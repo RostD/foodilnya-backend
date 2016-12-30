@@ -17,17 +17,17 @@ class Index extends Controller
 {
     public function index()
     {
-        $f = new CountedMaterialValue(2,'Мат. ценность',1,20);
-        $f2 = new CountedMaterialValue(3,'Мат. ценность2',1,10);
-        $f3 = new CountedMaterialValue(4,'Мат. ценность2',1,5);
+        $f = new CountedMaterialValue(2, 'Мат. ценность3', 1, 20);
+        $f2 = new CountedMaterialValue(3, 'Мат. ценность4', 1, 10);
+        $f3 = new CountedMaterialValue(4, 'Мат. ценность5', 1, 5);
         
         $collection = new WarehouseCollection();
         $collection->add($f);
         $collection->add($f2);
         $collection->add($f3);
-        
-        $warehouse = new WarehouseBase(1,NoValidate::class,FreePut::class,FreeTake::class);
-        $warehouse->put($collection);
+
+        $warehouse = new WarehouseBase(1);
+        $warehouse->justPut($collection);
         
 
     }

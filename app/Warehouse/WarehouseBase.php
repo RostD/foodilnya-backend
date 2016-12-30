@@ -13,75 +13,46 @@ use App\Collections\WarehouseCollection;
 use App\Warehouse\AcceptPolicy\IAcceptPut;
 use App\Warehouse\AcceptPolicy\IAcceptTake;
 use App\Warehouse\AcceptPolicy\IAcceptValidate;
+use App\Warehouse\AcceptPolicy\Put\FreePut;
+use App\Warehouse\AcceptPolicy\Take\FreeTake;
+use App\Warehouse\AcceptPolicy\Validate\NoValidate;
 
 class WarehouseBase implements IWarehouse
 {
+    protected $warehouse_id;
     protected $documentNumber = null;
     protected $data;
     protected $acceptPut;
     protected $acceptTake;
     protected $acceptValidate;
-    protected $warehouse_id;
 
     /**
      * WarehouseBase constructor.
      * @param $warehouse_id
-     * @param IAcceptValidate $acceptValidate
-     * @param IAcceptPut $acceptPut
-     * @param IAcceptTake $acceptTake
      */
-    public function __construct($warehouse_id, $acceptValidate, $acceptPut, $acceptTake)
+    public function __construct($warehouse_id)
     {
-        $this->acceptPut = new $acceptPut($this);
-        $this->acceptTake = new $acceptTake($this);
-        $this->acceptValidate = new $acceptValidate($this);
-        $this->warehouse_id = $warehouse_id;
+        // Политики по-умолчанию
+        $this->acceptPut = new FreePut($this);
+        $this->acceptTake = new FreeTake($this);
+        $this->acceptValidate = new NoValidate($this);
 
-        if (!$this->acceptValidate instanceof IAcceptValidate || !$this->acceptPut instanceof IAcceptPut || !$this->acceptTake instanceof IAcceptTake)
-            exit("Не забудь сделать Exception");
+        $this->warehouse_id = $warehouse_id;
     }
+
 
     /**
-     * @param $data
-     * @return bool
+     * @return WarehouseCollection
      */
-    public function put(WarehouseCollection $data)
-    {
-        // TODO: Implement put() method.
-        if (!$this->acceptValidate->isValidData())
-            return false;
-        if (!$this->acceptPut->canPut())
-            return false;
-
-        $this->data = $data;
-
-        $this->recordInRegister(true);
-
-        // запись в регистр
-        // обновление состояния остатков
-    }
-
-    public function take(WarehouseCollection $data)
-    {
-        // TODO: Implement take() method.
-        // валидация
-        // запись в регистр
-        // обновление состояния остатков
-    }
-
     public function getRequestedData()
     {
         return $this->data;
     }
 
-    /**
-     * @param mixed $documentNumber
-     */
-    public function setDocumentNumber($documentNumber)
-    {
-        $this->documentNumber = $documentNumber;
-    }
 
+    /**
+     * @param $isComing boolean Приход или Расход
+     */
     protected function recordInRegister($isComing)
     {
         foreach ($this->data->array() as $value) {
@@ -89,4 +60,102 @@ class WarehouseBase implements IWarehouse
         }
     }
 
+    /**
+     * Взаимодействие со складсм (Приход или расход материалов)
+     *
+     * Для обращения достаточно документа, в котором
+     * будет указно что, куда, какое движение (Приход/Расход)
+     *
+     * @param $document
+     * @return bool
+     */
+    public function appeal($document)
+    {
+        // TODO: Implement appeal() method.
+        $this->clearAppeal();
+    }
+
+    /**
+     * Если требутся поместить на склад без сопроводительных документов
+     * Принудительный режим игнорирует политику AcceptPut
+     *
+     * @param WarehouseCollection $data
+     * @param bool $forcibly
+     * @return bool
+     */
+    public function justPut(WarehouseCollection $data, bool $forcibly = false)
+    {
+        $this->data = $data;
+
+        if (!$forcibly)
+            if (!$this->acceptPut->canPut())
+                return false;
+
+        $this->recordInRegister(true);
+        // обновление состояния остатков
+        $this->clearAppeal();
+    }
+
+    /**
+     * Если требуется списать со склада без сопроводительных документов
+     * Принудительный режим игнорирует политику AcceptTake
+     *
+     * @param WarehouseCollection $data
+     * @param bool $forcibly
+     * @return mixed
+     */
+    public function justTake(WarehouseCollection $data, bool $forcibly = false)
+    {
+        $this->data = $data;
+
+        if (!$forcibly)
+            if (!$this->acceptTake->canTake())
+                return false;
+
+        $this->recordInRegister(false);
+        // обновление состояния остатков
+        $this->clearAppeal();
+    }
+
+    /**
+     * Позволяет установить правила для принятия материалов на склад
+     *
+     * @param IAcceptPut $acceptPut
+     * @return void
+     */
+    public function setPutPolicy(IAcceptPut $acceptPut)
+    {
+        $this->acceptPut = $acceptPut;
+    }
+
+    /**
+     * Позволяет установить правила передачи материалов
+     *
+     * @param IAcceptTake $acceptTake
+     * @return mixed
+     */
+    public function setTakePolicy(IAcceptTake $acceptTake)
+    {
+        $this->acceptTake = $acceptTake;
+    }
+
+    /**
+     * Необходимость этого метода под вопросом
+     *
+     * @param IAcceptValidate $acceptValidate
+     * @return void
+     */
+    public function setValidationPolicy(IAcceptValidate $acceptValidate)
+    {
+        $this->acceptValidate = $acceptValidate;
+    }
+
+    /**
+     *Подготавливает состояние объекта к следующим обращениям
+     */
+    protected function clearAppeal()
+    {
+        $this->data = null;
+        $this->documentNumber = null;
+    }
 }
