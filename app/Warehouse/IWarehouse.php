@@ -28,7 +28,9 @@ interface IWarehouse
     public function appeal($document);
 
     /**
-     * Если требутся поместить на склад без сопроводительных документов
+     * Если требутся поместить на склад без сопроводительных документов,
+     * используйте этот метод
+     * 
      * Принудительный режим игнорирует политику AcceptPut
      *
      * @param WarehouseCollection $data
@@ -38,7 +40,9 @@ interface IWarehouse
     public function justPut(WarehouseCollection $data, bool $forcibly = false);
 
     /**
-     * Если требуется списать со склада без сопроводительных документов
+     * Если требуется списать со склада без сопроводительных документов,
+     * используйте этот метод
+     * 
      * Принудительный режим игнорирует политику AcceptTake
      *
      * @param WarehouseCollection $data

@@ -1,14 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Ростислав
- * Date: 30.12.2016
- * Time: 17:26
- */
 
 namespace App\Interfaces;
 
-
+/**
+ * Данный интерфейс использует регистр склада
+ * для фиксации приходов и расходов материальных ценностей
+ *
+ * Interface IRegisterString
+ * @package App\Interfaces
+ */
 interface IRegisterString
 {
     public function getName();
