@@ -13,15 +13,20 @@ class AttributeOfMaterialValue extends Model
         return $this->belongsTo(TypeOfMaterialValue::class, 'material_type_id');
     }
 
-    public function valueType()
+    public function unit()
     {
-        return $this->belongsTo(ValueType::class, 'value_type_id');
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 
     public function materials()
     {
         return $this->belongsToMany(MaterialValue::class, 'material_attribute')
             ->withPivot('value');
+    }
+
+    public function possibleValues()
+    {
+        return $this->hasMany(PossibleAttributeValue::class, 'attr_id');
     }
 
 }

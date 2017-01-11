@@ -19,6 +19,16 @@ class MaterialValue extends Model
         return $this->belongsTo(Unit::class, 'unit_id');
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(MaterialValue::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(MaterialValue::class, 'parent_id');
+    }
+
     public function attributes()
     {
         return $this->belongsToMany(AttributeOfMaterialValue::class, 'material_attribute', 'material_id', 'attribute_id')

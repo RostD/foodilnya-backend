@@ -2,22 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\AttributeOfMaterialValue;
-use App\Collections\Collection;
-use App\Collections\WarehouseCollection;
-use App\MaterialAttribute;
-use App\MaterialValue\CountedMaterialValue;
 use App\MaterialValue\MaterialValue;
-use App\TranslationUnit;
-use App\TypeOfMaterialValue;
-use App\Unit;
+use App\MaterialValue\MaterialValueAttribute;
+use App\PropertyAttributes;
 use App\ValueType;
-use App\Warehouse\AcceptPolicy\Put\FreePut;
-use App\Warehouse\AcceptPolicy\Take\FreeTake;
-use App\Warehouse\AcceptPolicy\Validate\NoValidate;
-use App\Warehouse\WarehouseBase;
-use App\WarehouseRegister;
-use Illuminate\Http\Request;
 
 class Index extends Controller
 {
@@ -41,17 +29,34 @@ class Index extends Controller
                                         ->first();
         echo "$base_unit ".$translator->mainUnit->name." = ".$base_unit*$translator->value." ".$translator->transUnit->name;*/
 
-        $materials = \App\MaterialValue::all();
+        /*$materials = \App\MaterialValue::all();
 
-        foreach ($materials as $material) {
-            echo "<b>Наименование</b>: " . $material->name . "<br />";
-            echo "<b>Тип:</b> " . $material->type->name . "<br />";
-            echo "<b>Аттрибуты:</b><br />";
-            foreach ($material->attributes as $attribute) {
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . $attribute->name . " = " . $attribute->pivot->value . "<br />";
-            }
-            echo "<br />";
-        }
+         foreach ($materials as $material) {
+             echo "<b>Наименование</b>: " . $material->name . "<br />";
+             echo "<b>Тип:</b> " . $material->type->name . "<br />";
+             echo "<b>Аттрибуты:</b><br />";
+             foreach ($material->attributes as $attribute) {
+                 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . $attribute->name . " = " . $attribute->pivot->value . "<br />";
+             }
+             echo "<br />";
+         }*/
 
+        //$material = new MaterialValue(3);
+        //echo "<b>".$material->id."</b>: ".$material->name." ".$material->typeName." ".$material->BaseUnitName;
+
+        //$material = MaterialValue::find(3);
+        //$material->setAttribute(4,90);
+    }
+
+    function showMaterial($materialId)
+    {
+        $material = MaterialValue::find($materialId);
+        return view("test.material", ['material' => $material]);
+    }
+
+    function showAttribute($attr_id)
+    {
+        $attribute = MaterialValueAttribute::find($attr_id);
+        return view("test.attribute", ['attribute' => $attribute]);
     }
 }

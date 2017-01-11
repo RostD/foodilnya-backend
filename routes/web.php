@@ -12,3 +12,5 @@
 */
 
 Route::get('/', 'Index@index');
+Route::get('/material/{id}', 'Index@showMaterial');
+Route::get('/attribute/{id}', 'Index@showAttribute');

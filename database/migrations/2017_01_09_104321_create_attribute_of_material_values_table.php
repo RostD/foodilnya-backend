@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAttributeOfMaterialValuesTable extends Migration
 {
@@ -17,9 +17,11 @@ class CreateAttributeOfMaterialValuesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('material_type_id')->nullable();
-            $table->integer('value_type_id');
-            $table->string('default_value')->nullable();
+            $table->boolean('fixed_value')->default(false);
+            $table->integer('unit_id')->nullable();
         });
+
+
     }
 
     /**
