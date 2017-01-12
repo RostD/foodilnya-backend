@@ -3,12 +3,16 @@
  * Created by PhpStorm.
  * User: Ростислав
  * Date: 30.12.2016
- * Time: 15:35
+ * Time: 14:10
  */
 
 namespace App\Collections;
 
 
+/**
+ * Class Collection
+ * @package App\Collections
+ */
 class Collection implements ICollections
 {
     protected $typeItem;
@@ -25,6 +29,10 @@ class Collection implements ICollections
 
     }
 
+    /**
+     * Добавить элемент в коллекцию
+     * @param object $item Объект типа, указанного при инициализации коллекции
+     */
     public function add($item)
     {
         if ($this->checkType($item)) {

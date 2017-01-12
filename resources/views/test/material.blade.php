@@ -62,12 +62,12 @@
 
         @if(count($material->attributes) > 0)
             <tr>
-                <td colspan="2" class="center bold">Аттрибуты</td>
+                <td colspan="2" class="center bold">Атрибуты</td>
             </tr>
             @foreach($material->attributes as $attribute)
                 <tr>
                     <td>{{$attribute->name}}</td>
-                    <td>{{$attribute->pivot->value}} @if($attribute->unit){{$attribute->unit->name}}@endif</td>
+                    <td>{{$attribute->value}} @if($attribute->unitId){{$attribute->unitName}}@endif</td>
                 </tr>
             @endforeach
         @endif

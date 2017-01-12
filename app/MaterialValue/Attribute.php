@@ -9,12 +9,12 @@
 namespace App\MaterialValue;
 
 
-use App\AttributeOfMaterialValue;
 use App\MaterialValue;
-use App\TypeOfMaterialValue;
-use App\Unit;
+use App\Models\AttributeOfMaterialValue;
+use App\Models\TypeOfMaterialValue;
+use App\Models\Unit;
 
-class MaterialValueAttribute
+class Attribute
 {
     protected $model;
     protected $possibleValues;
@@ -98,7 +98,7 @@ class MaterialValueAttribute
     }
 
     /**
-     * true - Аттрибут имеет только фиксированные значения
+     * true - Атрибут имеет только фиксированные значения
      * false - доступны произвольные значения
      *
      * @return bool
@@ -152,7 +152,7 @@ class MaterialValueAttribute
      * @param null $type_material
      * @param null $unit
      * @param array $values
-     * @return MaterialValueAttribute
+     * @return Attribute
      */
     public static function create($name, $fixedValues, $type_material = null, $unit = null, $values = array())
     {
@@ -181,7 +181,7 @@ class MaterialValueAttribute
 
     /**
      * @param $id
-     * @return MaterialValueAttribute|bool
+     * @return Attribute|bool
      */
     public static function find($id)
     {

@@ -12,32 +12,31 @@ use App\Interfaces\IRegisterString;
 
 
 /**
- * Class CountedMaterialValue
- * @package App\MaterialValue
- *
  * Класс применяется, когда необходимо передавать количество материальных ценностей.
+ * @package App\MaterialValue
  */
-class CountedMaterialValue extends MaterialValue implements IRegisterString
+class CountedMaterial extends Material implements IRegisterString
 {
     private $quantity;
     //private $unit;
 
     /**
      * CountedMaterialValue constructor.
-     * @param $id
-     * @param $name
-     * @param $baseUnit
-     * @param $quantity
+     * @param integer $id Сушествующий идентификатор
+     * @param string $name
+     * @param integer $baseUnit_id
+     * @param float $quantity
      */
-    public function __construct($id, $name, $baseUnit, $quantity)
+    public function __construct($id, $name, $baseUnit_id, $quantity)
     {
-        parent::__construct($id, $name, $baseUnit);
+        //TODO: Изменить класс, в соответствии с конструктором родительского класса
+        parent::__construct($id, $name, $baseUnit_id);
         $this->quantity = $quantity;
         //$this->unit = $unit;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getQuantity()
     {
@@ -45,7 +44,7 @@ class CountedMaterialValue extends MaterialValue implements IRegisterString
     }
 
     /**
-     * @return mixed
+     * @return integer id
      */
     public function getUnit()
     {

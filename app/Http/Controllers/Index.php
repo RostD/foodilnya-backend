@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\MaterialValue\MaterialValue;
-use App\MaterialValue\MaterialValueAttribute;
-use App\PropertyAttributes;
-use App\ValueType;
+use App\MaterialValue\Attribute;
+use App\MaterialValue\Material;
 
 class Index extends Controller
 {
@@ -29,12 +27,12 @@ class Index extends Controller
                                         ->first();
         echo "$base_unit ".$translator->mainUnit->name." = ".$base_unit*$translator->value." ".$translator->transUnit->name;*/
 
-        /*$materials = \App\MaterialValue::all();
+        /*$materials = \App\Models\MaterialValue::all();
 
          foreach ($materials as $material) {
              echo "<b>Наименование</b>: " . $material->name . "<br />";
              echo "<b>Тип:</b> " . $material->type->name . "<br />";
-             echo "<b>Аттрибуты:</b><br />";
+             echo "<b>Атрибуты:</b><br />";
              foreach ($material->attributes as $attribute) {
                  echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . $attribute->name . " = " . $attribute->pivot->value . "<br />";
              }
@@ -44,19 +42,19 @@ class Index extends Controller
         //$material = new MaterialValue(3);
         //echo "<b>".$material->id."</b>: ".$material->name." ".$material->typeName." ".$material->BaseUnitName;
 
-        //$material = MaterialValue::find(3);
-        //$material->setAttribute(4,90);
+        $material = Material::find(3);
+        $material->setAttribute(1, 120);
     }
 
     function showMaterial($materialId)
     {
-        $material = MaterialValue::find($materialId);
+        $material = Material::find($materialId);
         return view("test.material", ['material' => $material]);
     }
 
     function showAttribute($attr_id)
     {
-        $attribute = MaterialValueAttribute::find($attr_id);
+        $attribute = Attribute::find($attr_id);
         return view("test.attribute", ['attribute' => $attribute]);
     }
 }

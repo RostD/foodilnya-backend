@@ -15,6 +15,12 @@ use App\WarehouseRegister;
 
 class Register
 {
+    /**
+     * Производит запись в регистр о движении материальной ценности
+     * @param integer $warehouse_id id склада
+     * @param boolean $isComing Приход(true) или расход(false)
+     * @param IRegisterString $material
+     */
     static public function record($warehouse_id, bool $isComing, IRegisterString $material)
     {
         $item = new WarehouseRegister();

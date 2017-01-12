@@ -1,5 +1,5 @@
 @if(!$attribute)
-    <h2>Аттрибут не найден</h2>
+    <h2>Атрибут не найден</h2>
 @else
     <h2>{{$attribute->name}} (id:{{$attribute->id}})</h2>
     <ol>

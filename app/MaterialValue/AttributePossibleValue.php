@@ -9,7 +9,7 @@
 namespace App\MaterialValue;
 
 
-use App\PossibleAttributeValue;
+use App\Models\PossibleAttributeValue;
 
 class AttributePossibleValue
 {
