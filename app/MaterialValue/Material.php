@@ -32,23 +32,27 @@ class Material
     /**
      * Материалы, конкретизирующие данный элемент
      *
-     * @var \App\MaterialValue\Material in array
+     * @var Material в массиве
      *
      */
     protected $specifics;
 
     /**
      * Материал, являющийся абстракцией для данного элемента
-     * @var \App\MaterialValue\Material
+     * @var Material
      */
     protected $abstract;
 
+    /**
+     * Массив атрибутов материала
+     * @var AttributeValue в массиве
+     */
     protected $attributes;
 
     /**
      * @param MaterialValue $model
      */
-    public function __construct(MaterialValue $model)
+    protected function __construct(MaterialValue $model)
     {
         $this->model = $model;
         $this->loadSpecifics();
@@ -56,6 +60,12 @@ class Material
         $this->loadAttributes();
     }
 
+    /**
+     * Магический метод, позволяющий обращатся к методам объекта, как к свойствам
+     *
+     * Например, вызов метода $obj->getName() может быть заменен на $obj->name.
+     * Относится к методам без параметров
+     */
     public function __get($name)
     {
         $name = "get" . $name;
@@ -112,7 +122,8 @@ class Material
     }
 
     /**
-     * Обновляет информацию об абстракции данного элемента
+     * Обновляет информацию об абстрактном материале
+     * @return void
      */
     private function loadAbstraction()
     {
@@ -123,7 +134,7 @@ class Material
     }
 
     /**
-     * Получить элемент, абстрагирующий данный
+     * Получить материал, являющийся абстракцией этого материала
      * @return Material|bool
      */
     public function getAbstraction()
@@ -132,7 +143,8 @@ class Material
     }
 
     /**
-     * Обновляет информацию о конкретизирующих элементах
+     * Загружает конкретизирующие материалы
+     * @return void
      */
     private function loadSpecifics()
     {
@@ -144,14 +156,18 @@ class Material
     }
 
     /**
-     * Получить массив элементов, состоящий из элементов, конкретизирующий данный
-     * @return array состоящий из App\MaterialValue\MaterialValue
+     * Получить материалы, конкретизирующий этот материал
+     * @return Material в массиве
      */
     public function getSpecifics()
     {
         return $this->specifics;
     }
 
+    /**
+     * Загружает аттрибуты материала и их значения
+     * @return void
+     */
     private function loadAttributes()
     {
         $this->attributes = [];
@@ -163,6 +179,8 @@ class Material
     }
 
     /**
+     * Возвращает массив аттрибутов в виде объектов
+     * @see AttributeValue
      * @return array
      */
     public function getAttributes()
@@ -170,11 +188,19 @@ class Material
         return $this->attributes;
     }
 
+    /**
+     * Возвращает id типа материала
+     * @return int
+     */
     public function getType()
     {
         return $this->model->type_id;
     }
 
+    /**
+     * Возвращает наименование типа материалы
+     * @return string
+     */
     public function getTypeName()
     {
         return $this->model->type->name;
@@ -224,7 +250,7 @@ class Material
      * @param integer $attribute_id
      * @param string|int|float $value
      */
-    public function setAttribute($attribute_id, $value)
+    public function setAttribute($attribute_id, $value = null)
     {
         if ($this->issetAttribute($attribute_id)) {
             $this->attributes[$attribute_id]->setValue($value);
@@ -252,13 +278,13 @@ class Material
 
     /**
      * Проверяет, имеет ли материал запрошенный атрибут
-     * @param integer $id
+     * @param integer $attribute_id
      * @return bool
      */
-    public function issetAttribute($id)
+    public function issetAttribute($attribute_id)
     {
         foreach ($this->attributes as $attribute) {
-            if ($attribute->id == $id)
+            if ($attribute->id == $attribute_id)
                 return true;
         }
         return false;

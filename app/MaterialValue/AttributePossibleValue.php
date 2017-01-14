@@ -36,6 +36,10 @@ class AttributePossibleValue
         return $this->model->value;
     }
 
+    /**
+     * Изменить возможное значение аттрибута
+     * @param string $value
+     */
     public function setValue($value)
     {
         $this->model->value = $value;

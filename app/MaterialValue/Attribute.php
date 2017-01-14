@@ -53,14 +53,14 @@ class Attribute
 
     /**
      * Получить id типа, которому доступен этот аттрибут.
-     * Если false - доступно для всех типов
+     * Если true - доступно для всех типов
      *
      * @return id|bool
      */
     public function getType()
     {
         if (!$this->model->materialType)
-            return false;
+            return true;
         return $this->model->materialType->id;
     }
 
@@ -98,12 +98,15 @@ class Attribute
     }
 
     /**
-     * true - Атрибут имеет только фиксированные значения
+     * Возвращает установку: фиксированные значения у атрибута,
+     * или доступен ввод произвольных
+     *
+     * true - только фиксированные значения
      * false - доступны произвольные значения
      *
      * @return bool
      */
-    public function getFixedValue()
+    public function isFixedValue()
     {
         return $this->model->fixed_value;
     }
@@ -124,8 +127,25 @@ class Attribute
 
     public function addPossibleValue($value)
     {
+        //TODO: проверить, чтобы не было дубликата значения
         AttributePossibleValue::create($this->id, $value);
         $this->loadPossibleValues();
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function issetPossibleValue($value)
+    {
+        $value = mb_strtolower($value);
+        foreach ($this->possibleValues as $possibleValue) {
+            $possibleValue = mb_strtolower($possibleValue->value);
+
+            if ($possibleValue == $value)
+                return true;
+        }
+        return false;
     }
 
     /**

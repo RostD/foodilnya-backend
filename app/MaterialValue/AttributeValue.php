@@ -10,6 +10,13 @@ namespace App\MaterialValue;
 
 use App\Models\AttributeOfMaterialValue;
 
+/**
+ * Значеине атрибута
+ *
+ * Класс предназначен для удобного доступа к установленному атрибуту материала.
+ * Позволяет легко изменять значение атрибута
+ * @package App\MaterialValue
+ */
 class AttributeValue
 {
 
@@ -91,10 +98,24 @@ class AttributeValue
         return $this->value;
     }
 
+    /**
+     * @param string|int|float $value
+     */
     public function setValue($value)
     {
-        $this->model->pivot->value = $value;
-        $this->model->pivot->save();
+        $attribute = Attribute::find($this->id);
+
+        if ($attribute->isFixedValue() && $value == false) {
+            return;
+        }
+
+        if (($attribute->isFixedValue() && $attribute->issetPossibleValue($value)) ||
+            !$attribute->isFixedValue()
+        ) {
+            $this->model->pivot->value = $value;
+            $this->model->pivot->save();
+        }
+        
     }
 
 

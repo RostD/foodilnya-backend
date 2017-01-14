@@ -39,11 +39,9 @@ class Index extends Controller
              echo "<br />";
          }*/
 
-        //$material = new MaterialValue(3);
-        //echo "<b>".$material->id."</b>: ".$material->name." ".$material->typeName." ".$material->BaseUnitName;
 
-        $material = Material::find(3);
-        $material->setAttribute(1, 120);
+        //$material = Material::find(2);
+        //$material->setAttribute(6, 'нет');
     }
 
     function showMaterial($materialId)
