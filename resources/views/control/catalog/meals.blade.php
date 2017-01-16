@@ -1,42 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="public/css/control/main.css"/>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
+@extends('control.includes.master')
 
-    <title>Dashboard Template for Bootstrap</title>
+@section('head')
+    <style>
+        .my-remove-border {
+            border: none;
+        }
 
-    <!-- Bootstrap core CSS -->
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+        /* Выравнивание модального окна по центру */
+        .modal {
+            text-align: center;
+        }
 
-    <!-- Custom styles for this template -->
-    <link href="{{asset('css/control/main.css')}}" rel="stylesheet">
+        @media screen and (min-width: 768px) {
+            .modal:before {
+                display: inline-block;
+                vertical-align: middle;
+                content: " ";
+                height: 100%;
+            }
+        }
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
+        .modal-dialog {
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+        }
 
-<body>
+        /* -------------------------- */
+    </style>
+@endsection
 
-<div id="myModalBox" class="modal fade modal-center">
-    <div class="modal-dialog">
+@section('title')
+    Блюда
+@endsection
+
+@section('priority')
+    <div id="myModalBox" class="modal fade my-modal-center">
+        <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Заголовок модального окна -->
-            <div class="modal-header">
+            <div class="modal-header my-remove-border">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Заголовок модального окна</h4>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#home" data-toggle="tab">Главная</a></li>
+                    <li><a href="#profile" data-toggle="tab">Профиль</a></li>
+                    <li><a href="#messages" data-toggle="tab">Сообщения</a></li>
+                    <li><a href="#settings" data-toggle="tab">Настройки</a></li>
+                </ul>
             </div>
             <!-- Основное содержимое модального окна -->
             <div class="modal-body">
-                Содержимое модального окна...
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home">Домашняя</div>
+                    <div class="tab-pane" id="profile">Профиль</div>
+                    <div class="tab-pane" id="messages">Сообщения</div>
+                    <div class="tab-pane" id="settings">Натсройки</div>
+                </div>
             </div>
             <!-- Футер модального окна -->
             <div class="modal-footer">
@@ -46,58 +66,10 @@
         </div>
     </div>
 </div>
+@endsection
 
-<!--TODO: отделить навигацию от страницы -->
+@section('content')
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Help</a></li>
-            </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>
-        </div>
-    </div>
-</nav>
-
-<div class="container-fluid overflow-max-y">
-    <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Analytics</a></li>
-                <li><a href="#">Export</a></li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li><a href="">Nav item</a></li>
-                <li><a href="">Nav item again</a></li>
-                <li><a href="">One more nav</a></li>
-                <li><a href="">Another nav item</a></li>
-                <li><a href="">More navigation</a></li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li><a href="">Nav item again</a></li>
-                <li><a href="">One more nav</a></li>
-                <li><a href="">Another nav item</a></li>
-            </ul>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">Dashboard</h1>
 
             <div class="row placeholders">
@@ -132,7 +104,7 @@
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
-                    <tr>
+                    <tr onclick="showModal()">
                         <th>#</th>
                         <th>Header</th>
                         <th>Header</th>
@@ -256,19 +228,16 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-</div>
+@endsection
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="{{asset('js/jquery.min.js')}}"></script>
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
-<script>
-    $(document).ready(function () {
-        $("#myModalBox").modal('show');
-    });
-</script>
-</body>
-</html>
+@section('scripts')
+    <script>
+        function showModal() {
+            $("#myModalBox").modal('show');
+        }
+    </script>
+    @include('libs.angular');
+
+    <script src="{{url('js/control/meals/first.js')}}"></script>
+@endsection
+

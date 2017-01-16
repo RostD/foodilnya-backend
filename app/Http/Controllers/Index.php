@@ -42,6 +42,7 @@ class Index extends Controller
 
         //$material = Material::find(2);
         //$material->setAttribute(6, 'нет');
+        return view('welcome');
     }
 
     function showMaterial($materialId)

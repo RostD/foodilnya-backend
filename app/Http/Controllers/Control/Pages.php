@@ -6,8 +6,13 @@ use App\Http\Controllers\Controller;
 
 class Pages extends Controller
 {
-    public function menuBuilder()
+    public function index()
     {
-        return view('control.menubuilder.main');
+        return view('control.main');
+    }
+
+    public function meals()
+    {
+        return view('control.catalog.meals');
     }
 }
