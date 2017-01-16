@@ -1,8 +1,6 @@
-@extends('control.includes.master')
+@extends('backend.control.includes.master')
 
-@section('title')
-    Главная
-@endsection
+@section('title')Главная@endsection
 
 @section('content')
     <h1>Панель управления</h1>

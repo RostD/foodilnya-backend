@@ -14,35 +14,41 @@ require('elixir-typescript');
  | file for our application, as well as publishing vendor resources.
  |
  */
+var dir_frontend = '../../views/frontend';
+elixir(mix => {
+    mix
+    /** Хз что это
+    .sass('app.scss')
+    .webpack('app.js')*/
 
-elixir(mix = > {
-    mix.sass('app.scss')
-    .webpack('app.js')
-    .copy('node_modules/@angular', 'public/@angular')
+    /******* Подгрузка ядра Angular 2 в public *********
+     .copy('node_modules/@angular', 'public/angular/@angular')
     .copy('node_modules/anular2-in-memory-web-api', 'public/anular2-in-memory-web-api')
-    .copy('node_modules/core-js', 'public/core-js')
-    .copy('node_modules/reflect-metadata', 'public/reflect-metadata')
-    .copy('node_modules/systemjs', 'public/systemjs')
-    .copy('node_modules/rxjs', 'public/rxjs')
-    .copy('node_modules/zone.js', 'public/zone.js')
-
+     .copy('node_modules/core-js', 'public/angular/core-js')
+     .copy('node_modules/reflect-metadata', 'public/angular/reflect-metadata')
+     .copy('node_modules/systemjs', 'public/angular/systemjs')
+     .copy('node_modules/rxjs', 'public/angular/rxjs')
+     .copy('node_modules/zone.js', 'public/angular/zone.js')*/
+    
+    /******* Control/Meals *******/
     .typescript(
         [
-            'app.component.ts',
-            'app.module.ts',
-            'main.ts'
+            dir_frontend+'/control/meals/main.ts',
+            dir_frontend+'/control/meals/app.component.ts',
+            dir_frontend+'/control/meals/app.module.ts'
         ],
-        'public/app',
+        'public/app/control/meals',
         {
             "target": "es5",
             "module": "system",
             "moduleResolution": "node",
-            "sourceMap": true,
+            "sourceMap": false,
             "emitDecoratorMetadata": true,
             "experimentalDecorators": true,
             "removeComments": false,
             "noImplicitAny": false
         }
-    );
-})
-;
+    )
+    /** Копируем html шаблоны и css файлы в public **/
+    .copy('resources/views/frontend/control/meals/view', 'public/app/control/meals/view')
+});

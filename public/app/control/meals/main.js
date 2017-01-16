@@ -1,4 +1,4 @@
-System.register(['@angular/platform-browser-dynamic', './app.module'], function (exports_1, context_1) {
+System.register(["@angular/platform-browser-dynamic", "./app.module"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var platform_browser_dynamic_1, app_module_1;
@@ -12,6 +12,7 @@ System.register(['@angular/platform-browser-dynamic', './app.module'], function 
                 app_module_1 = app_module_1_1;
             }],
         execute: function () {
+            // ПОДРУБАЕМ МОДУЛИ, В КОТОРОМ ЗАГРУЖЕНЫ НУЖНЫЕ НАМ КОМПОНЕНТЫ
             platform = platform_browser_dynamic_1.platformBrowserDynamic();
             //ЗАПРАВЛЯЕМ МОДУЛЬ ДЛЯ ВЫВОДА В БРАУЗЕР
             //noinspection TypeScriptValidateTypes

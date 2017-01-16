@@ -1,4 +1,4 @@
-///<reference path="../../../typings/index.d.ts"/>
+///<reference path="../../../../../typings/index.d.ts"/>
 
 import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";

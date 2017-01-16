@@ -42,18 +42,18 @@ class Index extends Controller
 
         //$material = Material::find(2);
         //$material->setAttribute(6, 'нет');
-        return view('welcome');
+        return view('backend.welcome');
     }
 
     function showMaterial($materialId)
     {
         $material = Material::find($materialId);
-        return view("test.material", ['material' => $material]);
+        return view("backend.test.material", ['material' => $material]);
     }
 
     function showAttribute($attr_id)
     {
         $attribute = Attribute::find($attr_id);
-        return view("test.attribute", ['attribute' => $attribute]);
+        return view("backend.test.attribute", ['attribute' => $attribute]);
     }
 }

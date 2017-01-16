@@ -8,11 +8,11 @@ class Pages extends Controller
 {
     public function index()
     {
-        return view('control.main');
+        return view('backend.control.main');
     }
 
     public function meals()
     {
-        return view('control.catalog.meals');
+        return view('backend.control.catalog.meals');
     }
 }

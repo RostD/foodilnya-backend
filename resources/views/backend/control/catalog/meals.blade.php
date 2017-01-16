@@ -1,4 +1,4 @@
-@extends('control.includes.master')
+@extends('backend.control.includes.master')
 
 @section('head')
     <style>
@@ -30,11 +30,9 @@
     </style>
 @endsection
 
-@section('title')
-    Блюда
-@endsection
+@section('title')Блюда@endsection
 
-@section('priority')
+@section('priority-content')
     <div id="myModalBox" class="modal fade my-modal-center">
         <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -69,7 +67,7 @@
 @endsection
 
 @section('content')
-
+    <my-app>Loading...</my-app>
             <h1 class="page-header">Dashboard</h1>
 
             <div class="row placeholders">
@@ -231,13 +229,15 @@
 @endsection
 
 @section('scripts')
+    @include('backend.libs.angular');
+    <script src="{{ url('js/ngcfg/control/meals.js') }}"></script>
     <script>
+        System.import('app').catch(function (err) {
+            console.error(err);
+        });
         function showModal() {
             $("#myModalBox").modal('show');
         }
     </script>
-    @include('libs.angular');
-
-    <script src="{{url('js/control/meals/first.js')}}"></script>
 @endsection
 

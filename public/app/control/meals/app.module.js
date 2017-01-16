@@ -1,4 +1,5 @@
-System.register(['@angular/core'], function (exports_1, context_1) {
+///<reference path="../../../../../typings/index.d.ts"/>
+System.register(["@angular/core", "@angular/platform-browser", "./app.component"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,32 +11,37 @@ System.register(['@angular/core'], function (exports_1, context_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
             if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
         };
-    var core_1;
-    var AppComponent;
+    var core_1, platform_browser_1, app_component_1;
+    var AppModule;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (platform_browser_1_1) {
+                platform_browser_1 = platform_browser_1_1;
+            },
+            function (app_component_1_1) {
+                app_component_1 = app_component_1_1;
             }],
         execute: function () {
-            //ЕБУЧИЙ КОМПОНЕНТ
-            AppComponent = (function () {
-                function AppComponent() {
-                    this.names = ['fitsr', 'second', 'third', 'fffffff'];
+            //ЗАВОЗИМ КЛАСС ШТОБ ЗАЕБЕНЕТЬ В NgMODULE
+            AppModule = (function () {
+                function AppModule() {
                 }
-
-                AppComponent = __decorate([
-                    core_1.Component({
-                        selector: 'my-app',
-                        template: '<ul><li *ngFor="let name of names ">{{name}}</li></ul>'
-                    }),
+                AppModule = __decorate([
+                    core_1.NgModule({
+                        imports: [platform_browser_1.BrowserModule],
+                        declarations: [app_component_1.AppComponent],
+                        bootstrap: [app_component_1.AppComponent]
+                    }), 
                     __metadata('design:paramtypes', [])
-                ], AppComponent);
-                return AppComponent;
+                ], AppModule);
+                return AppModule;
             }());
-            exports_1("AppComponent", AppComponent);
+            exports_1("AppModule", AppModule);
         }
     }
 });
 
-//# sourceMappingURL=app.component.js.map
+//# sourceMappingURL=app.module.js.map
