@@ -118,5 +118,18 @@ class AttributeValue
         
     }
 
+    public function toArray()
+    {
+        $array = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'unit' => $this->unitName,
+            'unit_id' => $this->unitId,
+            'value' => $this->value
+        ];
+
+        return $array;
+    }
+
 
 }

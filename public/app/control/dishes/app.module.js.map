@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "app.module.ts"
+  ],
+  "names": [],
+  "mappings": "AAAA,wDAAwD;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;YAOxD,yCAAyC;YASzC;gBAAA;gBACA,CAAC;gBARD;oBAAC,eAAQ,CAAC;wBACN,OAAO,EAAE,CAAC,gCAAa,CAAC;wBACxB,YAAY,EAAE,CAAC,4BAAY,EAAE,8BAAa,CAAC;wBAC3C,SAAS,EAAE,CAAC,4BAAY,CAAC;qBAC5B,CAAC;;6BAAA;gBAIF,gBAAC;YAAD,CADA,AACC,IAAA;YADD,iCACC,CAAA",
+  "file": "app.module.js",
+  "sourcesContent": [
+    "///<reference path=\"../../../../../typings/index.d.ts\"/>\r\n\r\nimport {NgModule} from \"@angular/core\";\r\nimport {BrowserModule} from \"@angular/platform-browser\";\r\nimport {AppComponent} from \"./app.component\";\r\nimport {HomeComponent} from './home.component';\r\n\r\n//ЗАВОЗИМ КЛАСС ШТОБ ЗАЕБЕНЕТЬ В NgMODULE\r\n\r\n@NgModule({\r\n    imports: [BrowserModule],\r\n    declarations: [AppComponent, HomeComponent],\r\n    bootstrap: [AppComponent]\r\n})\r\n\r\n//ВЫВОЗИМ КЛАСС\r\nexport class AppModule {\r\n}"
+  ]
+}

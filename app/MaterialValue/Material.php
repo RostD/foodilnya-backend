@@ -18,6 +18,8 @@ use App\Models\Unit;
  * Материальная ценность.
  * Класс, для создания материальной ценности(далее материал), а так же
  * для получения и редактирования информации сущестсвующей.
+ * @property  typeName
+ * @property  id
  * @package App\MaterialValue
  */
 class Material
@@ -52,7 +54,7 @@ class Material
     /**
      * @param MaterialValue $model
      */
-    protected function __construct(MaterialValue $model)
+    public function __construct(MaterialValue $model)
     {
         $this->model = $model;
         $this->loadSpecifics();
@@ -288,6 +290,28 @@ class Material
                 return true;
         }
         return false;
+    }
+
+    public function toArray()
+    {
+        $array = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'type' => $this->typeName,
+            'type_id' => $this->type,
+            'unit' => $this->unitName,
+            'unit_id' => $this->unit,
+        ];
+        if (!empty($this->getAttributes())) {
+            foreach ($this->getAttributes() as $attribute) {
+                $array['attributes'][] = $attribute->toArray();
+            }
+        }
+
+        if ($this->abstraction)
+            $array['abstract'] = $this->abstraction->toArray();
+
+        return $array;
     }
 
     //TODO: setSpecific

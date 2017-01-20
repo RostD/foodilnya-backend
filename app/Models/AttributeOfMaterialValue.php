@@ -8,6 +8,9 @@ class AttributeOfMaterialValue extends Model
 {
     public $timestamps = false;
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo||boolean
+     */
     public function materialType()
     {
         return $this->belongsTo(TypeOfMaterialValue::class, 'material_type_id');

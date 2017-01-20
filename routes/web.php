@@ -16,4 +16,4 @@ Route::get('/material/{id}', 'Index@showMaterial');
 Route::get('/attribute/{id}', 'Index@showAttribute');
 
 Route::get('/control', 'Control\Pages@index');
-Route::get('/control/meals', 'Control\Pages@meals');
+Route::get('/control/dishes', 'Control\Pages@dishes');

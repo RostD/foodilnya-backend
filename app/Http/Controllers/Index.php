@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\MaterialValue\Attribute;
 use App\MaterialValue\Material;
+use Illuminate\Http\Request;
 
 class Index extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         /* $f = new CountedMaterialValue(2, 'Мат. ценность3', 1, 20);
         $f2 = new CountedMaterialValue(3, 'Мат. ценность4', 1, 10);
@@ -42,6 +43,7 @@ class Index extends Controller
 
         //$material = Material::find(2);
         //$material->setAttribute(6, 'нет');
+        print_r($request->headers);
         return view('backend.welcome');
     }
 

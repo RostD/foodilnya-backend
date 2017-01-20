@@ -11,30 +11,31 @@ System.register(["@angular/core"], function (exports_1, context_1) {
             if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
         };
     var core_1;
-    var AppComponent;
+    var HomeComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             }],
         execute: function () {
-            //Декоратор
-            AppComponent = (function () {
-                function AppComponent() {
-                    this.text = "Angular 2 подгружен";
+            HomeComponent = (function () {
+                function HomeComponent() {
                 }
-                AppComponent = __decorate([
+
+                HomeComponent.prototype.ngOnInit = function () {
+                };
+                HomeComponent = __decorate([
                     core_1.Component({
-                        selector: 'my-app',
-                        templateUrl: _url('app/control/meals/view/app.component.html')
-                    }), 
+                        selector: 'home-c',
+                        templateUrl: _url('app/control/dishes/view/home.component.html')
+                    }),
                     __metadata('design:paramtypes', [])
-                ], AppComponent);
-                return AppComponent;
+                ], HomeComponent);
+                return HomeComponent;
             }());
-            exports_1("AppComponent", AppComponent);
+            exports_1("HomeComponent", HomeComponent);
         }
     }
 });
 
-//# sourceMappingURL=app.component.js.map
+//# sourceMappingURL=home.component.js.map

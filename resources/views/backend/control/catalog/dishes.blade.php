@@ -230,7 +230,7 @@
 
 @section('scripts')
     @include('backend.libs.angular');
-    <script src="{{ url('js/ngcfg/control/meals.js') }}"></script>
+    <script src="{{ url('js/ngcfg/control/dishes.js') }}"></script>
     <script>
         System.import('app').catch(function (err) {
             console.error(err);

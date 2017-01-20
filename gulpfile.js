@@ -29,15 +29,16 @@ elixir(mix => {
      .copy('node_modules/systemjs', 'public/angular/systemjs')
      .copy('node_modules/rxjs', 'public/angular/rxjs')
      .copy('node_modules/zone.js', 'public/angular/zone.js')*/
-    
-    /******* Control/Meals *******/
+
+/******* Control/Dishes *******/
     .typescript(
         [
-            dir_frontend+'/control/meals/main.ts',
-            dir_frontend+'/control/meals/app.component.ts',
-            dir_frontend+'/control/meals/app.module.ts'
+            dir_frontend + '/control/dishes/main.ts',
+            dir_frontend + '/control/dishes/app.component.ts',
+            dir_frontend + '/control/dishes/app.module.ts',
+            dir_frontend + '/control/dishes/home.component.ts'
         ],
-        'public/app/control/meals',
+        'public/app/control/dishes',
         {
             "target": "es5",
             "module": "system",
@@ -50,5 +51,5 @@ elixir(mix => {
         }
     )
     /** Копируем html шаблоны и css файлы в public **/
-    .copy('resources/views/frontend/control/meals/view', 'public/app/control/meals/view')
+    .copy('resources/views/frontend/control/dishes/view', 'public/app/control/dishes/view')
 });

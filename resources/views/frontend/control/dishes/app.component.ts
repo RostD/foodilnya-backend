@@ -5,7 +5,7 @@ import {Component} from "@angular/core";
 //Декоратор
 @Component({
     selector: 'my-app',
-    templateUrl: _url('app/control/meals/view/app.component.html')
+    templateUrl: _url('app/control/dishes/view/app.component.html'),
 })
 export class AppComponent {
     text:string;

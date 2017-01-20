@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property integer type_id
+ * @property mixed name
+ * @property mixed unit_id
+ * @property mixed unit
+ * @property mixed parent
  */
 class MaterialValue extends Model
 {
@@ -36,5 +40,10 @@ class MaterialValue extends Model
     {
         return $this->belongsToMany(AttributeOfMaterialValue::class, 'material_attribute', 'material_id', 'attribute_id')
             ->withPivot('value');
+    }
+
+    public function scopeDishes($query)
+    {
+        return $query->where('type_id', 3);
     }
 }

@@ -36,8 +36,10 @@ class Collection implements ICollections
     public function add($item)
     {
         if ($this->checkType($item)) {
+            //TODO: проверить, есть ли уже такой объект в коллекции
             $this->data[] = $item;
         } else {
+
             // TODO: Exception ("неподходищий тип")
             exit("Не подходит тип объекта для Коллекции");
         }

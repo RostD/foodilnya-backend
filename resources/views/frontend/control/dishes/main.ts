@@ -1,7 +1,7 @@
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {AppModule} from "./app.module";
 
-// ПОДРУБАЕМ МОДУЛИ, В КОТОРОМ ЗАГРУЖЕНЫ НУЖНЫЕ НАМ КОМПОНЕНТЫ
+// ПОДРУБАЕМ МОДУЛИ, В КОТОРых ЗАГРУЖЕНЫ НУЖНЫЕ НАМ КОМПОНЕНТЫ И ДИРЕКТИВЫ
 
 const platform = platformBrowserDynamic();
 

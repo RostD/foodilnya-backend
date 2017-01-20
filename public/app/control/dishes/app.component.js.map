@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "app.component.ts"
+  ],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;YAKA,WAAW;YAKX;gBAGI;oBACI,IAAI,CAAC,IAAI,GAAG,qBAAqB,CAAC;gBACtC,CAAC;gBATL;oBAAC,gBAAS,CAAC;wBACP,QAAQ,EAAE,QAAQ;wBAClB,WAAW,EAAE,IAAI,CAAC,4CAA4C,CAAC;qBAClE,CAAC;;gCAAA;gBAOF,mBAAC;YAAD,CANA,AAMC,IAAA;YAND,uCAMC,CAAA",
+  "file": "app.component.js",
+  "sourcesContent": [
+    "/// <reference path=\"../../cfg.ts\"/>\r\nimport {Component} from \"@angular/core\";\r\n\r\n\r\n\r\n//Декоратор\r\n@Component({\r\n    selector: 'my-app',\r\n    templateUrl: _url('app/control/dishes/view/app.component.html'),\r\n})\r\nexport class AppComponent {\r\n    text:string;\r\n\r\n    constructor() {\r\n        this.text = \"Angular 2 подгружен\";\r\n    }\r\n}"
+  ]
+}

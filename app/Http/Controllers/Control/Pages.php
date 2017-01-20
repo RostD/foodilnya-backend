@@ -11,8 +11,8 @@ class Pages extends Controller
         return view('backend.control.main');
     }
 
-    public function meals()
+    public function dishes()
     {
-        return view('backend.control.catalog.meals');
+        return view('backend.control.catalog.dishes');
     }
 }

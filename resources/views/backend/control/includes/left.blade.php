@@ -1,7 +1,7 @@
 <!-- TODO: class="active" Для <li>-->
 <label>Каталог</label>
 <ul class="nav nav-sidebar">
-    <li><a href="{{url('control/meals')}}">Блюда</a></li>
+    <li><a href="{{url('control/dishes')}}">Блюда</a></li>
     <li><a href="#">Analytics</a></li>
     <li><a href="#">Export</a></li>
 </ul>
