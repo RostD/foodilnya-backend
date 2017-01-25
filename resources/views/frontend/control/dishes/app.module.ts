@@ -1,15 +1,20 @@
 ///<reference path="../../../../../typings/index.d.ts"/>
 
+// Модули
+import {HttpModule} from "@angular/http";
 import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
 import {AppComponent} from "./app.component";
-import {HomeComponent} from "./home.component";
+import {TableComponent} from "./table.component";
+import {ModalComponent} from "./modal.component";
 
-//ЗАВОЗИМ КЛАСС ШТОБ ЗАЕБЕНЕТЬ В NgMODULE
+//Компоненты
+
 
 @NgModule({
-    imports: [BrowserModule],
-    declarations: [AppComponent, HomeComponent],
+    imports: [BrowserModule, HttpModule, FormsModule],
+    declarations: [AppComponent, TableComponent, ModalComponent],
     bootstrap: [AppComponent]
 })
 

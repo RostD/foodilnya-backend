@@ -11,31 +11,42 @@ System.register(["@angular/core"], function (exports_1, context_1) {
             if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
         };
     var core_1;
-    var HomeComponent;
+    var TableComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             }],
         execute: function () {
-            HomeComponent = (function () {
-                function HomeComponent() {
+            TableComponent = (function () {
+                function TableComponent() {
+                    this.OnClickDish = new core_1.EventEmitter();
                 }
-
-                HomeComponent.prototype.ngOnInit = function () {
+                TableComponent.prototype.loadModalData = function (dish) {
+                    this.OnClickDish.emit(dish);
                 };
-                HomeComponent = __decorate([
+                TableComponent.prototype.ngOnInit = function () {
+                };
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], TableComponent.prototype, "OnClickDish", void 0);
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Object)
+                ], TableComponent.prototype, "dishes", void 0);
+                TableComponent = __decorate([
                     core_1.Component({
-                        selector: 'home-c',
-                        templateUrl: _url('app/control/dishes/view/home.component.html')
-                    }),
+                        selector: 'dishes',
+                        templateUrl: '/app/control/dishes/view/table.component.html'
+                    }), 
                     __metadata('design:paramtypes', [])
-                ], HomeComponent);
-                return HomeComponent;
+                ], TableComponent);
+                return TableComponent;
             }());
-            exports_1("HomeComponent", HomeComponent);
+            exports_1("TableComponent", TableComponent);
         }
     }
 });
 
-//# sourceMappingURL=home.component.js.map
+//# sourceMappingURL=table.component.js.map

@@ -7,4 +7,4 @@ const platform = platformBrowserDynamic();
 
 //ЗАПРАВЛЯЕМ МОДУЛЬ ДЛЯ ВЫВОДА В БРАУЗЕР
 //noinspection TypeScriptValidateTypes
-platform.bootstrapModule(AppModule);
+platform.bootstrapModule(AppModule, []);

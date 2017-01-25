@@ -301,6 +301,7 @@ class Material
             'type_id' => $this->type,
             'unit' => $this->unitName,
             'unit_id' => $this->unit,
+            'attributes' => [],
         ];
         if (!empty($this->getAttributes())) {
             foreach ($this->getAttributes() as $attribute) {

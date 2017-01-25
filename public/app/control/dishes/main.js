@@ -16,7 +16,7 @@ System.register(["@angular/platform-browser-dynamic", "./app.module"], function 
             platform = platform_browser_dynamic_1.platformBrowserDynamic();
             //ЗАПРАВЛЯЕМ МОДУЛЬ ДЛЯ ВЫВОДА В БРАУЗЕР
             //noinspection TypeScriptValidateTypes
-            platform.bootstrapModule(app_module_1.AppModule);
+            platform.bootstrapModule(app_module_1.AppModule, []);
         }
     }
 });

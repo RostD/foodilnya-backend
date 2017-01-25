@@ -17,3 +17,5 @@ Route::get('/attribute/{id}', 'Index@showAttribute');
 
 Route::get('/control', 'Control\Pages@index');
 Route::get('/control/dishes', 'Control\Pages@dishes');
+
+Route::get('/ngtmpl/{tmpl}', 'Angular@getTemplate');

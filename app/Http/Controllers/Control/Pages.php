@@ -13,6 +13,6 @@ class Pages extends Controller
 
     public function dishes()
     {
-        return view('backend.control.catalog.dishes');
+        return view('backend.control.dishes.dishes');
     }
 }

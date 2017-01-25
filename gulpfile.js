@@ -34,9 +34,12 @@ elixir(mix => {
     .typescript(
         [
             dir_frontend + '/control/dishes/main.ts',
-            dir_frontend + '/control/dishes/app.component.ts',
             dir_frontend + '/control/dishes/app.module.ts',
-            dir_frontend + '/control/dishes/home.component.ts'
+            dir_frontend + '/control/dishes/app.component.ts',
+            dir_frontend + '/control/dishes/table.component.ts',
+            dir_frontend + '/control/dishes/modal.component.ts',
+            dir_frontend + '/control/dishes/dish.service.ts',
+            dir_frontend + '/control/dishes/dish.ts'
         ],
         'public/app/control/dishes',
         {

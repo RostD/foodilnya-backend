@@ -18,7 +18,7 @@ class Dish
     /**
      * @return array|bool (array of Material)
      */
-    public static function getDishes()
+    public static function all()
     {
         $result = MaterialValue::dishes()->get();
 

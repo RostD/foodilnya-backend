@@ -113,3 +113,13 @@ body {
     overflow-y: scroll;
     max-height: 91vh;
 }
+
+.attributes-table {
+    overflow-y: scroll;
+    max-height: 20vh;
+
+}
+
+.attr_panel {
+    margin-bottom: 5px;
+}

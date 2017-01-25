@@ -10,7 +10,7 @@ class DishController extends Controller
 {
     public function index()
     {
-        $dishes = Dish::getDishes();
+        $dishes = Dish::all();
 
         if (!$dishes)
             return JsonResponse::gen(404);

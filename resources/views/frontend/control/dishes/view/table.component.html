@@ -1,0 +1,23 @@
+<div class="table-responsive">
+    <span *ngIf="dishes==null">
+        <h3>Загрузка...</h3>
+    </span>
+    <table *ngIf="dishes != null" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Код</th>
+            <th>Наименование</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let dish of dishes" (click)="loadModalData(dish)" data-toggle="modal" data-target="#dishBox">
+            <td>{{dish.id}}</td>
+            <td>{{dish.name}}</td>
+            <td *ngFor="let attr of dish.attributes">
+                <p>{{attr.name}} {{attr.value}}
+                </p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
