@@ -45,6 +45,16 @@ class MaterialValue extends Model
             ->withPivot('value');
     }
 
+    public function scopeProperties()
+    {
+        return $this->attributes()->where('name', 'not like', '#%')->get();
+    }
+
+    public function scopeTags()
+    {
+        return $this->attributes()->where('name', 'like', '#%')->get();
+    }
+
     public function scopeDishes($query)
     {
         return $query->where('type_id', $this->dish_type_id);

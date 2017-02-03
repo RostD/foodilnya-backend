@@ -60,14 +60,25 @@
         </tr>
 
 
-        @if(count($material->attributes) > 0)
+        @if(count($material->properties) > 0)
             <tr>
-                <td colspan="2" class="center bold">Атрибуты</td>
+                <td colspan="2" class="center bold">Свойства</td>
             </tr>
-            @foreach($material->attributes as $attribute)
+            @foreach($material->properties as $properties)
                 <tr>
-                    <td>{{$attribute->name}}</td>
-                    <td>{{$attribute->value}} @if($attribute->unitId){{$attribute->unitName}}@endif</td>
+                    <td>{{$properties->name}}</td>
+                    <td>{{$properties->value}} @if($properties->unitId){{$properties->unitName}}@endif</td>
+                </tr>
+            @endforeach
+        @endif
+
+        @if(count($material->tags) > 0)
+            <tr>
+                <td colspan="2" class="center bold">Теги</td>
+            </tr>
+            @foreach($material->tags as $tag)
+                <tr>
+                    <td>{{$tag->name}}</td>
                 </tr>
             @endforeach
         @endif

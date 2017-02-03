@@ -9,6 +9,7 @@
 namespace App\MaterialValue;
 
 
+use App\Http\Helpers\Notifications;
 use App\Models\AttributeOfMaterialValue;
 use App\Models\MaterialValue;
 use App\Models\TypeOfMaterialValue;
@@ -34,9 +35,15 @@ abstract class Material
 
     /**
      * Массив атрибутов материала
-     * @var AttributeValue в массиве
+     * @var PropertyValue в массиве
      */
-    protected $attributes;
+    protected $properties = [];
+
+    /**
+     * Массив тегов материала
+     * @var PropertyValue в массиве
+     */
+    protected $tags = [];
 
 
     /**
@@ -45,7 +52,8 @@ abstract class Material
     public function __construct(MaterialValue $model)
     {
         $this->model = $model;
-        $this->loadAttributes();
+        $this->loadProperties();
+        $this->loadTags();
     }
 
     /**
@@ -109,29 +117,37 @@ abstract class Material
         return $this->model->unit->full_name;
     }
 
-
-    /**
-     * Загружает аттрибуты материала и их значения
-     * @return void
-     */
-    private function loadAttributes()
+    private function loadProperties()
     {
-        $this->attributes = [];
-
-        foreach ($this->model->attributes as $attribute) {
-            $this->attributes[$attribute->id] = new AttributeValue($attribute);
-
+        foreach ($this->model->properties() as $p) {
+            $this->properties[$p->id] = new PropertyValue($p);
         }
-    }
+    }    
 
     /**
      * Возвращает массив аттрибутов в виде объектов
      * @see AttributeValue
      * @return array
      */
-    public function getAttributes()
+    public function getProperties()
     {
-        return $this->attributes;
+        return $this->properties;
+    }
+
+    private function loadTags()
+    {
+        foreach ($this->model->tags() as $t) {
+            $this->tags[$t->id] = new Tag($t);
+        }
+    }
+    /**
+     * Возвращает массив аттрибутов в виде объектов
+     * @see AttributeValue
+     * @return array
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 
     /**
@@ -183,23 +199,56 @@ abstract class Material
         return new $material($model);
     }
 
+    public function setTag($tag_id)
+    {
+        if (!$this->issetTag($tag_id)) {
+            $tag = AttributeOfMaterialValue::tag($tag_id)->first();
+            $this->model->attributes()->attach($tag->id);
+
+            $this->loadTags();
+        }
+    }
+
+    public function removeTag($tag_id)
+    {
+        if ($this->issetTag($tag_id)) {
+            $this->model->attributes()->detach($tag_id);
+            $this->loadTags();
+        }
+    }
+
+    public function issetTag($tag_id)
+    {
+        foreach ($this->tags as $tag) {
+            if ($tag->id == $tag_id)
+                return true;
+        }
+        return false;
+    }
     /**
      * Устанавливает материалу значение атрибута
      * Если у элемента уже установлен такой атрибут, то его значение будет перезаписано
-     * @param integer $attribute_id
+     * @param integer $prop_id
      * @param string|int|float $value
      */
-    public function setAttribute($attribute_id, $value = null)
+    public function setProperty($prop_id, $value)
     {
-        if ($this->issetAttribute($attribute_id)) {
-            $this->attributes[$attribute_id]->setValue($value);
-        } else {
-            $attribute = AttributeOfMaterialValue::find($attribute_id);
+        if (!$value) {
+            Notifications::add('Пустое значение свойства не принимается', 2, __FILE__ . ' line:' . __LINE__);
+            return;
+        }
 
-            if ($attribute->materialType == $this->model->type || !$attribute->materialType) {
-                $this->model->attributes()->attach($attribute->id, ['value' => $value]);
+        if ($this->issetProperty($prop_id)) {
+            $this->properties[$prop_id]->setValue($value);
+        } else {
+            $property = AttributeOfMaterialValue::property($prop_id)->first();
+
+            if ($property->materialType == $this->model->type || !$property->materialType) {
+                $this->model->attributes()->attach($property->id, ['value' => $value]);
             }
         }
+
+        $this->loadProperties();
     }
 
     /**
@@ -207,23 +256,23 @@ abstract class Material
      * @param integer $attribute_id
      * @return void
      */
-    public function removeAttribute($attribute_id)
+    public function removeProperty($attribute_id)
     {
-        if ($this->issetAttribute($attribute_id)) {
+        if ($this->issetProperty($attribute_id)) {
             $this->model->attributes()->detach($attribute_id);
-            $this->loadAttributes();
+            $this->loadProperties();
         }
     }
 
     /**
      * Проверяет, имеет ли материал запрошенный атрибут
-     * @param integer $attribute_id
+     * @param integer $property_id
      * @return bool
      */
-    public function issetAttribute($attribute_id)
+    public function issetProperty($property_id)
     {
-        foreach ($this->attributes as $attribute) {
-            if ($attribute->id == $attribute_id)
+        foreach ($this->properties as $prop) {
+            if ($prop->id == $property_id)
                 return true;
         }
         return false;
@@ -238,23 +287,23 @@ abstract class Material
             'type_id' => $this->type,
             'unit' => $this->unitName,
             'unit_id' => $this->unit,
-            'rate' => $this->rate,
-            'attributes' => [],
+            'properties' => [],
+            'tags' => [],
         ];
-        if (!empty($this->getAttributes())) {
-            foreach ($this->getAttributes() as $attribute) {
-                $array['attributes'][] = $attribute->toArray();
+
+        if (!empty($this->getProperties())) {
+            foreach ($this->getProperties() as $a) {
+                $array['properties'][] = $a->toArray();
             }
         }
 
-        if ($this->abstraction)
-            $array['abstract'] = $this->abstraction->toArray();
+        if (!empty($this->getTags())) {
+            foreach ($this->getTags() as $t) {
+                $array['tags'][] = $t->toArray();
+            }
+        }
 
         return $array;
     }
-
-    //TODO: setSpecific
-    //TODO: delete
-
 
 }

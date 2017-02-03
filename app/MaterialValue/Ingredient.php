@@ -14,7 +14,7 @@ use App\Models\MaterialValue;
 class Ingredient extends Material
 {
     /**
-     * Товары, конкретизирующие данный элемент
+     * Товары, конкретизирующие данный ингредиент
      *
      * @var Material в массиве
      *

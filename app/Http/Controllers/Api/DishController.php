@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\JsonResponse;
-use App\MaterialValue\Dish\Dish;
+use App\MaterialValue\Dish;
 
 class DishController extends Controller
 {

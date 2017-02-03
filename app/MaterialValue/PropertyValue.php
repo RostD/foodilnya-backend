@@ -17,7 +17,7 @@ use App\Models\AttributeOfMaterialValue;
  * Позволяет легко изменять значение атрибута
  * @package App\MaterialValue
  */
-class AttributeValue
+class PropertyValue
 {
 
 
@@ -103,11 +103,7 @@ class AttributeValue
      */
     public function setValue($value)
     {
-        $attribute = Attribute::find($this->id);
-
-        if ($attribute->isFixedValue() && $value == false) {
-            return;
-        }
+        $attribute = Property::find($this->id);        
 
         if (($attribute->isFixedValue() && $attribute->issetPossibleValue($value)) ||
             !$attribute->isFixedValue()

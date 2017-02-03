@@ -32,6 +32,7 @@ class Dish extends Material
     }    
 
     /**
+     * Все существующие блюда
      * @return array|bool (Dish[])
      */
     public static function all()
@@ -51,7 +52,7 @@ class Dish extends Material
     }
 
     /**
-     * Ищет материал по его id и возвращает его модель
+     * Ищет блюдо по его id и возвращает его модель
      * @param integer $id
      * @return MaterialValue|bool
      */
@@ -61,6 +62,13 @@ class Dish extends Material
         if ($model)
             return self::initial(self::class, $model);
         return false;
+    }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+        $array['rate'] = $this->rate;
+        return $array;
     }
 
 }

@@ -14,7 +14,7 @@ use App\Models\AttributeOfMaterialValue;
 use App\Models\TypeOfMaterialValue;
 use App\Models\Unit;
 
-class Attribute
+class Property
 {
     protected $model;
     protected $possibleValues;
@@ -113,7 +113,7 @@ class Attribute
 
     private function loadPossibleValues()
     {
-        $this->possibleValues = AttributePossibleValue::ofAttribute($this->id);
+        $this->possibleValues = PropertyPossibleValue::ofAttribute($this->id);
     }
 
     /**
@@ -128,7 +128,7 @@ class Attribute
     public function addPossibleValue($value)
     {
         //TODO: проверить, чтобы не было дубликата значения
-        AttributePossibleValue::create($this->id, $value);
+        PropertyPossibleValue::create($this->id, $value);
         $this->loadPossibleValues();
     }
 
@@ -172,7 +172,7 @@ class Attribute
      * @param null $type_material
      * @param null $unit
      * @param array $values
-     * @return Attribute
+     * @return Property
      */
     public static function create($name, $fixedValues, $type_material = null, $unit = null, $values = array())
     {
@@ -201,14 +201,14 @@ class Attribute
 
     /**
      * @param $id
-     * @return Attribute|bool
+     * @return Property|bool
      */
     public static function find($id)
     {
-        $material = AttributeOfMaterialValue::find($id);
+        $property = AttributeOfMaterialValue::property($id)->first();
 
-        if ($material)
-            return new self($material);
+        if ($property)
+            return new self($property);
         else
             return false;
     }

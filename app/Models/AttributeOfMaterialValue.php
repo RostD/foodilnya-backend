@@ -32,4 +32,14 @@ class AttributeOfMaterialValue extends Model
         return $this->hasMany(PossibleAttributeValue::class, 'attr_id');
     }
 
+    public function scopeProperty($query, $id)
+    {
+        return $query->where('id', $id)->where('name', 'not like', '#%');
+    }
+
+    public function scopeTag($query, $id)
+    {
+        return $query->where('id', $id)->where('name', 'like', '#%');
+    }
+    
 }

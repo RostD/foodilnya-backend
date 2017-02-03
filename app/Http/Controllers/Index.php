@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\MaterialValue\Attribute;
 use App\MaterialValue\Ingredient;
+use App\MaterialValue\Property;
 use Illuminate\Http\Request;
 
 class Index extends Controller
@@ -50,12 +50,13 @@ class Index extends Controller
     function showMaterial($materialId)
     {
         $material = Ingredient::find($materialId);
+        $material->removeTag(8);
         return view("test.material", ['material' => $material]);
     }
 
     function showAttribute($attr_id)
     {
-        $attribute = Attribute::find($attr_id);
+        $attribute = Property::find($attr_id);
         return view("test.attribute", ['attribute' => $attribute]);
     }
 }

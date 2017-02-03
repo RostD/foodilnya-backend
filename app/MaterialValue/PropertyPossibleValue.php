@@ -11,7 +11,7 @@ namespace App\MaterialValue;
 
 use App\Models\PossibleAttributeValue;
 
-class AttributePossibleValue
+class PropertyPossibleValue
 {
     private $model;
 
@@ -74,7 +74,7 @@ class AttributePossibleValue
     /**
      * @param integer $attr_id
      * @param string $value
-     * @return AttributePossibleValue
+     * @return PropertyPossibleValue
      */
     public static function create($attr_id, $value)
     {
@@ -91,7 +91,7 @@ class AttributePossibleValue
 
     /**
      * @param $id
-     * @return AttributePossibleValue|bool
+     * @return PropertyPossibleValue|bool
      */
     public static function find($id)
     {
