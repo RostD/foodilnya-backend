@@ -15,7 +15,8 @@ Route::get('/', 'Index@index');
 Route::get('/material/{id}', 'Index@showMaterial');
 Route::get('/attribute/{id}', 'Index@showAttribute');
 
-Route::get('/control', 'Control\Pages@index');
-Route::get('/control/dishes', 'Control\Pages@dishes');
 
-Route::get('/ngtmpl/{tmpl}', 'Angular@getTemplate');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+

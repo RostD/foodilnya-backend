@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\MaterialValue\Attribute;
-use App\MaterialValue\Material;
+use App\MaterialValue\Ingredient;
 use Illuminate\Http\Request;
 
 class Index extends Controller
@@ -44,18 +44,18 @@ class Index extends Controller
         //$material = Material::find(2);
         //$material->setAttribute(6, 'нет');
         print_r($request->headers);
-        return view('backend.welcome');
+        return view('welcome');
     }
 
     function showMaterial($materialId)
     {
-        $material = Material::find($materialId);
-        return view("backend.test.material", ['material' => $material]);
+        $material = Ingredient::find($materialId);
+        return view("test.material", ['material' => $material]);
     }
 
     function showAttribute($attr_id)
     {
         $attribute = Attribute::find($attr_id);
-        return view("backend.test.attribute", ['attribute' => $attribute]);
+        return view("test.attribute", ['attribute' => $attribute]);
     }
 }

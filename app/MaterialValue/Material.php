@@ -22,7 +22,7 @@ use App\Models\Unit;
  * @property  id
  * @package App\MaterialValue
  */
-class Material
+abstract class Material
 {
 
     /**
@@ -31,19 +31,6 @@ class Material
      */
     protected $model;
 
-    /**
-     * Материалы, конкретизирующие данный элемент
-     *
-     * @var Material в массиве
-     *
-     */
-    protected $specifics;
-
-    /**
-     * Материал, являющийся абстракцией для данного элемента
-     * @var Material
-     */
-    protected $abstract;
 
     /**
      * Массив атрибутов материала
@@ -51,14 +38,13 @@ class Material
      */
     protected $attributes;
 
+
     /**
      * @param MaterialValue $model
      */
     public function __construct(MaterialValue $model)
     {
         $this->model = $model;
-        $this->loadSpecifics();
-        $this->loadAbstraction();
         $this->loadAttributes();
     }
 
@@ -123,48 +109,6 @@ class Material
         return $this->model->unit->full_name;
     }
 
-    /**
-     * Обновляет информацию об абстрактном материале
-     * @return void
-     */
-    private function loadAbstraction()
-    {
-        $this->abstract = false;
-
-        if ($this->model->parent)
-            $this->abstract = new Material($this->model->parent);
-    }
-
-    /**
-     * Получить материал, являющийся абстракцией этого материала
-     * @return Material|bool
-     */
-    public function getAbstraction()
-    {
-        return $this->abstract;
-    }
-
-    /**
-     * Загружает конкретизирующие материалы
-     * @return void
-     */
-    private function loadSpecifics()
-    {
-        $this->specifics = [];
-
-        foreach ($this->model->children as $child) {
-            $this->specifics[] = new Material($child);
-        }
-    }
-
-    /**
-     * Получить материалы, конкретизирующий этот материал
-     * @return Material в массиве
-     */
-    public function getSpecifics()
-    {
-        return $this->specifics;
-    }
 
     /**
      * Загружает аттрибуты материала и их значения
@@ -209,11 +153,11 @@ class Material
     }
 
     /**
-     * Создает новый материал, и передает его объект
+     * Создает новый материал, и возвращает его объект
      * @param string $name
      * @param integer $type_id
      * @param integer $baseUnit_id
-     * @return Material
+     * @return MaterialValue
      */
     public static function create($name, $type_id, $baseUnit_id)
     {
@@ -225,25 +169,18 @@ class Material
         $material->type()->associate($type);
         $material->unit()->associate($baseUnit);
 
-        $material->save();
-
-        return new Material($material);
-
     }
 
     /**
-     * Ищет материал по его id и возвращает его объект, если есть
+     * Ищет материал по его id и возвращает его модель
      * @param integer $id
-     * @return Material|bool
+     * @return MaterialValue|bool
      */
-    public static function find($id)
-    {
-        $material = MaterialValue::find($id);
+    abstract public static function find($id);
 
-        if ($material)
-            return new self($material);
-        else
-            return false;
+    public static function initial($material, $model)
+    {
+        return new $material($model);
     }
 
     /**
@@ -301,6 +238,7 @@ class Material
             'type_id' => $this->type,
             'unit' => $this->unitName,
             'unit_id' => $this->unit,
+            'rate' => $this->rate,
             'attributes' => [],
         ];
         if (!empty($this->getAttributes())) {

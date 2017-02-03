@@ -17,5 +17,5 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
-Route::resource('dish', 'Api\DishController',
+Route::resource('dishes', 'Api\DishController',
     ['only' => ['index', 'show']]);

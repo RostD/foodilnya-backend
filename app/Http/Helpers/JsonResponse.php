@@ -18,9 +18,11 @@ class JsonResponse
      */
     static function gen($status, $data = null)
     {
+        $headers['Access-Control-Allow-Origin'] = "*";
+
         return response()->json([
             'notifications' => Notifications::get(),
             'data' => $data
-        ], $status);
+        ], $status, $headers);
     }
 }
