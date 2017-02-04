@@ -19,7 +19,15 @@ class Ingredient extends Material
      * @var Material в массиве
      *
      */
-    protected $specifics;
+    protected $products = [];
+
+    protected $dishes = [];
+
+    public function __get($name)
+    {
+        $name = "get" . $name;
+        return $this->$name();
+    }
 
     /**
      * Ingredient constructor.
@@ -28,19 +36,29 @@ class Ingredient extends Material
     public function __construct(MaterialValue $model)
     {
         parent::__construct($model);
-        $this->loadSpecifics();
+        $this->loadProducts();
+        $this->loadDishes();
     }
 
     /**
      * Загружает конкретизирующие товары
      * @return void
      */
-    private function loadSpecifics()
+    private function loadProducts()
     {
-        $this->specifics = [];
+        $this->products = [];
 
-        foreach ($this->model->children as $child) {
-            $this->specifics[] = new Product($child);
+        foreach ($this->model->children as $products) {
+            $this->products[] = new Product($products);
+        }
+    }
+
+    private function loadDishes()
+    {
+        $this->dishes = [];
+
+        foreach ($this->model->parents as $dish) {
+            $this->dishes[] = new Dish($dish);
         }
     }
 
@@ -48,9 +66,39 @@ class Ingredient extends Material
      * Получить товары, конкретизирующий этот ингредиент
      * @return Material в массиве
      */
-    public function getSpecifics()
+    public function getProducts()
     {
-        return $this->specifics;
+        return $this->products;
+    }
+
+    public function getDishes()
+    {
+        return $this->dishes;
+    }
+
+    /**
+     * @param $id
+     */
+    public function addDish($id)
+    {
+
+        if ($this->belongsDish($id))
+            return;
+
+
+        $dish = Dish::find($id);
+        if ($dish) {
+            $this->model->parents()->attach($dish->id);
+        }
+    }
+
+    public function belongsDish($id)
+    {
+        foreach ($this->dishes as $dish) {
+            if ($dish->id == $id)
+                return true;
+        }
+        return false;
     }
 
     public static function find($id)

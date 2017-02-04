@@ -119,6 +119,7 @@ abstract class Material
 
     private function loadProperties()
     {
+        $this->properties = [];
         foreach ($this->model->properties() as $p) {
             $this->properties[$p->id] = new PropertyValue($p);
         }
@@ -136,6 +137,7 @@ abstract class Material
 
     private function loadTags()
     {
+        $this->tags = [];
         foreach ($this->model->tags() as $t) {
             $this->tags[$t->id] = new Tag($t);
         }
@@ -166,37 +168,6 @@ abstract class Material
     public function getTypeName()
     {
         return $this->model->type->name;
-    }
-
-    /**
-     * Создает новый материал, и возвращает его объект
-     * @param string $name
-     * @param integer $type_id
-     * @param integer $baseUnit_id
-     * @return MaterialValue
-     */
-    public static function create($name, $type_id, $baseUnit_id)
-    {
-        $type = TypeOfMaterialValue::find($type_id);
-        $baseUnit = Unit::find($baseUnit_id);
-
-        $material = new MaterialValue();
-        $material->name = $name;
-        $material->type()->associate($type);
-        $material->unit()->associate($baseUnit);
-
-    }
-
-    /**
-     * Ищет материал по его id и возвращает его модель
-     * @param integer $id
-     * @return MaterialValue|bool
-     */
-    abstract public static function find($id);
-
-    public static function initial($material, $model)
-    {
-        return new $material($model);
     }
 
     public function setTag($tag_id)
@@ -305,5 +276,36 @@ abstract class Material
 
         return $array;
     }
+
+    /**
+     * Создает новый материал, и возвращает его объект
+     * @param string $name
+     * @param integer $type_id
+     * @param integer $baseUnit_id
+     * @return MaterialValue
+     */
+    public static function create($name, $type_id, $baseUnit_id)
+    {
+        $type = TypeOfMaterialValue::find($type_id);
+        $baseUnit = Unit::find($baseUnit_id);
+
+        $material = new MaterialValue();
+        $material->name = $name;
+        $material->type()->associate($type);
+        $material->unit()->associate($baseUnit);
+
+    }
+
+    public static function initial($material, $model)
+    {
+        return new $material($model);
+    }
+
+    /**
+     * Ищет материал по его id и возвращает его модель
+     * @param integer $id
+     * @return MaterialValue|bool
+     */
+    abstract public static function find($id);
 
 }

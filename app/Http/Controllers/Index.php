@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
 use App\MaterialValue\Property;
 use Illuminate\Http\Request;
@@ -49,9 +50,15 @@ class Index extends Controller
 
     function showMaterial($materialId)
     {
-        $material = Ingredient::find($materialId);
-        $material->removeTag(8);
+        $material = Dish::find($materialId);
         return view("test.material", ['material' => $material]);
+    }
+
+    function ingredient($id)
+    {
+        $ingredient = Ingredient::find($id);
+        $ingredient->addDish(5);
+        return view('test.ingredient', ['material' => $ingredient]);
     }
 
     function showAttribute($attr_id)

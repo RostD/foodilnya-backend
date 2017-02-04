@@ -13,6 +13,7 @@
 
 Route::get('/', 'Index@index');
 Route::get('/material/{id}', 'Index@showMaterial');
+Route::get('/ingredient/{id}', 'Index@ingredient');
 Route::get('/attribute/{id}', 'Index@showAttribute');
 
 
