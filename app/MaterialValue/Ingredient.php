@@ -23,12 +23,6 @@ class Ingredient extends Material
 
     protected $dishes = [];
 
-    public function __get($name)
-    {
-        $name = "get" . $name;
-        return $this->$name();
-    }
-
     /**
      * Ingredient constructor.
      * @param MaterialValue $model
@@ -71,18 +65,37 @@ class Ingredient extends Material
         return $this->products;
     }
 
+    public function productAdd($id)
+    {
+        if ($this->productBelongs($id))
+            return;
+
+        $product = Product::find($id);
+
+        if ($product) {
+            $this->model->children()->attach($product->id);
+        }
+    }
+
+    public function productBelongs($id)
+    {
+        foreach ($this->products as $product) {
+            if ($product->id == $id)
+                return true;
+        }
+
+        return false;
+    }
+
     public function getDishes()
     {
         return $this->dishes;
     }
 
-    /**
-     * @param $id
-     */
-    public function addDish($id)
+    public function dishAdd($id)
     {
 
-        if ($this->belongsDish($id))
+        if ($this->dishBelongs($id))
             return;
 
 
@@ -92,7 +105,7 @@ class Ingredient extends Material
         }
     }
 
-    public function belongsDish($id)
+    public function dishBelongs($id)
     {
         foreach ($this->dishes as $dish) {
             if ($dish->id == $id)
@@ -101,6 +114,10 @@ class Ingredient extends Material
         return false;
     }
 
+    /**
+     * @param int $id
+     * @return bool|Ingredient
+     */
     public static function find($id)
     {
         $model = MaterialValue::ingredient($id)->first();

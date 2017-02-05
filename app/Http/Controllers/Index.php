@@ -57,7 +57,7 @@ class Index extends Controller
     function ingredient($id)
     {
         $ingredient = Ingredient::find($id);
-        $ingredient->addDish(5);
+        $ingredient->productAdd(3);
         return view('test.ingredient', ['material' => $ingredient]);
     }
 

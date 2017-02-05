@@ -16,7 +16,6 @@ class MaterialValue extends Migration
         Schema::create('material_values', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('parent_id')->nullable();
             $table->integer('type_id');
             $table->integer('unit_id');
             $table->timestamps();
