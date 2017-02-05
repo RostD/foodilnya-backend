@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\MaterialValue\Adaptation;
 use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
 use App\MaterialValue\Property;
@@ -57,8 +58,20 @@ class Index extends Controller
     function ingredient($id)
     {
         $ingredient = Ingredient::find($id);
-        $ingredient->productAdd(3);
         return view('test.ingredient', ['material' => $ingredient]);
+    }
+
+    function adaptation($id)
+    {
+        $adaptation = Adaptation::find($id);
+        $adaptation->addDish(5);
+        return view('test.adaptation', ['material' => $adaptation]);
+    }
+
+    function dish($id)
+    {
+        $adaptation = Dish::find($id);
+        return view('test.dish', ['material' => $adaptation]);
     }
 
     function showAttribute($attr_id)

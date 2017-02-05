@@ -47,6 +47,16 @@ class MaterialValue extends Model
             ->withPivot('value');
     }
 
+    public function scopeIngredientsOfDish()
+    {
+        return $this->children()->where('type_id', $this->ingredient_type_id);
+    }
+
+    public function scopeAdaptationsOfDish()
+    {
+        return $this->children()->where('type_id', $this->adaptation_type_id);
+    }
+
     public function scopeProperties()
     {
         return $this->attributes()->where('name', 'not like', '#%')->get();
@@ -59,7 +69,7 @@ class MaterialValue extends Model
 
     public function scopeDishes($query)
     {
-        return $query->where('type_id', $this->dish_type_id);
+        return $query->where('type_id', $this->dish_type_id)->get();
     }
 
     public function scopeDish($query, $id)

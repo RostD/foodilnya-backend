@@ -14,43 +14,50 @@ use App\Models\MaterialValue;
 class Adaptation extends Material
 {
     protected $dishes = [];
+    protected $dishes_loaded = false;
 
     public function __construct(MaterialValue $model)
     {
         parent::__construct($model);
-        $this->loadDishes();
     }
 
     private function loadDishes()
     {
-        $this->dishes = [];
+        if (!$this->dishes_loaded) {
+            $this->dishes = [];
 
-        foreach ($this->model->parents as $dish) {
-            $this->dishes[] = new Dish($dish);
+            foreach ($this->model->parents as $dish) {
+                $this->dishes[] = new Dish($dish);
+            }
+            $this->dishes_loaded = true;
         }
+
     }
 
     public function getDishes()
     {
+        $this->loadDishes();
         return $this->dishes;
     }
 
-    public function dishAdd($id)
+    public function addDish($id)
     {
 
-        if ($this->dishBelongs($id))
+        if ($this->issetDish($id))
             return;
 
 
         $dish = Dish::find($id);
         if ($dish) {
             $this->model->parents()->attach($dish->id);
-            $this->loadDishes();
+            $this->dishes_loaded = false;
         }
     }
 
-    public function dishBelongs($id)
+    public function issetDish($id)
     {
+        $this->loadDishes();
+        
         foreach ($this->dishes as $dish) {
             if ($dish->id == $id)
                 return true;
@@ -61,11 +68,11 @@ class Adaptation extends Material
     /**
      * Ищет материал по его id и возвращает его модель
      * @param integer $id
-     * @return MaterialValue|bool
+     * @return Adaptation|bool
      */
     public static function find($id)
     {
-        $adaptation = MaterialValue::adaptation();
+        $adaptation = MaterialValue::adaptation($id)->first();
 
         if ($adaptation)
             return self::initial(self::class, $adaptation);

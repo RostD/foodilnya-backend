@@ -38,12 +38,14 @@ abstract class Material
      * @var PropertyValue в массиве
      */
     protected $properties = [];
+    protected $prop_laded = false;
 
     /**
      * Массив тегов материала
      * @var PropertyValue в массиве
      */
     protected $tags = [];
+    protected $tags_loaded = false;
 
 
     /**
@@ -52,8 +54,6 @@ abstract class Material
     public function __construct(MaterialValue $model)
     {
         $this->model = $model;
-        $this->loadProperties();
-        $this->loadTags();
     }
 
     /**
@@ -106,23 +106,29 @@ abstract class Material
 
     /**
      * Получить наименование единицы измерения
-     * @param boolean $short_name Сокращенное наименование
      * @return string Наименование единицы измерения
      */
-    public function getUnitName($short_name = false)
+    public function getUnitName()
     {
-        if ($short_name)
-            return $this->model->unit->name;
-
         return $this->model->unit->full_name;
+    }
+
+    public function getUnitShortName()
+    {
+        return $this->model->unit->name;
     }
 
     private function loadProperties()
     {
-        $this->properties = [];
-        foreach ($this->model->properties() as $p) {
-            $this->properties[$p->id] = new PropertyValue($p);
+        if (!$this->prop_laded) {
+            $this->properties = [];
+            foreach ($this->model->properties() as $p) {
+                $this->properties[$p->id] = new PropertyValue($p);
+            }
+
+            $this->prop_laded = true;
         }
+
     }    
 
     /**
@@ -132,14 +138,18 @@ abstract class Material
      */
     public function getProperties()
     {
+        $this->loadProperties();
         return $this->properties;
     }
 
     private function loadTags()
     {
-        $this->tags = [];
-        foreach ($this->model->tags() as $t) {
-            $this->tags[$t->id] = new Tag($t);
+        if (!$this->tags_loaded) {
+            $this->tags = [];
+            foreach ($this->model->tags() as $t) {
+                $this->tags[$t->id] = new Tag($t);
+            }
+            $this->tags_loaded = true;
         }
     }
     /**
@@ -149,6 +159,7 @@ abstract class Material
      */
     public function getTags()
     {
+        $this->loadTags();
         return $this->tags;
     }
 
@@ -176,7 +187,7 @@ abstract class Material
             $tag = AttributeOfMaterialValue::tag($tag_id)->first();
             $this->model->attributes()->attach($tag->id);
 
-            $this->loadTags();
+            $this->tags_loaded = false;
         }
     }
 
@@ -184,12 +195,13 @@ abstract class Material
     {
         if ($this->issetTag($tag_id)) {
             $this->model->attributes()->detach($tag_id);
-            $this->loadTags();
+            $this->tags_loaded = false;
         }
     }
 
     public function issetTag($tag_id)
     {
+        $this->loadTags();
         foreach ($this->tags as $tag) {
             if ($tag->id == $tag_id)
                 return true;
@@ -219,7 +231,7 @@ abstract class Material
             }
         }
 
-        $this->loadProperties();
+        $this->prop_laded = false;
     }
 
     /**
@@ -231,7 +243,7 @@ abstract class Material
     {
         if ($this->issetProperty($attribute_id)) {
             $this->model->attributes()->detach($attribute_id);
-            $this->loadProperties();
+            $this->prop_laded = false;
         }
     }
 
@@ -242,6 +254,7 @@ abstract class Material
      */
     public function issetProperty($property_id)
     {
+        $this->loadProperties();
         foreach ($this->properties as $prop) {
             if ($prop->id == $property_id)
                 return true;

@@ -20,8 +20,10 @@ class Ingredient extends Material
      *
      */
     protected $products = [];
+    protected $prod_loaded = false;
 
     protected $dishes = [];
+    protected $dishes_loaded = false;
 
     /**
      * Ingredient constructor.
@@ -30,8 +32,6 @@ class Ingredient extends Material
     public function __construct(MaterialValue $model)
     {
         parent::__construct($model);
-        $this->loadProducts();
-        $this->loadDishes();
     }
 
     /**
@@ -40,19 +40,25 @@ class Ingredient extends Material
      */
     private function loadProducts()
     {
-        $this->products = [];
+        if (!$this->prod_loaded) {
+            $this->products = [];
 
-        foreach ($this->model->children as $products) {
-            $this->products[] = new Product($products);
+            foreach ($this->model->children as $products) {
+                $this->products[] = new Product($products);
+            }
+            $this->prod_loaded = true;
         }
     }
 
     private function loadDishes()
     {
-        $this->dishes = [];
+        if (!$this->dishes_loaded) {
+            $this->dishes = [];
 
-        foreach ($this->model->parents as $dish) {
-            $this->dishes[] = new Dish($dish);
+            foreach ($this->model->parents as $dish) {
+                $this->dishes[] = new Dish($dish);
+            }
+            $this->dishes_loaded = true;
         }
     }
 
@@ -62,23 +68,26 @@ class Ingredient extends Material
      */
     public function getProducts()
     {
+        $this->loadProducts();
         return $this->products;
     }
 
-    public function productAdd($id)
+    public function addProduct($id)
     {
-        if ($this->productBelongs($id))
+        if ($this->issetProduct($id))
             return;
 
         $product = Product::find($id);
 
         if ($product) {
             $this->model->children()->attach($product->id);
+            $this->prod_loaded = false;
         }
     }
 
-    public function productBelongs($id)
+    public function issetProduct($id)
     {
+        $this->loadProducts();
         foreach ($this->products as $product) {
             if ($product->id == $id)
                 return true;
@@ -89,25 +98,28 @@ class Ingredient extends Material
 
     public function getDishes()
     {
+        $this->loadDishes();
         return $this->dishes;
     }
 
-    public function dishAdd($id)
+    public function addDish($id)
     {
 
-        if ($this->dishBelongs($id))
+        if ($this->issetDish($id))
             return;
 
 
         $dish = Dish::find($id);
         if ($dish) {
             $this->model->parents()->attach($dish->id);
-            $this->loadDishes();
+            $this->dishes_loaded = false;
         }
     }
 
-    public function dishBelongs($id)
+    public function issetDish($id)
     {
+        $this->loadDishes();
+        
         foreach ($this->dishes as $dish) {
             if ($dish->id == $id)
                 return true;

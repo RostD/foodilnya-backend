@@ -86,15 +86,20 @@ class Property
         return $this->model->unit->id;
     }
 
-    public function getUnitName($short = false)
+    public function getUnitName()
     {
         if (!$this->model->unit)
             return false;
 
-        if ($short)
-            return $this->model->unit->name;
-        else
-            return $this->model->unit->full_name;
+        return $this->model->unit->full_name;
+    }
+
+    public function getUnitShortName()
+    {
+        if (!$this->model->unit)
+            return false;
+
+        return $this->model->unit->name;
     }
 
     /**
