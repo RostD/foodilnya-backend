@@ -102,6 +102,7 @@ class Ingredient extends Material
         $dish = Dish::find($id);
         if ($dish) {
             $this->model->parents()->attach($dish->id);
+            $this->loadDishes();
         }
     }
 
@@ -120,9 +121,9 @@ class Ingredient extends Material
      */
     public static function find($id)
     {
-        $model = MaterialValue::ingredient($id)->first();
-        if ($model)
-            return self::initial(self::class, $model);
+        $ingredient = MaterialValue::ingredient($id)->first();
+        if ($ingredient)
+            return self::initial(self::class, $ingredient);
         return false;
     }
 }

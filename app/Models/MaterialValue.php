@@ -16,6 +16,7 @@ class MaterialValue extends Model
     private $dish_type_id = 3;
     private $product_type_id = 2;
     private $ingredient_type_id = 1;
+    private $adaptation_type_id = 4;
 
     protected $table = "material_values";
 
@@ -74,5 +75,10 @@ class MaterialValue extends Model
     public function scopeIngredient($query, $id)
     {
         return $query->where('type_id', $this->ingredient_type_id)->where('id', $id);
+    }
+
+    public function scopeAdaptation($query, $id)
+    {
+        return $query->where('type_id', $this->adaptation_type_id)->where('id', $id);
     }
 }
