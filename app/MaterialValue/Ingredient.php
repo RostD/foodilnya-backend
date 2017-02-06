@@ -11,7 +11,7 @@ namespace App\MaterialValue;
 
 use App\Models\MaterialValue;
 
-class Ingredient extends Material
+class Ingredient extends DishComponent
 {
     /**
      * Товары, конкретизирующие данный ингредиент
@@ -21,18 +21,6 @@ class Ingredient extends Material
      */
     protected $products = [];
     protected $prod_loaded = false;
-
-    protected $dishes = [];
-    protected $dishes_loaded = false;
-
-    /**
-     * Ingredient constructor.
-     * @param MaterialValue $model
-     */
-    public function __construct(MaterialValue $model)
-    {
-        parent::__construct($model);
-    }
 
     /**
      * Загружает конкретизирующие товары
@@ -50,17 +38,6 @@ class Ingredient extends Material
         }
     }
 
-    private function loadDishes()
-    {
-        if (!$this->dishes_loaded) {
-            $this->dishes = [];
-
-            foreach ($this->model->parents as $dish) {
-                $this->dishes[] = new Dish($dish);
-            }
-            $this->dishes_loaded = true;
-        }
-    }
 
     /**
      * Получить товары, конкретизирующий этот ингредиент
@@ -93,37 +70,6 @@ class Ingredient extends Material
                 return true;
         }
 
-        return false;
-    }
-
-    public function getDishes()
-    {
-        $this->loadDishes();
-        return $this->dishes;
-    }
-
-    public function addDish($id)
-    {
-
-        if ($this->issetDish($id))
-            return;
-
-
-        $dish = Dish::find($id);
-        if ($dish) {
-            $this->model->parents()->attach($dish->id);
-            $this->dishes_loaded = false;
-        }
-    }
-
-    public function issetDish($id)
-    {
-        $this->loadDishes();
-        
-        foreach ($this->dishes as $dish) {
-            if ($dish->id == $id)
-                return true;
-        }
         return false;
     }
 
