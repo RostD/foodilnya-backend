@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\MaterialValue\Adaptation;
 use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
+use App\MaterialValue\Product;
 use App\MaterialValue\Property;
 use Illuminate\Http\Request;
 
@@ -72,6 +73,12 @@ class Index extends Controller
     {
         $adaptation = Dish::find($id);
         return view('test.dish', ['material' => $adaptation]);
+    }
+
+    function product($id)
+    {
+        $product = Product::find($id);
+        return view('test.product', ['material' => $product]);
     }
 
     function showAttribute($attr_id)

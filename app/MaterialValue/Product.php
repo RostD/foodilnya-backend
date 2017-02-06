@@ -17,37 +17,58 @@ class Product extends Material
      * Ингредиент, являющийся абстракцией для данного элемента
      * @var Material
      */
-    protected $abstract;
-
-    /**
-     * Product constructor.
-     * @param MaterialValue $model
-     */
-    public function __construct(MaterialValue $model)
-    {
-        parent::__construct($model);
-        $this->loadAbstraction();
-    }
+    protected $ingredient = null;
+    protected $ingr_loaded = false;
 
     /**
      * Обновляет информацию об ингредиенте
      * @return void
      */
-    private function loadAbstraction()
+    private function loadIngredient()
     {
-        $this->abstract = false;
+        if (!$this->ingr_loaded) {
+            $this->ingredient = null;
 
-        if ($this->model->parent)
-            $this->abstract = new Ingredient($this->model->parent);
+            $ingredient = $this->model->parents()->first();
+            if ($ingredient)
+                $this->ingredient = new Ingredient($ingredient);
+
+            $this->ingr_loaded = true;
+        }
+    }
+
+    public function setIngredient($id)
+    {
+        if ($this->issetIngredient($id)) return;
+
+        $ingredient = Ingredient::find($id);
+
+        if ($ingredient) {
+            $this->model->parents()->detach([$this->ingredient->id]);
+            $this->model->parents()->attach($ingredient->id);
+            $this->ingr_loaded = false;
+        }
+    }
+
+    public function issetIngredient($id)
+    {
+        $this->loadIngredient();
+
+        if (!$this->ingredient) return false;
+
+        if ($this->ingredient->id == $id) return true;
+
+        return false;
     }
 
     /**
      * Получить ингредиент, к которому относится данный товар
      * @return Ingredient|bool
      */
-    public function getAbstraction()
+    public function getIngredient()
     {
-        return $this->abstract;
+        $this->loadIngredient();
+        return $this->ingredient;
     }
 
     public static function find($id)

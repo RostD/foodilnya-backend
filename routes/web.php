@@ -16,6 +16,7 @@ Route::get('/material/{id}', 'Index@showMaterial');
 Route::get('/ingredient/{id}', 'Index@ingredient');
 Route::get('/adaptation/{id}', 'Index@adaptation');
 Route::get('/dish/{id}', 'Index@dish');
+Route::get('/product/{id}', 'Index@product');
 Route::get('/attribute/{id}', 'Index@showAttribute');
 
 
