@@ -19,6 +19,7 @@ class Dish extends Material
 
     protected $adaptations = [];
     protected $adapt_loaded = false;
+    const type_id = 3;
 
     /**
      * Рейтинг блюда среди клиентов
@@ -156,7 +157,7 @@ class Dish extends Material
     /**
      * Ищет блюдо по его id и возвращает его модель
      * @param integer $id
-     * @return MaterialValue|bool
+     * @return Dish|bool
      */
     public static function find($id)
     {

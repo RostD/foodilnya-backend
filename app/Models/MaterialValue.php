@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\MaterialValue\Adaptation;
+use App\MaterialValue\Dish;
+use App\MaterialValue\Ingredient;
+use App\MaterialValue\Product;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,10 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MaterialValue extends Model
 {
-    private $dish_type_id = 3;
-    private $product_type_id = 2;
-    private $ingredient_type_id = 1;
-    private $adaptation_type_id = 4;
 
     protected $table = "material_values";
 
@@ -49,12 +49,12 @@ class MaterialValue extends Model
 
     public function scopeIngredientsOfDish()
     {
-        return $this->children()->where('type_id', $this->ingredient_type_id);
+        return $this->children()->where('type_id', Ingredient::type_id);
     }
 
     public function scopeAdaptationsOfDish()
     {
-        return $this->children()->where('type_id', $this->adaptation_type_id);
+        return $this->children()->where('type_id', Adaptation::type_id);
     }
 
     public function scopeProperties()
@@ -69,26 +69,26 @@ class MaterialValue extends Model
 
     public function scopeDishes($query)
     {
-        return $query->where('type_id', $this->dish_type_id)->get();
+        return $query->where('type_id', Dish::type_id);
     }
 
     public function scopeDish($query, $id)
     {
-        return $query->where('type_id', $this->dish_type_id)->where('id', $id);
+        return $query->where('type_id', Dish::type_id)->where('id', $id);
     }
 
     public function scopeProduct($query, $id)
     {
-        return $query->where('type_id', $this->product_type_id)->where('id', $id);
+        return $query->where('type_id', Product::type_id)->where('id', $id);
     }
 
     public function scopeIngredient($query, $id)
     {
-        return $query->where('type_id', $this->ingredient_type_id)->where('id', $id);
+        return $query->where('type_id', Ingredient::type_id)->where('id', $id);
     }
 
     public function scopeAdaptation($query, $id)
     {
-        return $query->where('type_id', $this->adaptation_type_id)->where('id', $id);
+        return $query->where('type_id', Adaptation::type_id)->where('id', $id);
     }
 }

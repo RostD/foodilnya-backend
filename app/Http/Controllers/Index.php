@@ -65,7 +65,6 @@ class Index extends Controller
     function adaptation($id)
     {
         $adaptation = Adaptation::find($id);
-        $adaptation->addDish(5);
         return view('test.adaptation', ['material' => $adaptation]);
     }
 

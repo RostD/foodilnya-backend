@@ -57,4 +57,16 @@ class Tag
         return $array;
 
     }
+
+    /**
+     * @param $id
+     * @return Tag|bool
+     */
+    public static function find($id)
+    {
+        $tag = AttributeOfMaterialValue::tag($id)->first();
+        if ($tag)
+            return new self($tag);
+        return false;
+    }
 }

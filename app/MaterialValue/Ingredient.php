@@ -13,6 +13,7 @@ use App\Models\MaterialValue;
 
 class Ingredient extends DishComponent
 {
+    const type_id = 1;
     /**
      * Товары, конкретизирующие данный ингредиент
      *

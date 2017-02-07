@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class AttributeOfMaterialValue extends Model
 {
@@ -41,5 +42,20 @@ class AttributeOfMaterialValue extends Model
     {
         return $query->where('id', $id)->where('name', 'like', '#%');
     }
-    
+
+    public static function usedTags(int $material_type_id = null)
+    {
+        $query = DB::table('material_attribute')
+            ->select('material_attribute.attribute_id as id', 'attribute_of_material_values.name as name')
+            ->join('material_values', 'material_attribute.material_id', 'material_values.id')
+            ->join('attribute_of_material_values', 'material_attribute.attribute_id', 'attribute_of_material_values.id');
+
+        if ($material_type_id)
+            $query->where('material_values.type_id', $material_type_id);
+
+        $query->where('attribute_of_material_values.name', 'LIKE', '#%')
+            ->groupBy('id', 'name');
+
+        return $query;
+    }
 }

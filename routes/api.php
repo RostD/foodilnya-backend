@@ -19,3 +19,5 @@ Route::get('/user', function (Request $request) {
 
 Route::resource('dishes', 'Api\DishController',
     ['only' => ['index', 'show']]);
+
+Route::get('usedTags/{option?}', 'Api\TagsController@getUsed');

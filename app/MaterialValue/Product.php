@@ -13,6 +13,7 @@ use App\Models\MaterialValue;
 
 class Product extends Material
 {
+    const type_id = 2;
     /**
      * Ингредиент, являющийся абстракцией для данного элемента
      * @var Material
@@ -71,6 +72,10 @@ class Product extends Material
         return $this->ingredient;
     }
 
+    /**
+     * @param int $id
+     * @return bool|Product
+     */
     public static function find($id)
     {
         $model = MaterialValue::product($id)->first();

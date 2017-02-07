@@ -13,7 +13,7 @@ use App\Models\MaterialValue;
 
 class Adaptation extends DishComponent
 {
-    
+    const type_id = 4;
     /**
      * Ищет материал по его id и возвращает его модель
      * @param integer $id
