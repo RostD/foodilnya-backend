@@ -122,7 +122,7 @@ class Property
     }
 
     /**
-     * Возвращает массив AttributePossibleValue c возможными значениями аттрибута
+     * Возвращает массив PropertyPossibleValue c возможными значениями аттрибута
      * @return array|bool
      */
     public function getPossibleValues()
@@ -216,6 +216,21 @@ class Property
             return new self($property);
         else
             return false;
+    }
+
+    public static function all()
+    {
+        $properties = AttributeOfMaterialValue::properties()->get();
+
+        if ($properties) {
+            $objects = array();
+            foreach ($properties as $property) {
+                $objects[] = new self($property);
+            }
+            return $objects;
+        } else {
+            return false;
+        }
     }
 
     //TODO: delete (поиск использования, если не используется, произвести удаление, если исп. мягк удалить)

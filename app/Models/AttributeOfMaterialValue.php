@@ -38,6 +38,11 @@ class AttributeOfMaterialValue extends Model
         return $query->where('id', $id)->where('name', 'not like', '#%');
     }
 
+    public function scopeProperties($query)
+    {
+        return $query->where('name', 'not like', '#%');
+    }
+
     public function scopeTag($query, $id)
     {
         return $query->where('id', $id)->where('name', 'like', '#%');

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
+use App\Models\UserRole;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role_id'
     ];
 
     /**
@@ -26,4 +27,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(UserRole::class, 'role_id', 'id');
+    }
 }
