@@ -3,11 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+
 
 class AttributeOfMaterialValue extends Model
 {
+    use SoftDeletes;
     public $timestamps = false;
+    /**
+     * Атрибуты, которые должны быть преобразованы в даты.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo||boolean
@@ -24,7 +33,7 @@ class AttributeOfMaterialValue extends Model
 
     public function materials()
     {
-        return $this->belongsToMany(MaterialValue::class, 'material_attribute')
+        return $this->belongsToMany(MaterialValue::class, 'material_attribute', 'attribute_id', 'material_id')
             ->withPivot('value');
     }
 

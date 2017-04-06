@@ -12,29 +12,20 @@
 
 @section('content')
 
-    <form action="{{url('/ctrl/sys/attribute/'.$property->id)}}" style="margin: 10px;" method="POST">
+    <form id="formProp" style="margin: 10px;" method="POST">
         <input type="hidden" name="_method" value="PUT">
         {{ csrf_field() }}
         <div class="form-group">
-            <label for="att-name">Наименование</label>
+            <label for="att-name">Наименование</label> <span style="color:red;"><i>{{$errors->first('name')}}</i></span>
             <input type="text" class="form-control" name="name" id="att-name" value="{{$property->name}}"
                    placeholder="Введите наименование">
         </div>
 
         <div class="form-group">
-            <label for="att-type">Для типа товара:</label>
-            <select class="form-control" id="att-type" name="type">
-                <option value="false" selected>Не важно</option>
-                @foreach($types as $type)
-                    <option value="{{$type->id}}" {{$property->type === $type->id ? 'selected' : ''}}>{{$type->name}}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="form-group">
             <label for="exampleTextarea">Возможные значения (через запятую)</label>
-            <textarea class="form-control" id="exampleTextarea"
-                      rows="3">@foreach($property->getPossibleValues() as $possibleValue){{$possibleValue->value.","}}@endforeach</textarea>
+            <textarea class="form-control" id="exampleTextarea" name="possibleValues"
+                      rows="3">@foreach($property->getPossibleValues() as $possibleValue){{$possibleValue->value}}@if(!$loop->last)
+                    ,@endif @endforeach</textarea>
 
         </div>
 
@@ -46,8 +37,18 @@
             </label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-
+        <input type="button" onclick="closeWindow()" class="btn btn-warning pointer" value="Закрыть">
+        <button type="submit" class="btn btn-primary pointer">Сохранить</button>
     </form>
 
+@endsection
+
+@section('script')
+    <script>
+
+        function closeWindow() {
+            window.opener.location.reload();
+            window.close();
+        }
+    </script>
 @endsection

@@ -47,7 +47,7 @@ class Property
 
     public function setName($name)
     {
-        $this->model->name = $name;
+        $this->model->name = trim($name);
         $this->model->save();
     }
 
@@ -116,6 +116,15 @@ class Property
         return $this->model->fixed_value;
     }
 
+    /**
+     * @param bool $value
+     */
+    public function setFixedValue(bool $value)
+    {
+        $this->model->fixed_value = $value;
+        $this->model->save();
+    }
+
     private function loadPossibleValues()
     {
         $this->possibleValues = PropertyPossibleValue::ofAttribute($this->id);
@@ -132,9 +141,26 @@ class Property
 
     public function addPossibleValue($value)
     {
-        //TODO: проверить, чтобы не было дубликата значения
-        PropertyPossibleValue::create($this->id, $value);
-        $this->loadPossibleValues();
+        $value = trim($value);
+        if (!empty($value)) {
+            PropertyPossibleValue::create($this->id, $value);
+            $this->loadPossibleValues();
+        }
+    }
+
+    /**
+     * @param $possibleValues array of values
+     */
+    public function replacePossibleValues($possibleValues)
+    {
+        foreach ($this->getPossibleValues() as $value) {
+            $value->delete();
+        }
+
+        foreach ($possibleValues as $value) {
+            $this->addPossibleValue($value);
+        }
+
     }
 
     /**
@@ -170,21 +196,26 @@ class Property
         }
     }
 
+    public function trashed()
+    {
+        return $this->model->trashed();
+    }
+
 
     /**
      * @param $name
-     * @param boolean $fixedValues
-     * @param null $type_material
-     * @param null $unit
+     * @param boolean $fixedValue
+     * @param int $type_material
+     * @param int $unit
      * @param array $values
      * @return Property
      */
-    public static function create($name, $fixedValues, $type_material = null, $unit = null, $values = array())
+    public static function create($name, $fixedValue, $type_material = null, $unit = null, $values = array())
     {
 
         $attribute = new AttributeOfMaterialValue();
-        $attribute->name = $name;
-        $attribute->fixed_value = $fixedValues;
+        $attribute->name = trim($name);
+        $attribute->fixed_value = $fixedValue;
 
         if ($type_material)
             $attribute->materialType()->associate(TypeOfMaterialValue::find($type_material));
@@ -197,7 +228,7 @@ class Property
 
         if ($values) {
             foreach ($values as $value) {
-                $new_attribute->setPossibleValue($value);
+                $new_attribute->addPossibleValue($value);
             }
         }
 
@@ -210,7 +241,7 @@ class Property
      */
     public static function find($id)
     {
-        $property = AttributeOfMaterialValue::property($id)->first();
+        $property = AttributeOfMaterialValue::property($id)->withTrashed()->first();
 
         if ($property)
             return new self($property);
@@ -220,7 +251,7 @@ class Property
 
     public static function all()
     {
-        $properties = AttributeOfMaterialValue::properties()->get();
+        $properties = AttributeOfMaterialValue::properties()->withTrashed()->orderBy('name')->get();
 
         if ($properties) {
             $objects = array();
@@ -233,5 +264,20 @@ class Property
         }
     }
 
-    //TODO: delete (поиск использования, если не используется, произвести удаление, если исп. мягк удалить)
+    public function destroy()
+    {
+
+        if (count($this->model->materials) > 0) {
+            $this->model->delete();
+        } else {
+            $this->model->forceDelete();
+        }
+
+    }
+
+    public function restore()
+    {
+        $this->model->restore();
+    }
+    //TODO: destroy (поиск использования, если не используется, произвести удаление, если исп. мягк удалить)
 }

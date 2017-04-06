@@ -14,6 +14,14 @@
 @section('content')
     @extends('control.layout.menu')
 
+    <button type="submit" class="btn btn-primary btn-sm pointer"
+            style="margin:10px 10px 10px 10px"
+            onclick="openPopupWindow('{{url('ctrl/sys/attribute/add')}}','Добавить новый атрибут',600,500)">Добавить
+    </button>
+    <button type="submit" class="btn btn-primary btn-sm pointer"
+            style="margin:10px 10px 10px 0px"
+            onclick="window.location.reload()">Обновить
+    </button>
     <table class="table">
         <tr>
             <th>Наименование</th>
@@ -24,7 +32,7 @@
             <th>Действия</th>
         </tr>
         @foreach($properties as $property)
-            <tr>
+            <tr style="{{$property->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">
                 <td>{{$property->name}}</td>
                 <td>
                     @if($property->typeName)
@@ -36,7 +44,7 @@
                 <td>{{$property->unitName}}</td>
                 <td>
                     @foreach($property->possibleValues as $possibleValue)
-                        {{$possibleValue->value}},
+                        {{$possibleValue->value}}@if(!$loop->last),@endif
                     @endforeach
 
                 </td>
@@ -48,12 +56,13 @@
                 </td>
                 <td>
                     <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                         onclick="openPopupWindow('{{url('/ctrl/sys/attribute/'.$property->id)}}','Редактирование атрибута',600,400)"
+                         onclick="openPopupWindow('{{url('/ctrl/sys/attribute/'.$property->id)}}','Редактирование атрибута',600,320)"
                          class="pointer"
                          width="20"
                          height="20"
                     >
                     <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
+                         onclick="destroyAttr('{{$property->id}}','{{$property->name}}')"
                          class="pointer"
                          width="20"
                          height="20"
@@ -64,5 +73,34 @@
 
         @endforeach
     </table>
+    <div id="error"></div>
+@endsection
+
+@section('script')
+    <script>
+        function destroyAttr(id, name) {
+            var resp = confirm("Удалить атрибут \"" + name + "\"?");
+
+            if (resp) {
+                $.ajax({
+                    url: '{{url('/ctrl/sys/attribute')}}/' + id,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'DELETE',
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function () {
+                        alert("Ошибка");
+                    }
+
+
+                });
+            } else {
+                return false;
+            }
+        }
+    </script>
 @endsection
 
