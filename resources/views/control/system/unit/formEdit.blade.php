@@ -12,7 +12,7 @@
 
 @section('content')
 
-    <form id="formProp" style="margin: 10px;" method="POST">
+    <form id="formProp" style="margin: 10px;" method="POST" action="{{url('/ctrl/sys/unit/'.$unit->id)}}}">
         <input type="hidden" name="_method" value="PUT">
         {{ csrf_field() }}
         <div class="form-group">

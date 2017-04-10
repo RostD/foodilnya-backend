@@ -27,7 +27,7 @@ class UnitController extends Controller
         if ($data['unit']) {
             return view('control.system.unit.formEdit', $data);
         }
-        return response('Unit not found', 404);
+        abort(404);
     }
 
     public function edit(Request $request, $id)
@@ -47,7 +47,7 @@ class UnitController extends Controller
 
             return redirect()->action('Control\UnitController@formEdit', ['id' => $unit->id]);
         }
-        return response('Unit not found', 404);
+        abort(404);
     }
 
     public function add(Request $request)
@@ -59,7 +59,7 @@ class UnitController extends Controller
 
         Unit::create($request->input('name'), $request->input('full_name'));
 
-        return redirect('/ctrl/sys/unit/add');
+        return redirect()->action('Control\UnitController@formAdd');
     }
 
     public function destroy($id)

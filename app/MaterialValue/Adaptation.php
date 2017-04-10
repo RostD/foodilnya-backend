@@ -11,6 +11,11 @@ namespace App\MaterialValue;
 
 use App\Models\MaterialValue;
 
+/**
+ * Class Adaptation
+ * Приспособления для приготовления блюд
+ * @package App\MaterialValue
+ */
 class Adaptation extends DishComponent
 {
     const type_id = 4;

@@ -19,7 +19,19 @@ class Dish extends Material
 
     protected $adaptations = [];
     protected $adapt_loaded = false;
+
+    protected $props = [];
+    protected $props_loaded = false;
+
+    /**
+     * Тип материальной ценности - блюдо
+     */
     const type_id = 3;
+
+    /**
+     * Единица измерения - порция
+     */
+    const unit_id = 5;
 
     /**
      * Рейтинг блюда среди клиентов
@@ -43,7 +55,9 @@ class Dish extends Material
             $this->ingredients = [];
 
             foreach ($this->model->ingredientsOfDish()->get() as $i) {
-                $this->ingredients[] = new Ingredient($i);
+                $ingredient = new IngredientCounted($i);
+                $ingredient->quantity = $i->pivot->quantity;
+                $this->ingredients[] = $ingredient;
             }
 
             $this->ing_loaded = true;
@@ -81,14 +95,16 @@ class Dish extends Material
         }
     }
 
-
     private function loadAdaptations()
     {
         if (!$this->adapt_loaded) {
             $this->adaptations = [];
 
             foreach ($this->model->adaptationsOfDish()->get() as $a) {
-                $this->adaptations[] = new Adaptation($a);
+
+                $adaptation = new AdaptationCounted($a);
+                $adaptation->quantity = $a->pivot->quantity;
+                $this->adaptations[] = $adaptation;
             }
             $this->adapt_loaded = true;
         }
@@ -126,6 +142,19 @@ class Dish extends Material
         }
     }
 
+    public function destroy()
+    {
+        if ($this->trashed()) {
+            $this->model->restore();
+        } else {
+            if (count($this->getAdaptations()) == 0 && count($this->getIngredients()) == 0)
+                $this->model->forceDelete();
+            else
+                $this->model->delete();
+        }
+
+    }
+    
     /**
      * @return int
      */
@@ -133,9 +162,16 @@ class Dish extends Material
     {
         return $this->rate;
     }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+        $array['rate'] = $this->rate;
+        return $array;
+    }
     
     /**
-     * Все существующие блюда
+     * Все существующие блюда,
      * @return array|bool (Dish[])
      */
     public static function all()
@@ -161,17 +197,21 @@ class Dish extends Material
      */
     public static function find($id)
     {
-        $model = MaterialValue::dish($id)->first();
+        $model = MaterialValue::dish($id)->withTrashed()->first();
         if ($model)
             return self::initial(self::class, $model);
         return false;
     }
 
-    public function toArray()
+    public static function create($name)
     {
-        $array = parent::toArray();
-        $array['rate'] = $this->rate;
-        return $array;
+        $model = self::createMaterial($name, Dish::type_id, Dish::unit_id);
+
+        if ($model) {
+            $dish = new self($model);
+            return $dish;
+        }
+        return false;
     }
 
 }

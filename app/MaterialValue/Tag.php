@@ -11,6 +11,12 @@ namespace App\MaterialValue;
 
 use App\Models\AttributeOfMaterialValue;
 
+/**
+ * Class Tag
+ * Тег не подразделяется на типы материальных ценностей.
+ * Т.е. один и тот же тег может быть использован как блюдом, так товаром или ингредиентом
+ * @package App\MaterialValue
+ */
 class Tag
 {
     protected $model;
@@ -67,6 +73,64 @@ class Tag
         $tag = AttributeOfMaterialValue::tag($id)->first();
         if ($tag)
             return new self($tag);
+        return false;
+    }
+
+    /**
+     * Возвращает все теги, которые были использованны блюдами
+     *
+     * @return bool
+     */
+    public static function allUsedDishesTags()
+    {
+        return self::allUsedTags(Dish::type_id);
+    }
+
+    public static function allUsedIngredientsTags()
+    {
+        return self::allUsedTags(Ingredient::type_id);
+    }
+
+    private static function allUsedTags(int $type_id)
+    {
+        $tags = AttributeOfMaterialValue::usedTags($type_id)->get();
+        if ($tags) {
+            return $tags;
+        }
+        return false;
+    }
+
+    public static function all()
+    {
+        $tags = AttributeOfMaterialValue::tags()->get();
+
+        if ($tags) {
+            $objs = [];
+            foreach ($tags as $tag) {
+                $objs[] = new self($tag);
+            }
+            return $objs;
+        }
+        return false;
+    }
+
+    public static function create(string $name)
+    {
+        if (trim($name)) {
+
+            if (substr($name, 0, 1) != "#")
+                $name = "#" . mb_strtolower($name);
+
+            $res = AttributeOfMaterialValue::where('name', $name)->first();
+            if ($res)
+                return new self($res);
+
+            $tag = new AttributeOfMaterialValue();
+            $tag->name = $name;
+            $tag->save();
+
+            return new self($tag);
+        }
         return false;
     }
 }

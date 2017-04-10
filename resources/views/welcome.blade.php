@@ -10,5 +10,7 @@
 <!-- 3. Display the application -->
 <body>
 <h1>Welcome to Laravel 5.3</h1>
+<a href="{{url('/home')}}">Домашняя страница</a><br/>
+<a href="{{url('/ctrl')}}">Панель управления</a>
 </body>
 </html>

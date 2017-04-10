@@ -53,12 +53,7 @@ class PropertyValue
     /**
      * @return mixed
      */
-    public function getUnitName($short = false)
-    {
-        if ($short)
-            return $this->unitShortName;
-        return $this->unitName;
-    }
+
 
     function __get($name)
     {
@@ -90,6 +85,15 @@ class PropertyValue
         return $this->unitId;
     }
 
+    public function getUnit()
+    {
+        return $this->unitShortName;
+    }
+
+    public function getUnitFull()
+    {
+        return $this->unitName;
+    }
     /**
      * @return mixed
      */

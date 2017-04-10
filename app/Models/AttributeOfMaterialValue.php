@@ -57,6 +57,11 @@ class AttributeOfMaterialValue extends Model
         return $query->where('id', $id)->where('name', 'like', '#%');
     }
 
+    public function scopeTags($query)
+    {
+        return $query->where('name', 'like', '#%');
+    }
+
     public static function usedTags(int $material_type_id = null)
     {
         $query = DB::table('material_attribute')
@@ -68,7 +73,8 @@ class AttributeOfMaterialValue extends Model
             $query->where('material_values.type_id', $material_type_id);
 
         $query->where('attribute_of_material_values.name', 'LIKE', '#%')
-            ->groupBy('id', 'name');
+            ->groupBy('id', 'name')
+            ->orderBy('name');
 
         return $query;
     }

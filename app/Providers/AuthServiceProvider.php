@@ -24,13 +24,22 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
+        $rightsAccessNamespace = 'App\RightsAccess';
         // Админу можно всё
         Gate::before(function ($user) {
             if ($user->role->sys_name == 'admin')
                 return true;
         });
 
+        Gate::define('dish-see', $rightsAccessNamespace . '\Nomenclature\DishRights@see');
+        Gate::define('dish-add', $rightsAccessNamespace . '\Nomenclature\DishRights@add');
+        Gate::define('dish-edit', $rightsAccessNamespace . '\Nomenclature\DishRights@edit');
+        Gate::define('dish-delete', $rightsAccessNamespace . '\Nomenclature\DishRights@delete');
+
+        Gate::define('ingredient-see', $rightsAccessNamespace . '\Nomenclature\IngredientRights@see');
+        Gate::define('ingredient-add', $rightsAccessNamespace . '\Nomenclature\IngredientRights@add');
+        Gate::define('ingredient-edit', $rightsAccessNamespace . '\Nomenclature\IngredientRights@edit');
+        Gate::define('ingredient-delete', $rightsAccessNamespace . '\Nomenclature\IngredientRights@delete');
 
         //Просмотр информации шеф повара
         Gate::define('chef_info-see', function ($user) {

@@ -15,7 +15,7 @@ use App\Interfaces\IRegisterString;
  * Класс применяется, когда необходимо передавать количество материальных ценностей.
  * @package App\MaterialValue
  */
-class CountedMaterial extends Material implements IRegisterString
+abstract class CountedMaterial extends Material implements IRegisterString
 {
     private $quantity;
     //private $unit;

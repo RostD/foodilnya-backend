@@ -16,7 +16,7 @@
 
     <button type="submit" class="btn btn-primary btn-sm pointer"
             style="margin:10px 10px 10px 10px"
-            onclick="openPopupWindow('{{url('ctrl/sys/attribute/add')}}','Добавить новый атрибут',600,500)">Добавить
+            onclick="openPopupWindow('{{url('ctrl/sys/attribute/add')}}','Добавить новый атрибут',600,550)">Добавить
     </button>
     <button type="submit" class="btn btn-primary btn-sm pointer"
             style="margin:10px 10px 10px 0px"
@@ -56,7 +56,7 @@
                 </td>
                 <td>
                     <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                         onclick="openPopupWindow('{{url('/ctrl/sys/attribute/'.$property->id)}}','Редактирование атрибута',600,320)"
+                         onclick="openPopupWindow('{{url('/ctrl/sys/attribute/'.$property->id.'/edit')}}','Редактирование атрибута',600,350)"
                          class="pointer"
                          width="20"
                          height="20"

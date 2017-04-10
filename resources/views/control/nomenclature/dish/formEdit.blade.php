@@ -2,42 +2,49 @@
 /**
  * Created by PhpStorm.
  * User: Ростислав
- * Date: 04.04.2017
- * Time: 14:46
+ * Date: 08.04.2017
+ * Time: 19:42
  */
 ?>
+
 @extends('control.layout.main')
 
-@section('title','Изменение атрибута')
+@section('title','Редактирование блюда')
 
 @section('content')
 
-    <form id="formProp" style="margin: 10px;" method="POST" action="{{url('/ctrl/sys/attribute/'.$property->id)}}}">
+    <form id="formProp" style="margin: 10px;" method="POST" action="{{url('ctrl/nmcl/dish/'.$dish->id)}}">
         <input type="hidden" name="_method" value="PUT">
         {{ csrf_field() }}
         <div class="form-group {{$errors->first('name') ? 'has-danger' : ''}}">
             <label for="att-name">Наименование</label>
             <input type="text" class="form-control {{$errors->first('name') ? 'form-control-danger' : ''}}" name="name"
-                   id="att-name" value="{{$property->name}}"
+                   id="att-name" value="{{$dish->name}}"
                    placeholder="Введите наименование">
             @if($errors->first('name'))
                 <div class="form-control-feedback">{{$errors->first('name')}}</div>@endif
         </div>
 
         <div class="form-group">
-            <label for="exampleTextarea">Возможные значения (через запятую)</label>
-            <textarea class="form-control" id="exampleTextarea" name="possibleValues"
-                      rows="3">@foreach($property->getPossibleValues() as $possibleValue){{$possibleValue->value}}@if(!$loop->last)
-                    ,@endif @endforeach</textarea>
+            <label for="tagsSelect">Теги:</label>
+            <select multiple class="form-control" id="tagsSelect" name="tags[]">
+                @foreach($tags as $tag)
 
+                    <option value="{{$tag->id}}"
+                    @if($tag)
+                        @foreach($dish->tags as $t)
+                            {{$t->id == $tag->id? 'selected':''}}
+                                @endforeach
+                            @endif
+                    >{{mb_substr($tag->name,1)}}</option>
+                @endforeach
+            </select>
         </div>
 
-        <div class="form-check">
-            <label class="form-check-label">
-                <input name="fixedValues" {{$property->isFixedValue() ? 'checked' : ''}} value="true" type="checkbox"
-                       class="form-check-input">
-                Фиксированные значения
-            </label>
+        <div class="form-group">
+            <label for="exampleTextarea">Добавить новые теги (через запятую)</label>
+            <textarea class="form-control" id="exampleTextarea" name="newTags"
+                      rows="3"></textarea>
         </div>
 
         <input type="button" onclick="closeWindow()" class="btn btn-warning pointer" value="Закрыть">

@@ -60,8 +60,10 @@
                     Номенклатура
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" href="{{url('/ctrl/nmcl/dishes')}}">Блюда</a>
+                    <a class="dropdown-item" href="{{url('/ctrl/nmcl/ingredients')}}">Ингредиенты</a>
+                    <a class="dropdown-item" href="#">Товары</a>
+                    <a class="dropdown-item" href="#">Приспособления</a>
                 </div>
             </li>
 

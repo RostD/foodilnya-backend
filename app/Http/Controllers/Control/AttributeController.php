@@ -21,7 +21,7 @@ class AttributeController extends Controller
     {
         $data['property'] = Property::find($id);
         if (!$data['property'])
-            return view('errors/404');
+            abort(404);
         return view('control.system.attribute.formEdit', $data);
     }
 
@@ -41,7 +41,7 @@ class AttributeController extends Controller
         $property = Property::find($id);
 
         if ($property) {
-            DB::beginTransaction();
+
             $property->setName(trim($request->input('name')));
             $property->replacePossibleValues(explode(',', $request->input('possibleValues')));
             $property->setFixedValue((bool)$request->input('fixedValues'));
@@ -49,7 +49,7 @@ class AttributeController extends Controller
 
             return redirect()->action('Control\AttributeController@formEdit', ['id' => $property->id]);
         }
-        return response('Attribute not found', 404);
+        abort(404);
     }
 
     public function add(Request $request)
@@ -65,7 +65,7 @@ class AttributeController extends Controller
             $request->input('unit'),
             explode(',', $request->input('possibleValues')));
 
-        return redirect('/ctrl/sys/attribute/add');
+        return redirect()->action('Control\AttributeController@formAdd');
 
     }
 

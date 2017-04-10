@@ -8,16 +8,19 @@
 ?>
 @extends('control.layout.main')
 
-@section('title','Изменение атрибута')
+@section('title','Добавление атрибута')
 
 @section('content')
 
     <form id="formProp" style="margin: 10px;" method="POST">
         {{ csrf_field() }}
-        <div class="form-group">
-            <label for="att-name">Наименование</label> <span style="color:red;"><i>{{$errors->first('name')}}</i></span>
-            <input type="text" class="form-control" name="name" id="att-name" value="{{old('name')}}"
+        <div class="form-group {{$errors->first('name') ? 'has-danger' : ''}}">
+            <label for="att-name">Наименование</label>
+            <input type="text" class="form-control {{$errors->first('name') ? 'form-control-danger' : ''}}" name="name"
+                   id="att-name" value="{{old('name')}}"
                    placeholder="Введите наименование">
+            @if($errors->first('name'))
+                <div class="form-control-feedback">{{$errors->first('name')}}</div>@endif
         </div>
 
         <div class="form-group">

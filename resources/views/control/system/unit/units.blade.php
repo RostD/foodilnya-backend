@@ -35,7 +35,7 @@
                 <td>{{$unit->name}}</td>
                 <td>
                     <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                         onclick="openPopupWindow('{{url('/ctrl/sys/unit/'.$unit->id)}}','Редактирование единицы измерения',600,320)"
+                         onclick="openPopupWindow('{{url('/ctrl/sys/unit/'.$unit->id.'/edit')}}','Редактирование единицы измерения',600,320)"
                          class="pointer"
                          width="20"
                          height="20"

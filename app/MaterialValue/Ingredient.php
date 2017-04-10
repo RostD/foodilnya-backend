@@ -85,4 +85,18 @@ class Ingredient extends DishComponent
             return self::initial(self::class, $ingredient);
         return false;
     }
+
+    public static function all()
+    {
+        $models = MaterialValue::ingredients()->withTrashed()->get();
+
+        if ($models) {
+            $ingredients = [];
+            foreach ($models as $model) {
+                $ingredients[] = new self($model);
+            }
+            return $ingredients;
+        }
+        return false;
+    }
 }

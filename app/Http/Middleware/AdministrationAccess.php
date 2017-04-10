@@ -17,6 +17,6 @@ class AdministrationAccess
     {
         if ($request->user()->role->sys_name == 'admin')
             return $next($request);
-        return redirect('403');
+        abort(403);
     }
 }

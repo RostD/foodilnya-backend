@@ -7,6 +7,7 @@ use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
 use App\MaterialValue\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property integer type_id
@@ -17,8 +18,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MaterialValue extends Model
 {
+    use SoftDeletes;
 
     protected $table = "material_values";
+    /**
+     * Атрибуты, которые должны быть преобразованы в даты.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     public function type()
     {
@@ -49,22 +57,22 @@ class MaterialValue extends Model
 
     public function scopeIngredientsOfDish()
     {
-        return $this->children()->where('type_id', Ingredient::type_id);
+        return $this->children()->where('type_id', Ingredient::type_id)->withPivot('quantity');
     }
 
     public function scopeAdaptationsOfDish()
     {
-        return $this->children()->where('type_id', Adaptation::type_id);
+        return $this->children()->where('type_id', Adaptation::type_id)->withPivot('quantity');
     }
 
     public function scopeProperties()
     {
-        return $this->attributes()->where('name', 'not like', '#%')->get();
+        return $this->attributes()->where('name', 'not like', '#%');
     }
 
     public function scopeTags()
     {
-        return $this->attributes()->where('name', 'like', '#%')->get();
+        return $this->attributes()->where('name', 'like', '#%');
     }
 
     public function scopeDishes($query)
@@ -85,6 +93,11 @@ class MaterialValue extends Model
     public function scopeIngredient($query, $id)
     {
         return $query->where('type_id', Ingredient::type_id)->where('id', $id);
+    }
+
+    public function scopeIngredients($query)
+    {
+        return $query->where('type_id', Ingredient::type_id);
     }
 
     public function scopeAdaptation($query, $id)

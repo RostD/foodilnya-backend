@@ -45,7 +45,7 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::get('attributes', 'Control\AttributeController@attributes');
         Route::get('attribute/add', 'Control\AttributeController@formAdd');
         Route::post('attribute/add', 'Control\AttributeController@add');
-        Route::get('attribute/{id}', 'Control\AttributeController@formEdit');
+        Route::get('attribute/{id}/edit', 'Control\AttributeController@formEdit');
         Route::put('attribute/{id}', 'Control\AttributeController@edit');
         Route::delete('attribute/{id}', 'Control\AttributeController@destroy');
 
@@ -53,8 +53,20 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::get('unit/add', 'Control\UnitController@formAdd');
         Route::post('unit/add', 'Control\UnitController@add');
         Route::delete('unit/{id}', 'Control\UnitController@destroy');
-        Route::get('unit/{id}', 'Control\UnitController@formEdit');
+        Route::get('unit/{id}/edit', 'Control\UnitController@formEdit');
         Route::put('unit/{id}', 'Control\UnitController@edit');
+    });
+
+    Route::group(['prefix' => 'nmcl'], function () {
+
+        Route::get('dishes', 'Control\DishController@dishes');
+        Route::get('dish/add', 'Control\DishController@formAdd');
+        Route::post('dish/add', 'Control\DishController@add');
+        Route::get('dish/{id}/edit', 'Control\DishController@formEdit');
+        Route::put('dish/{id}', 'Control\DishController@edit');
+        Route::delete('dish/{id}', 'Control\DishController@delete');
+
+        Route::get('ingredients', 'Control\IngredientController@ingredients');
     });
 });
 

@@ -17,6 +17,6 @@ class AccessToControlPanel
     {
         if ($request->user()->role->sys_name != 'client')
             return $next($request);
-        return redirect('403');
+        abort(403);
     }
 }
