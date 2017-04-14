@@ -17,7 +17,7 @@
     @can('ingredient-add')
         <button type="submit" class="btn btn-primary btn-sm pointer"
                 style="margin:10px 0px 10px 10px"
-                onclick="openPopupWindow('{{url('#')}}','Добавить ингредиент',600,500)">Добавить
+                onclick="openPopupWindow('{{url('/ctrl/nmcl/ingredient/add')}}','Добавить ингредиент',600,500)">Добавить
         </button>
     @endcan
     <button type="submit" class="btn btn-primary btn-sm pointer"
@@ -67,8 +67,8 @@
         <tr>
             <th>Код</th>
             <th>Наименование</th>
+            <th>Единица измерения</th>
             <th>Свойства</th>
-
             <th>Теги</th>
             <th>Действия</th>
         </tr>
@@ -76,6 +76,7 @@
             <tr style="{{$ingredient->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">
                 <td>{{$ingredient->id}}</td>
                 <td>{{$ingredient->name}}</td>
+                <td>{{$ingredient->unitName}}</td>
                 <td>
                     @foreach($ingredient->properties as $property)
                         <span class="badge badge-default">{{$property->name}} - {{$property->value}}

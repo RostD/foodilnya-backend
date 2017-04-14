@@ -112,9 +112,15 @@ class Unit
         return false;
     }
 
-    public static function all()
+    public static function all($withTrashed = true)
     {
-        $units = UnitM::withTrashed()->orderBy('full_name')->get();
+        $units = UnitM::orderBy('full_name');
+
+        if ($withTrashed)
+            $units = $units->withTrashed();
+
+        $units = $units->get();
+        
         if ($units) {
             $objs = [];
             foreach ($units as $unit) {

@@ -73,7 +73,7 @@ class DishController extends Controller
             }
         }
 
-        $dish = Dish::create($request->input('name'), $tags);
+        $dish = Dish::create($request->input('name'));
 
         if (!empty($tags)) {
             foreach ($tags as $tag) {

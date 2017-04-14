@@ -2,13 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: Ростислав
- * Date: 04.04.2017
- * Time: 14:46
+ * Date: 08.04.2017
+ * Time: 19:42
  */
 ?>
+
 @extends('control.layout.main')
 
-@section('title','Добавление атрибута')
+@section('title','Добавление ингредиента')
 
 @section('content')
 
@@ -32,29 +33,27 @@
             </select>
         </div>
 
+        <!-- TODO преределать на чекбоксы -->
         <div class="form-group">
-            <label for="att-type">Для типа товара:</label>
-            <select class="form-control" id="att-type" name="type">
-                <option value="false" selected>Не важно</option>
-                @foreach($types as $type)
-                    <option value="{{$type->id}}" {{old('type') === $type->id ? 'selected' : ''}}>{{$type->name}}</option>
+            <label for="tagsSelect">Теги:</label>
+            <select multiple class="form-control" id="tagsSelect" name="tags[]">
+                @foreach($tags as $tag)
+
+                    <option value="{{$tag->id}}"
+                    @if(old('tags'))
+                        @foreach(old('tags') as $t)
+                            {{$t==$tag->id? 'selected':''}}
+                                @endforeach
+                            @endif
+                    >{{mb_substr($tag->name,1)}}</option>
                 @endforeach
             </select>
         </div>
 
         <div class="form-group">
-            <label for="exampleTextarea">Возможные значения (через запятую)</label>
-            <textarea class="form-control" id="exampleTextarea" name="possibleValues"
-                      rows="3">{{old('possibleValues')}}</textarea>
-
-        </div>
-
-        <div class="form-check">
-            <label class="form-check-label">
-                <input name="fixedValues" {{old('fixedValues') ? 'checked' : ''}} value="true" type="checkbox"
-                       class="form-check-input">
-                Фиксированные значения
-            </label>
+            <label for="exampleTextarea">Добавить новые теги (через запятую)</label>
+            <textarea class="form-control" id="exampleTextarea" name="newTags"
+                      rows="3">{{old('newTags')}}</textarea>
         </div>
 
         <input type="button" onclick="closeWindow()" class="btn btn-warning pointer" value="Закрыть">

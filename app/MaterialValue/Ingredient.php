@@ -99,4 +99,14 @@ class Ingredient extends DishComponent
         }
         return false;
     }
+
+    public static function create(string $name, int $unit_id)
+    {
+        $model = self::createMaterial($name, Ingredient::type_id, $unit_id);
+
+        if ($model) {
+            return new self($model);
+        }
+        return false;
+    }
 }

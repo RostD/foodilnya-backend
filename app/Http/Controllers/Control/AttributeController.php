@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Control;
 
 use App\Http\Controllers\Controller;
 use App\MaterialValue\Property;
+use App\MaterialValue\Unit;
 use App\Models\TypeOfMaterialValue;
-use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,7 +27,7 @@ class AttributeController extends Controller
 
     public function formAdd()
     {
-        $data['units'] = Unit::all();
+        $data['units'] = Unit::all(false);
         $data['types'] = TypeOfMaterialValue::all();
         return view('control.system.attribute.formAdd', $data);
     }

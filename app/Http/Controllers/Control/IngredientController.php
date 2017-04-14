@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Control;
 use App\Http\Controllers\Controller;
 use App\MaterialValue\Ingredient;
 use App\MaterialValue\Tag;
+use App\MaterialValue\Unit;
 use App\Models\MaterialValue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class IngredientController extends Controller
@@ -38,7 +40,52 @@ class IngredientController extends Controller
         }
 
 
-        $data['tags'] = Tag::allUsedDishesTags();
+        $data['tags'] = Tag::allUsedIngredientsTags();
         return view('control.nomenclature.ingredient.ingredients', $data);
+    }
+
+    public function formAdd()
+    {
+        if (Gate::denies('ingredient-add'))
+            abort(403);
+
+        $data['units'] = Unit::all(false);
+        $data['tags'] = Tag::all();
+        return view('control.nomenclature.ingredient.formAdd', $data);
+    }
+
+    public function add(Request $request)
+    {
+        if (Gate::denies('ingredient-add'))
+            abort(403);
+
+        $this->validate($request, [
+            'name' => 'required',
+            'unit' => 'required| exists:units,id'
+        ]);
+
+        $tags = $request->input('tags');
+        $newTags = trim($request->input('newTags'));
+
+        DB::beginTransaction();
+
+        if (!empty($newTags)) {
+            foreach (explode(',', $newTags) as $newTag) {
+                $t = Tag::create($newTag);
+                if ($t) $tags[] = $t->id;
+            }
+        }
+
+        $ingredient = Ingredient::create($request->input('name'), $request->input('unit'));
+
+        if (!empty($tags)) {
+            foreach ($tags as $tag) {
+                $ingredient->addTag($tag);
+            }
+        }
+
+        DB::commit();
+
+        return redirect()->action('Control\IngredientController@formAdd');
     }
 }

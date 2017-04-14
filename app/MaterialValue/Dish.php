@@ -82,8 +82,9 @@ class Dish extends Material
         return false;
     }
 
-    public function addIngredient($id)
+    public function addIngredient($id, $quantity = null)
     {
+        //TODO чтобы quantity записывалось в базу (это количетсво ингредиента на единицу блюда)
         if ($this->issetIngredient($id))
             return;
 
@@ -131,8 +132,9 @@ class Dish extends Material
         return false;
     }
 
-    public function addAdaptation($id)
+    public function addAdaptation($id, $quantity = null)
     {
+        //TODO чтобы quantity записывалось в базу (это количетсво приспособлений на единицу блюда)
         if ($this->issetAdaptation($id))
             return;
         $adaptation = Adaptation::find($id);
