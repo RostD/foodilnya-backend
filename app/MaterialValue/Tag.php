@@ -100,9 +100,14 @@ class Tag
         return false;
     }
 
-    public static function all()
+    public static function all($withTrashed = true)
     {
-        $tags = AttributeOfMaterialValue::tags()->get();
+
+        $tags = AttributeOfMaterialValue::tags();
+        if ($withTrashed)
+            $tags = $tags->withTrashed();
+
+        $tags = $tags->get();
 
         if ($tags) {
             $objs = [];

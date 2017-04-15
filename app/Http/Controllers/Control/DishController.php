@@ -48,7 +48,7 @@ class DishController extends Controller
         if (Gate::denies('dish-add'))
             abort(403);
 
-        $data['tags'] = Tag::all();
+        $data['tags'] = Tag::all(false);
         return view('control.nomenclature.dish.formAdd', $data);
     }
 
@@ -92,7 +92,7 @@ class DishController extends Controller
             abort(403);
 
         $data['dish'] = Dish::find($id);
-        $data['tags'] = Tag::all();
+        $data['tags'] = Tag::all(false);
         return view('control.nomenclature.dish.formEdit', $data);
     }
 

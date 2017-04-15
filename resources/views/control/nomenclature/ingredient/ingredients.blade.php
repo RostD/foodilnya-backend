@@ -91,7 +91,7 @@
                 <td>
                     @can('ingredient-edit')
                         <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                             onclick="openPopupWindow('{{url('/ctrl/nmcl/dish/'.$ingredient->id.'/edit')}}','Редактирование ингредиента',600,450)"
+                             onclick="openPopupWindow('{{url('/ctrl/nmcl/ingredient/'.$ingredient->id.'/edit')}}','Редактирование ингредиента',600,450)"
                              class="pointer"
                              width="20"
                              height="20"

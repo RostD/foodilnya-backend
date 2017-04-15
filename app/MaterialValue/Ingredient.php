@@ -80,7 +80,7 @@ class Ingredient extends DishComponent
      */
     public static function find($id)
     {
-        $ingredient = MaterialValue::ingredient($id)->first();
+        $ingredient = MaterialValue::ingredient($id)->withTrashed()->first();
         if ($ingredient)
             return self::initial(self::class, $ingredient);
         return false;

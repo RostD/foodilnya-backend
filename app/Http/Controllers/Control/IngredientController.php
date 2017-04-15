@@ -50,7 +50,7 @@ class IngredientController extends Controller
             abort(403);
 
         $data['units'] = Unit::all(false);
-        $data['tags'] = Tag::all();
+        $data['tags'] = Tag::all(false);
         return view('control.nomenclature.ingredient.formAdd', $data);
     }
 
@@ -88,4 +88,59 @@ class IngredientController extends Controller
 
         return redirect()->action('Control\IngredientController@formAdd');
     }
+
+    public function formEdit($id)
+    {
+        if (Gate::denies('ingredient-edit'))
+            abort(403);
+
+        $data['ingredient'] = Ingredient::find($id);
+
+        if (!$data['ingredient'])
+            abort(404);
+
+        $data['tags'] = Tag::all(false);
+        return view('control.nomenclature.ingredient.formEdit', $data);
+
+
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if (Gate::denies('ingredient-delete'))
+            abort(403);
+
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $ingredient = Ingredient::find($id);
+
+        if ($ingredient) {
+            $tags = $request->input('tags');
+            $newTags = trim($request->input('newTags'));
+
+            DB::beginTransaction();
+
+            if (!empty($newTags)) {
+                foreach (explode(',', $newTags) as $newTag) {
+                    $t = Tag::create($newTag);
+                    if ($t) $tags[] = $t->id;
+                }
+            }
+
+            $ingredient->name = $request->input('name');
+
+            if (!empty($tags)) {
+                $ingredient->replaceTags($tags);
+            }
+            DB::commit();
+
+            return redirect()->action('Control\IngredientController@formEdit', ['id' => $ingredient->id]);
+        }
+        abort(404);
+
+
+    }
+
 }
