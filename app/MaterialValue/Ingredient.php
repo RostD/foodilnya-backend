@@ -74,6 +74,19 @@ class Ingredient extends DishComponent
         return false;
     }
 
+    public function destroy()
+    {
+        if ($this->trashed()) {
+            $this->model->restore();
+        } else {
+            if (count($this->getDishes()) == 0 && count($this->getProducts()) == 0)
+                $this->model->forceDelete();
+            else
+                $this->model->delete();
+        }
+
+    }
+
     /**
      * @param int $id
      * @return bool|Ingredient

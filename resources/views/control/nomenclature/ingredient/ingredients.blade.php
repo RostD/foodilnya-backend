@@ -132,7 +132,7 @@
 
             if (resp) {
                 $.ajax({
-                    url: '{{url('/ctrl/nmcl/dish')}}/' + id,
+                    url: '{{url('/ctrl/nmcl/ingredient')}}/' + id,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },

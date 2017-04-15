@@ -143,4 +143,18 @@ class IngredientController extends Controller
 
     }
 
+    public function delete(Request $request, $id)
+    {
+        if (Gate::denies('ingredient-delete'))
+            abort(403);
+
+        $ingredient = Ingredient::find($id);
+
+        if ($ingredient) {
+            $ingredient->destroy();
+            return response('', 200);
+        }
+        abort(404);
+    }
+
 }
