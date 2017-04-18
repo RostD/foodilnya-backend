@@ -203,4 +203,17 @@ class DishController extends Controller
 
     }
 
+    public function removeIngredient(Request $request, $dish, $ingredient)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(403);
+
+        $dish = Dish::find((int)$dish);
+
+        if ($dish) {
+            $dish->removeIngredient((int)$ingredient);
+        }
+        return response('', 200);
+    }
+
 }

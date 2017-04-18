@@ -77,6 +77,12 @@
                                  width="20"
                                  height="20"
                             >
+                            <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
+                                 onclick="removeIngredient('{{$ingredient->id}}','{{$ingredient->name}}')"
+                                 class="pointer"
+                                 width="20"
+                                 height="20"
+                            >
                         </td>
                     </tr>
                 @endforeach
@@ -88,7 +94,7 @@
         <div class="tab-pane" id="properties" role="tabpanel">...</div>
         <div class="tab-pane" id="tags" role="tabpanel">...</div>
     </div>
-
+    <div id="error"></div>
 @endsection
 
 @section('script')
@@ -100,6 +106,31 @@
             var hash = urlString.substring(from, to);
 
             window.location.hash = hash;
+        }
+
+        function removeIngredient(id, name) {
+            var resp = confirm("Убрать ингредиент \"" + name + "\"?");
+
+            if (resp) {
+                $.ajax({
+                    url: '{{url('/ctrl/nmcl/cfg/dish')}}/{{$dish->id}}/ingredient/' + id,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'DELETE',
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function (data) {
+                        alert("Ошибка");
+                        $('#error').html(data.responseText);
+                    }
+
+
+                });
+            } else {
+                return false;
+            }
         }
 
         $(function () {

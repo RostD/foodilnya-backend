@@ -111,6 +111,13 @@ class Dish extends Material
 
     }
 
+    public function removeIngredient($id)
+    {
+        if ($this->issetIngredient($id)) {
+            $this->model->children()->detach($id);
+        }
+    }
+
     private function loadAdaptations()
     {
         if (!$this->adapt_loaded) {
