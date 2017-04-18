@@ -13,7 +13,7 @@
 @section('title','Добавление ингредиента')
 
 @section('content')
-    <h4>{{$dish->name}}</h4>
+    <h4>{{$ingredient->name}}</h4>
 
     <form id="formProp" style="margin: 10px;" method="POST"
           action="{{url('ctrl/nmcl/cfg/dish/'.$dish->id.'/editIngredient')}}">

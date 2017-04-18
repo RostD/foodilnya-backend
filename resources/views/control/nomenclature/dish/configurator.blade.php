@@ -90,7 +90,18 @@
         </div>
 
         <div class="tab-pane" id="adaptations" role="tabpanel">...</div>
-        <div class="tab-pane" id="recipe" role="tabpanel">...</div>
+        <div class="tab-pane" id="recipe" role="tabpanel">
+            <form method="POST" id="editRecipe" action="{{url('ctrl/nmcl/cfg/dish/'.$dish->id.'/recipe')}}">
+                {{ csrf_field() }}
+                <textarea id="recipe-txt" name="recipe">{{$dish->description}}</textarea>
+            </form>
+            <button type="submit" class="btn btn-primary btn-sm pointer"
+                    style="margin:10px 0px 10px 10px"
+                    onclick="pushRecipe()">
+                Сохранить
+            </button>
+
+        </div>
         <div class="tab-pane" id="properties" role="tabpanel">...</div>
         <div class="tab-pane" id="tags" role="tabpanel">...</div>
     </div>
@@ -98,7 +109,10 @@
 @endsection
 
 @section('script')
+    <script src="{{ asset('/js/ckeditor/ckeditor.js') }}" type="text/javascript" charset="utf-8"></script>
+
     <script>
+
         function setHash(urlString) {
 
             var from = urlString.search('#');
@@ -133,7 +147,12 @@
             }
         }
 
+        function pushRecipe() {
+            $('#editRecipe').submit();
+        }
+
         $(function () {
+            var editor = CKEDITOR.replace('recipe-txt');
 
             $('#cfg-nav a').each(function () {
                 $(this).on("click", function () {

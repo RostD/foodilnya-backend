@@ -117,6 +117,8 @@ class Ingredient extends DishComponent
 
     public static function allNotUsed($dishId)
     {
+        $dish = Dish::find($dishId);
+
         $modelsHaveParent = MaterialValue::ingredients()->whereHas('parents', function ($query) use ($dishId) {
             $query->where('material_parent', '<>', $dishId);
         })->get();
@@ -127,7 +129,8 @@ class Ingredient extends DishComponent
         if ($modelsHaveParent || $modelsDoesntHaveParent) {
             $notUsedIngredients = [];
             foreach ($modelsHaveParent as $model) {
-                $notUsedIngredients[] = new self($model);
+                if (!$dish->issetIngredient($model->id))
+                    $notUsedIngredients[] = new self($model);
             }
 
             foreach ($modelsDoesntHaveParent as $model) {

@@ -105,6 +105,20 @@ abstract class Material
         }        
     }
 
+    public function getDescription()
+    {
+        return $this->model->description;
+    }
+
+    public function setDescription($text)
+    {
+        $text = trim($text);
+        if (!empty($text)) {
+            $this->model->description = $text;
+            $this->model->save();
+        }
+    }
+
     /**
      * Получить идентификатор единицы измерения
      * @return integer id единицы измерения

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property mixed unit_id
  * @property mixed unit
  * @property mixed parent
+ * @property mixed description
  */
 class MaterialValue extends Model
 {

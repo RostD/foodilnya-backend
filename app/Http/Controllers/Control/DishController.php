@@ -212,7 +212,7 @@ class DishController extends Controller
         if ($dish) {
             $dish->addIngredient($ingredient, $quantity, (integer)$unit);
 
-            return redirect()->action('Control\DishController@formAddIngredient', ['id' => $dish->id]);
+            return back();
         }
         abort(400);
     }
@@ -221,8 +221,7 @@ class DishController extends Controller
     {
         $this->addIngredient($request);
 
-        return redirect()->action('Control\DishController@formEditIngredient', ['d_id' => $request->input('dish'),
-            'i_id' => $request->input('ingredient')]);
+        return back();
     }
 
     public function removeIngredient(Request $request, $dish, $ingredient)
@@ -236,6 +235,21 @@ class DishController extends Controller
             $dish->removeIngredient((int)$ingredient);
         }
         return response('', 200);
+    }
+
+    public function setRecipe(Request $request, $id)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(403);
+
+        $dish = Dish::find($id);
+
+        if ($dish) {
+            $dish->setDescription($request->input('recipe'));
+            return back();
+        }
+
+        abort(404);
     }
 
 }

@@ -81,6 +81,7 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
             Route::delete('dish/{d_id}/ingredient/{i_id}', 'Control\DishController@removeIngredient');
             Route::get('dish/{d_id}/ingredient/{i_id}', 'Control\DishController@formEditIngredient');
             Route::put('dish/{id}/editIngredient', 'Control\DishController@editIngredient');
+            Route::post('dish/{id}/recipe', 'Control\DishController@setRecipe');
 
         });
 
