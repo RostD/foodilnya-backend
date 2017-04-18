@@ -57,6 +57,7 @@ class Dish extends Material
             foreach ($this->model->ingredientsOfDish()->get() as $i) {
                 $ingredient = new IngredientCounted($i);
                 $ingredient->quantity = $i->pivot->quantity;
+                $ingredient->pivotId = $i->pivot->id;
                 $this->ingredients[] = $ingredient;
             }
 
@@ -73,6 +74,12 @@ class Dish extends Material
         return $this->ingredients;
     }
 
+    /**
+     * Проверяет, есть ли в составе бюда переданный ингредиент
+     *
+     * @param $id
+     * @return bool
+     */
     public function issetIngredient($id)
     {
         $this->loadIngredients();
@@ -82,18 +89,26 @@ class Dish extends Material
         return false;
     }
 
-    public function addIngredient($id, $quantity = null)
+    /**
+     * @param $id
+     * @param $quantity
+     * @param integer $quantityUnit
+     */
+    public function addIngredient($id, $quantity, int $quantityUnit)
     {
-        //TODO чтобы quantity записывалось в базу (это количетсво ингредиента на единицу блюда)
-        if ($this->issetIngredient($id))
-            return;
-
         $ingredient = Ingredient::find($id);
 
         if ($ingredient) {
-            $this->model->children()->attach($ingredient->id);
-            $this->ing_loaded = false;
+            $quantity = Unit::convert($quantity, $quantityUnit, $ingredient->unit);
+
+            if ($this->issetIngredient($ingredient->id)) {
+                $this->model->children()->updateExistingPivot($ingredient->id, ['quantity' => $quantity]);
+            } else {
+                $this->model->children()->attach($ingredient->id, ['quantity' => $quantity]);
+                $this->ing_loaded = false;
+            }
         }
+
     }
 
     private function loadAdaptations()
@@ -105,6 +120,7 @@ class Dish extends Material
 
                 $adaptation = new AdaptationCounted($a);
                 $adaptation->quantity = $a->pivot->quantity;
+                $adaptation->pivotId = $a->pivot->id;
                 $this->adaptations[] = $adaptation;
             }
             $this->adapt_loaded = true;

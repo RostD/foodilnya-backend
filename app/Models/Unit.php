@@ -27,4 +27,14 @@ class Unit extends Model
     {
         return $this->hasMany(MaterialValue::class, 'unit_id');
     }
+
+    public function similarUnits()
+    {
+        return $this->belongsToMany(Unit::class, 'translation_units', 'main_unit', 'trans_unit')->withPivot('value');
+    }
+
+    public function mainUnits()
+    {
+        return $this->belongsToMany(Unit::class, 'translation_units', 'trans_unit', 'main_unit')->withPivot('value');
+    }
 }

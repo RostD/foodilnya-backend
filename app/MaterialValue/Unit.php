@@ -9,6 +9,7 @@
 namespace App\MaterialValue;
 
 
+use App\Models\TranslationUnit;
 use App\Models\Unit as UnitM;
 
 class Unit
@@ -74,6 +75,25 @@ class Unit
         $this->model->save();
     }
 
+    public function getSimilarUnits()
+    {
+        $modelsSimilar = $this->model->similarUnits()->get();
+        $modelMain = $this->model->mainUnits()->get();
+
+        if ($modelsSimilar || $modelMain) {
+            $similarUnits = [];
+
+            foreach ($modelsSimilar as $model) {
+                $similarUnits[] = new self($model);
+            }
+            foreach ($modelMain as $model) {
+                $similarUnits[] = new self($model);
+            }
+            return $similarUnits;
+        }
+        return false;
+    }
+
     public function trashed()
     {
         return $this->model->trashed();
@@ -88,6 +108,28 @@ class Unit
                 $this->model->forceDelete();
             else
                 $this->model->delete();
+        }
+    }
+
+    public static function convert($quantity, $unit_id_of, $unit_id_in)
+    {
+        $quantity = str_replace(",", ".", $quantity);
+        if ($unit_id_of == $unit_id_in)
+            return $quantity;
+
+        $unit_of = Unit::find($unit_id_of);
+
+        foreach ($unit_of->getSimilarUnits() as $similarUnit) {
+            if ($similarUnit->id == $unit_id_in) {
+                $model = TranslationUnit::where([['main_unit', '=', $unit_of->getId()], ['trans_unit', '=', $unit_id_in]])->first();
+                if ($model) {
+                    return $quantity * $model->value;
+                } else {
+                    $model = TranslationUnit::where([['trans_unit', '=', $unit_of->getId()], ['main_unit', '=', $unit_id_in]])->first();
+                    return $quantity / $model->value;
+                }
+
+            }
         }
     }
 
@@ -120,7 +162,7 @@ class Unit
             $units = $units->withTrashed();
 
         $units = $units->get();
-        
+
         if ($units) {
             $objs = [];
             foreach ($units as $unit) {

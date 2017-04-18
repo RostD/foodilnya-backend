@@ -63,7 +63,7 @@
 
     </div>
 
-    <table class="table">
+    <table class="table table-sm">
         <tr>
             <th>Код</th>
             <th>Наименование</th>
@@ -107,12 +107,13 @@
                     @endcan
 
                     @can('dish-edit')
-                        <img src="{{asset("imgs/icons/shock/technical_wrench.png")}}"
-                             onclick="openPopupWindow('{{url('#')}}','Конструктор блюда',600,450)"
+                        <a href="{{url('/ctrl/nmcl/cfg/dish').'/'.$dish->id}}" target="_blank">
+                            <img src="{{asset("imgs/icons/shock/technical_wrench.png")}}"
                              class="pointer"
                              width="20"
                              height="20"
-                        >
+                            >
+                        </a>
                     @endcan
                 </td>
             </tr>

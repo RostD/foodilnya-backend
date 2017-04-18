@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Control;
 
 use App\Http\Controllers\Controller;
 use App\MaterialValue\Dish;
+use App\MaterialValue\Ingredient;
 use App\MaterialValue\Tag;
+use App\MaterialValue\Unit;
 use App\Models\MaterialValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -144,6 +146,61 @@ class DishController extends Controller
             return response('', 200);
         }
         abort(404);
+    }
+
+    public function constructor(Request $request, $id)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(403);
+
+        $dish = Dish::find($id);
+
+        if ($dish) {
+            return view('control.nomenclature.dish.configurator', ['dish' => $dish]);
+        }
+        abort(404);
+    }
+
+    public function formAddIngredient($dishId)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(403);
+
+        $dish = Dish::find($dishId);
+
+        if ($dish) {
+            $ingredients = Ingredient::allNotUsed($dish->id);
+
+            return view('control/nomenclature/dish/formAddIngredient', ['dish' => $dish,
+                'ingredients' => $ingredients]);
+        }
+        //abort(404);
+    }
+
+    public function addIngredient(Request $request)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(403);
+
+        $this->validate($request, [
+            'ingredient' => 'required',
+            'quantity' => 'required',
+            'unit' => 'required',
+            'dish' => 'required',
+        ]);
+
+        $ingredient = $request->input('ingredient');
+        $quantity = trim($request->input('quantity'));
+        $unit = $request->input('unit');
+        $dish = Dish::find($request->input('dish'));
+
+        if ($dish) {
+            $dish->addIngredient($ingredient, $quantity, (integer)$unit);
+            return redirect()->action('Control\DishController@formAddIngredient', ['id' => $dish->id]);
+        }
+        abort(400);
+
+
     }
 
 }

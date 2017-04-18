@@ -72,6 +72,15 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::get('ingredient/{id}/edit', 'Control\IngredientController@formEdit');
         Route::put('ingredient/{id}', 'Control\IngredientController@edit');
         Route::delete('ingredient/{id}', 'Control\IngredientController@delete');
+
+        Route::group(['prefix' => 'cfg'], function () {
+
+            Route::get('dish/{id}', 'Control\DishController@constructor');
+            Route::get('dish/{id}/addIngredient', 'Control\DishController@formAddIngredient');
+            Route::post('dish/{id}/addIngredient', 'Control\DishController@addIngredient');
+
+        });
+
     });
 });
 

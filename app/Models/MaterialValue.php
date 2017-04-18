@@ -57,12 +57,12 @@ class MaterialValue extends Model
 
     public function scopeIngredientsOfDish()
     {
-        return $this->children()->where('type_id', Ingredient::type_id)->withPivot('quantity');
+        return $this->children()->where('type_id', Ingredient::type_id)->withPivot('quantity', 'id');
     }
 
     public function scopeAdaptationsOfDish()
     {
-        return $this->children()->where('type_id', Adaptation::type_id)->withPivot('quantity');
+        return $this->children()->where('type_id', Adaptation::type_id)->withPivot('quantity', 'id');
     }
 
     public function scopeProperties()

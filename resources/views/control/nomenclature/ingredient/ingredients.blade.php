@@ -63,7 +63,7 @@
 
     </div>
 
-    <table class="table">
+    <table class="table table-sm">
         <tr>
             <th>Код</th>
             <th>Наименование</th>
@@ -100,7 +100,7 @@
 
                     @can('ingredient-delete')
                         <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
-                             onclick="destroyDish('{{$ingredient->id}}','{{$ingredient->name}}')"
+                             onclick="destroyIngredient('{{$ingredient->id}}','{{$ingredient->name}}')"
                              class="pointer"
                              width="20"
                              height="20"
@@ -127,7 +127,7 @@
 @section('script')
     <script>
         var state = false;
-        function destroyDish(id, name) {
+        function destroyIngredient(id, name) {
             var resp = confirm("Удалить ингредиент \"" + name + "\"?");
 
             if (resp) {

@@ -87,6 +87,22 @@ class Ingredient extends DishComponent
 
     }
 
+    public function getAvailableUnits()
+    {
+        $mainUnit = Unit::find($this->getUnit());
+        $units = $mainUnit->getSimilarUnits();
+        $units[] = $mainUnit;
+
+        return $units;
+    }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+        $array['availableUnits'] = $this->getAvailableUnits();
+        return $array;
+    }
+
     /**
      * @param int $id
      * @return bool|Ingredient
@@ -96,6 +112,30 @@ class Ingredient extends DishComponent
         $ingredient = MaterialValue::ingredient($id)->withTrashed()->first();
         if ($ingredient)
             return self::initial(self::class, $ingredient);
+        return false;
+    }
+
+    public static function allNotUsed($dishId)
+    {
+        $modelsHaveParent = MaterialValue::ingredients()->whereHas('parents', function ($query) use ($dishId) {
+            $query->where('material_parent', '<>', $dishId);
+        })->get();
+
+        $modelsDoesntHaveParent = MaterialValue::ingredients()->doesntHave('parents')->get();
+
+
+        if ($modelsHaveParent || $modelsDoesntHaveParent) {
+            $notUsedIngredients = [];
+            foreach ($modelsHaveParent as $model) {
+                $notUsedIngredients[] = new self($model);
+            }
+
+            foreach ($modelsDoesntHaveParent as $model) {
+                $notUsedIngredients[] = new self($model);
+            }
+
+            return $notUsedIngredients;
+        }
         return false;
     }
 
