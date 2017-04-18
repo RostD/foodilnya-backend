@@ -174,7 +174,22 @@ class DishController extends Controller
             return view('control/nomenclature/dish/formAddIngredient', ['dish' => $dish,
                 'ingredients' => $ingredients]);
         }
-        //abort(404);
+        abort(404);
+    }
+
+    public function formEditIngredient($dishId, $ingredientId)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(403);
+
+        $dish = Dish::find($dishId);
+
+        if ($dish) {
+            if ($dish->issetIngredient($ingredientId))
+                return view('control/nomenclature/dish/formEditIngredient', ['dish' => $dish,
+                    'ingredient' => $dish->getIngredient($ingredientId)]);
+        }
+        abort(404);
     }
 
     public function addIngredient(Request $request)
@@ -196,11 +211,18 @@ class DishController extends Controller
 
         if ($dish) {
             $dish->addIngredient($ingredient, $quantity, (integer)$unit);
+
             return redirect()->action('Control\DishController@formAddIngredient', ['id' => $dish->id]);
         }
         abort(400);
+    }
 
+    public function editIngredient(Request $request)
+    {
+        $this->addIngredient($request);
 
+        return redirect()->action('Control\DishController@formEditIngredient', ['d_id' => $request->input('dish'),
+            'i_id' => $request->input('ingredient')]);
     }
 
     public function removeIngredient(Request $request, $dish, $ingredient)

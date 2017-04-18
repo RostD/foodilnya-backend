@@ -14,24 +14,6 @@ use App\Interfaces\Counted;
 class IngredientCounted extends Ingredient implements Counted
 {
     protected $quantity = null;
-    protected $pivotId = null;
-
-    /**
-     * @return null
-     */
-    public function getPivotId()
-    {
-        return $this->pivotId;
-    }
-
-    /**
-     * @param null $pivotId
-     */
-    public function setPivotId($pivotId)
-    {
-        $this->pivotId = $pivotId;
-        //TODO
-    }
 
     /**
      * @return null

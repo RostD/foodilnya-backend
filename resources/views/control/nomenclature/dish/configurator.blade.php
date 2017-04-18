@@ -72,7 +72,7 @@
                         <td>{{$ingredient->unitName}}</td>
                         <td>
                             <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                                 onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/structure/'.$ingredient->pivotId)}}','Редактирование состава блюда',600,450)"
+                                 onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$dish->id.'/ingredient/'.$ingredient->id.'')}}','Редактирование состава блюда',600,450)"
                                  class="pointer"
                                  width="20"
                                  height="20"

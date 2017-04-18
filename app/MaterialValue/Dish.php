@@ -57,7 +57,6 @@ class Dish extends Material
             foreach ($this->model->ingredientsOfDish()->get() as $i) {
                 $ingredient = new IngredientCounted($i);
                 $ingredient->quantity = $i->pivot->quantity;
-                $ingredient->pivotId = $i->pivot->id;
                 $this->ingredients[] = $ingredient;
             }
 
@@ -72,6 +71,15 @@ class Dish extends Material
     {
         $this->loadIngredients();
         return $this->ingredients;
+    }
+
+    public function getIngredient($id)
+    {
+        $this->loadIngredients();
+        foreach ($this->ingredients as $i) {
+            if ($i->id == $id) return $i;
+        }
+        return false;
     }
 
     /**

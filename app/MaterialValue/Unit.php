@@ -131,6 +131,7 @@ class Unit
 
             }
         }
+        return false;
     }
 
     public static function find($id)
