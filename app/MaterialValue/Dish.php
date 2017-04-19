@@ -151,6 +151,15 @@ class Dish extends Material
         return $this->adaptations;
     }
 
+    public function getAdaptation($id)
+    {
+        $this->loadAdaptations();
+        foreach ($this->adaptations as $a) {
+            if ($a->id == $id) return $a;
+        }
+        return false;
+    }
+
     public function issetAdaptation($id)
     {
         $this->loadAdaptations();
@@ -168,7 +177,7 @@ class Dish extends Material
 
         if ($adaptation) {
 
-            if ($this->issetIngredient($adaptation->id)) {
+            if ($this->issetAdaptation($adaptation->id)) {
                 $this->model->children()->updateExistingPivot($adaptation->id, ['quantity' => $quantity]);
             } else {
                 $this->model->children()->attach($adaptation->id, ['quantity' => $quantity]);

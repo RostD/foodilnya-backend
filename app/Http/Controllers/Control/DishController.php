@@ -277,6 +277,26 @@ class DishController extends Controller
         abort(400);
     }
 
+    public function formEditAdaptation($dishId, $adaptationId)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(401);
+
+        $dish = Dish::find($dishId);
+
+        if ($dish) {
+            if ($dish->issetAdaptation($adaptationId))
+                return view('control/nomenclature/dish/formEditAdaptation', ['dish' => $dish,
+                    'adaptation' => $dish->getAdaptation($adaptationId)]);
+        }
+        abort(404);
+    }
+
+    public function editAdaptation(Request $request)
+    {
+        return $this->addAdaptation($request);
+    }
+
     public function removeAdaptation(Request $request, $dish, $ingredient)
     {
         if (Gate::denies('dish-edit'))

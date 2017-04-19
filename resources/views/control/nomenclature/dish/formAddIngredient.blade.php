@@ -27,6 +27,13 @@
                     <option value="{{$ingredient->id}}" {{old('ingredient')==$ingredient->id ? 'selected':''}}>{{$ingredient->name}}</option>
                 @endforeach
             </select>
+            @can('ingredient-add')
+                <input type="button" class="btn btn-primary btn-sm pointer"
+                       style="margin:10px 0px 10px 10px"
+                       onclick="openPopupWindow('{{url('/ctrl/nmcl/ingredient/add')}}','Создать ингредиент',600,500)"
+                       value="Добавить">
+                </input>
+            @endcan
             @if($errors->first('ingredient'))
                 <div class="form-control-feedback">{{$errors->first('ingredient')}}</div>@endif
         </div>

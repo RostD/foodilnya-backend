@@ -80,7 +80,7 @@
                         <td>{{$ingredient->unitName}}</td>
                         <td>
                             <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                                 onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$dish->id.'/ingredient/'.$ingredient->id.'')}}','Редактирование состава блюда',600,450)"
+                                 onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$dish->id.'/ingredient/'.$ingredient->id.'')}}','Редактирование состава блюда',600,300)"
                                  class="pointer"
                                  width="20"
                                  height="20"
@@ -120,7 +120,7 @@
                         <td>{{$adaptation->unitName}}</td>
                         <td>
                             <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                                 onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$dish->id.'/ingredient/'.$adaptation->id.'')}}','Редактирование состава блюда',600,450)"
+                                 onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$dish->id.'/adaptation/'.$adaptation->id.'')}}','Редактирование состава блюда',600,200)"
                                  class="pointer"
                                  width="20"
                                  height="20"

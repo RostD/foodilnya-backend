@@ -27,6 +27,13 @@
                     <option value="{{$adaptation->id}}" {{old('adaptation')==$adaptation->id ? 'selected':''}}>{{$adaptation->name}}</option>
                 @endforeach
             </select>
+            @can('adaptation-add')
+                <input type="button" class="btn btn-primary btn-sm pointer"
+                       style="margin:10px 0px 10px 10px"
+                       onclick="openPopupWindow('{{url('/ctrl/nmcl/adaptation/add')}}','Создать приспособление',600,500)"
+                       value="Добавить">
+                </input>
+            @endcan
             @if($errors->first('adaptation'))
                 <div class="form-control-feedback">{{$errors->first('adaptation')}}</div>@endif
         </div>
