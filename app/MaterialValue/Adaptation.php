@@ -19,6 +19,11 @@ use App\Models\MaterialValue;
 class Adaptation extends DishComponent
 {
     const type_id = 4;
+
+    /**
+     * Измеряется только в штуках
+     */
+    const unit_id = 1;
     /**
      * Ищет материал по его id и возвращает его модель
      * @param integer $id
@@ -31,6 +36,17 @@ class Adaptation extends DishComponent
         if ($adaptation)
             return self::initial(self::class, $adaptation);
 
+        return false;
+    }
+
+    public static function create($name)
+    {
+        $model = self::createMaterial($name, Adaptation::type_id, Adaptation::unit_id);
+
+        if ($model) {
+            $adaptation = new self($model);
+            return $adaptation;
+        }
         return false;
     }
 }

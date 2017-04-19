@@ -7,6 +7,7 @@ use App\MaterialValue\Tag;
 use App\Models\MaterialValue;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class AdaptationController extends Controller
@@ -40,5 +41,48 @@ class AdaptationController extends Controller
 
         $data['tags'] = Tag::allUsedAdaptationsTags();
         return view('control.nomenclature.adaptation.adaptations', $data);
+    }
+
+    public function formAdd()
+    {
+        if (Gate::denies('adaptation-add'))
+            abort(401);
+
+        $data['tags'] = Tag::all(false);
+        return view('control.nomenclature.adaptation.formAdd', $data);
+    }
+
+    public function add(Request $request)
+    {
+        if (Gate::denies('adaptation-add'))
+            abort(401);
+
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+
+        $tags = $request->input('tags');
+        $newTags = trim($request->input('newTags'));
+
+        DB::beginTransaction();
+
+        if (!empty($newTags)) {
+            foreach (explode(',', $newTags) as $newTag) {
+                $t = Tag::create($newTag);
+                if ($t) $tags[] = $t->id;
+            }
+        }
+
+        $adaptation = Adaptation::create($request->input('name'));
+
+        if (!empty($tags)) {
+            foreach ($tags as $tag) {
+                $adaptation->addTag($tag);
+            }
+        }
+
+        DB::commit();
+
+        return back();
     }
 }
