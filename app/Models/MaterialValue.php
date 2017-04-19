@@ -105,4 +105,9 @@ class MaterialValue extends Model
     {
         return $query->where('type_id', Adaptation::type_id)->where('id', $id);
     }
+
+    public function scopeAdaptations($query)
+    {
+        return $query->where('type_id', Adaptation::type_id);
+    }
 }

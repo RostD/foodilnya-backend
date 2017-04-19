@@ -17,7 +17,7 @@ class DishController extends Controller
     public function dishes(Request $request)
     {
         if (Gate::denies('dish-see'))
-            abort(403);
+            abort(401);
 
         $filterName = $request->input('name');
         $filterTags = $request->input('tags');

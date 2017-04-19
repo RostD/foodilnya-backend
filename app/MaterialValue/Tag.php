@@ -86,6 +86,16 @@ class Tag
         return self::allUsedTags(Dish::type_id);
     }
 
+    /**
+     * Возвращает все теги, которые были использованны приспособлениями
+     *
+     * @return bool
+     */
+    public static function allUsedAdaptationsTags()
+    {
+        return self::allUsedTags(Adaptation::type_id);
+    }
+
     public static function allUsedIngredientsTags()
     {
         return self::allUsedTags(Ingredient::type_id);

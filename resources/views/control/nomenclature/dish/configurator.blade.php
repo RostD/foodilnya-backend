@@ -13,7 +13,15 @@
 @section('content')
     @extends('control.layout.menu')
 
-    <h3>{{$dish->name}}</h3>
+    <h3>
+        {{$dish->name}}
+        <img src="{{asset("imgs/icons/shock/edit.png")}}"
+             onclick="openPopupWindow('{{url('/ctrl/nmcl/dish/'.$dish->id.'/edit')}}','Редактирование блюда',600,450)"
+             class="pointer"
+             width="20"
+             height="20"
+        >
+    </h3>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist" id="cfg-nav">
         <li class="nav-item">

@@ -73,6 +73,8 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::put('ingredient/{id}', 'Control\IngredientController@edit');
         Route::delete('ingredient/{id}', 'Control\IngredientController@delete');
 
+        Route::get('adaptations', 'Control\AdaptationController@adaptations');
+
         Route::group(['prefix' => 'cfg'], function () {
 
             Route::get('dish/{id}', 'Control\DishController@constructor');

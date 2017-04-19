@@ -63,7 +63,7 @@
                     <a class="dropdown-item" href="{{url('/ctrl/nmcl/dishes')}}">Блюда</a>
                     <a class="dropdown-item" href="{{url('/ctrl/nmcl/ingredients')}}">Ингредиенты</a>
                     <a class="dropdown-item" href="#">Товары</a>
-                    <a class="dropdown-item" href="#">Приспособления</a>
+                    <a class="dropdown-item" href="{{url('/ctrl/nmcl/adaptations')}}">Приспособления</a>
                 </div>
             </li>
 
