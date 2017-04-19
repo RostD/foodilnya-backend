@@ -17,9 +17,10 @@
     @can('product-add')
         <button type="submit" class="btn btn-primary btn-sm pointer"
                 style="margin:10px 0px 10px 10px"
-                onclick="openPopupWindow('{{url('ctrl/nmcl/dish/add')}}','Добавить новое блюдо',600,500)">Добавить
+                onclick="openPopupWindow('{{url('ctrl/nmcl/product/add')}}','Добавить новый товар',600,500)">Добавить
         </button>
     @endcan
+
     <button type="submit" class="btn btn-primary btn-sm pointer"
             style="margin:10px 0px 10px 10px"
             onclick="window.location.reload()">Обновить

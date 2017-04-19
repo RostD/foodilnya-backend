@@ -9,7 +9,7 @@
 
 @extends('control.layout.main')
 
-@section('title','Добавление ингредиента')
+@section('title','Добавление товара')
 
 @section('content')
 
@@ -33,7 +33,6 @@
             </select>
         </div>
 
-        <!-- TODO преределать на чекбоксы -->
         <div class="form-group">
             <label for="tagsSelect">Теги:</label>
             <select multiple class="form-control" id="tagsSelect" name="tags[]">

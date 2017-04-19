@@ -88,4 +88,14 @@ class Product extends Material
             return self::initial(self::class, $model);
         return false;
     }
+
+    public static function create(string $name, int $unit_id)
+    {
+        $model = self::createMaterial($name, Product::type_id, $unit_id);
+
+        if ($model) {
+            return new self($model);
+        }
+        return false;
+    }
 }

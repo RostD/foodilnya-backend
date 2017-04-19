@@ -81,6 +81,8 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::delete('adaptation/{id}', 'Control\AdaptationController@delete');
 
         Route::get('products', 'Control\ProductController@products');
+        Route::get('product/add', 'Control\ProductController@formAdd');
+        Route::post('product/add', 'Control\ProductController@add');
 
         Route::group(['prefix' => 'cfg'], function () {
 
