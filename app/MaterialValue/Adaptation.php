@@ -29,14 +29,27 @@ class Adaptation extends DishComponent
      * @param integer $id
      * @return Adaptation|bool
      */
-    public static function find($id)
+    public static function find($id, $withTrashed = false)
     {
-        $adaptation = MaterialValue::adaptation($id)->first();
+        $adaptation = MaterialValue::adaptation($id)->withTrashed()->first();
 
         if ($adaptation)
             return self::initial(self::class, $adaptation);
 
         return false;
+    }
+
+    public function destroy()
+    {
+        if ($this->trashed()) {
+            $this->model->restore();
+        } else {
+            if (count($this->getDishes()) == 0)
+                $this->model->forceDelete();
+            else
+                $this->model->delete();
+        }
+
     }
 
     public static function create($name)

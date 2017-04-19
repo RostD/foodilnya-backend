@@ -131,4 +131,18 @@ class AdaptationController extends Controller
         }
         abort(404);
     }
+
+    public function delete(Request $request, $id)
+    {
+        if (Gate::denies('adaptation-delete'))
+            abort(401);
+
+        $adaptation = Adaptation::find($id);
+
+        if ($adaptation) {
+            $adaptation->destroy();
+            return response('', 200);
+        }
+        abort(404);
+    }
 }

@@ -99,7 +99,7 @@
 
                     @can('adaptation-delete')
                         <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
-                             onclick="destroyDish('{{$adaptation->id}}','{{$adaptation->name}}')"
+                             onclick="destroyAdaptation('{{$adaptation->id}}','{{$adaptation->name}}')"
                              class="pointer"
                              width="20"
                              height="20"
@@ -127,12 +127,12 @@
 @section('script')
     <script>
         var state = false;
-        function destroyDish(id, name) {
-            var resp = confirm("Удалить блюдо \"" + name + "\"?");
+        function destroyAdaptation(id, name) {
+            var resp = confirm("Удалить приспособление \"" + name + "\"?");
 
             if (resp) {
                 $.ajax({
-                    url: '{{url('/ctrl/nmcl/dish')}}/' + id,
+                    url: '{{url('/ctrl/nmcl/adaptation')}}/' + id,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
