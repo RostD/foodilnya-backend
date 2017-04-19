@@ -85,4 +85,50 @@ class AdaptationController extends Controller
 
         return back();
     }
+
+    public function formEdit($id)
+    {
+        if (Gate::denies('adaptation-edit'))
+            abort(401);
+
+        $data['adaptation'] = Adaptation::find($id);
+        $data['tags'] = Tag::all(false);
+        return view('control.nomenclature.adaptation.formEdit', $data);
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if (Gate::denies('adaptation-edit'))
+            abort(401);
+
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+
+        $adaptation = Adaptation::find($id);
+
+        if ($adaptation) {
+            $tags = $request->input('tags');
+            $newTags = trim($request->input('newTags'));
+
+            DB::beginTransaction();
+
+            if (!empty($newTags)) {
+                foreach (explode(',', $newTags) as $newTag) {
+                    $t = Tag::create($newTag);
+                    if ($t) $tags[] = $t->id;
+                }
+            }
+
+            $adaptation->name = $request->input('name');
+
+            if (!empty($tags)) {
+                $adaptation->replaceTags($tags);
+            }
+            DB::commit();
+
+            return back();
+        }
+        abort(404);
+    }
 }

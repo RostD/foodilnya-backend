@@ -90,7 +90,7 @@
                 <td>
                     @can('adaptation-edit')
                         <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                             onclick="openPopupWindow('{{url('/ctrl/nmcl/dish/'.$adaptation->id.'/edit')}}','Редактирование блюда',600,450)"
+                             onclick="openPopupWindow('{{url('/ctrl/nmcl/adaptation/'.$adaptation->id.'/edit')}}','Редактирование приспособления',600,450)"
                              class="pointer"
                              width="20"
                              height="20"

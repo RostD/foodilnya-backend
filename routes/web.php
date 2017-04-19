@@ -76,6 +76,8 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::get('adaptations', 'Control\AdaptationController@adaptations');
         Route::get('adaptation/add', 'Control\AdaptationController@formAdd');
         Route::post('adaptation/add', 'Control\AdaptationController@add');
+        Route::get('adaptation/{id}/edit', 'Control\AdaptationController@formEdit');
+        Route::put('adaptation/{id}', 'Control\AdaptationController@edit');
 
         Route::group(['prefix' => 'cfg'], function () {
 
