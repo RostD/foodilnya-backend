@@ -88,4 +88,58 @@ class ProductController extends Controller
 
         return back();
     }
+
+    public function formEdit($id)
+    {
+        if (Gate::denies('product-edit'))
+            abort(401);
+
+        $data['product'] = Product::find($id);
+
+        if (!$data['product'])
+            abort(404);
+
+        $data['tags'] = Tag::all(false);
+        return view('control.nomenclature.product.formEdit', $data);
+
+
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if (Gate::denies('product-delete'))
+            abort(401);
+
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $product = Product::find($id);
+
+        if ($product) {
+            $tags = $request->input('tags');
+            $newTags = trim($request->input('newTags'));
+
+            DB::beginTransaction();
+
+            if (!empty($newTags)) {
+                foreach (explode(',', $newTags) as $newTag) {
+                    $t = Tag::create($newTag);
+                    if ($t) $tags[] = $t->id;
+                }
+            }
+
+            $product->name = $request->input('name');
+
+            if (!empty($tags)) {
+                $product->replaceTags($tags);
+            }
+            DB::commit();
+
+            return back();
+        }
+        abort(404);
+
+
+    }
 }

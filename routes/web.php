@@ -83,6 +83,8 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::get('products', 'Control\ProductController@products');
         Route::get('product/add', 'Control\ProductController@formAdd');
         Route::post('product/add', 'Control\ProductController@add');
+        Route::get('product/{id}/edit', 'Control\ProductController@formEdit');
+        Route::put('product/{id}', 'Control\ProductController@edit');
 
         Route::group(['prefix' => 'cfg'], function () {
 

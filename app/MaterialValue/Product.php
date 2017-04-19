@@ -83,7 +83,7 @@ class Product extends Material
      */
     public static function find($id)
     {
-        $model = MaterialValue::product($id)->first();
+        $model = MaterialValue::product($id)->withTrashed()->first();
         if ($model)
             return self::initial(self::class, $model);
         return false;
