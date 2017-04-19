@@ -277,6 +277,19 @@ class DishController extends Controller
         abort(400);
     }
 
+    public function removeAdaptation(Request $request, $dish, $ingredient)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(401);
+
+        $dish = Dish::find((int)$dish);
+
+        if ($dish) {
+            $dish->removeAdaptation((int)$ingredient);
+        }
+        return response('', 200);
+    }
+
     public function setRecipe(Request $request, $id)
     {
         if (Gate::denies('dish-edit'))

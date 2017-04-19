@@ -177,6 +177,13 @@ class Dish extends Material
         }
     }
 
+    public function removeAdaptation($id)
+    {
+        if ($this->issetAdaptation($id)) {
+            $this->model->children()->detach($id);
+        }
+    }
+
     public function destroy()
     {
         if ($this->trashed()) {

@@ -94,6 +94,7 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
 
             Route::get('dish/{id}/addAdaptation', 'Control\DishController@formAddAdaptation');
             Route::post('dish/{id}/addAdaptation', 'Control\DishController@addAdaptation');
+            Route::delete('dish/{d_id}/adaptation/{i_id}', 'Control\DishController@removeAdaptation');
 
         });
 

@@ -126,7 +126,7 @@
                                  height="20"
                             >
                             <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
-                                 onclick="removeIngredient('{{$adaptation->id}}','{{$adaptation->name}}')"
+                                 onclick="removeAdaptation('{{$adaptation->id}}','{{$adaptation->name}}')"
                                  class="pointer"
                                  width="20"
                                  height="20"
@@ -175,6 +175,31 @@
             if (resp) {
                 $.ajax({
                     url: '{{url('/ctrl/nmcl/cfg/dish')}}/{{$dish->id}}/ingredient/' + id,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'DELETE',
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function (data) {
+                        alert("Ошибка");
+                        $('#error').html(data.responseText);
+                    }
+
+
+                });
+            } else {
+                return false;
+            }
+        }
+
+        function removeAdaptation(id, name) {
+            var resp = confirm("Убрать приспособление \"" + name + "\"?");
+
+            if (resp) {
+                $.ajax({
+                    url: '{{url('/ctrl/nmcl/cfg/dish')}}/{{$dish->id}}/adaptation/' + id,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
