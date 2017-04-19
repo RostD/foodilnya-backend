@@ -97,7 +97,46 @@
             </table>
         </div>
 
-        <div class="tab-pane" id="adaptations" role="tabpanel">...</div>
+        <div class="tab-pane" id="adaptations" role="tabpanel">
+            <button type="submit" class="btn btn-primary btn-sm pointer"
+                    style="margin:10px 0px 10px 10px"
+                    onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$dish->id.'/addAdaptation')}}','Добавить приспособление',600,500)">
+                Добавить
+            </button>
+
+            <table class="table table-sm">
+                <tr>
+                    <th>Код</th>
+                    <th>Наименование</th>
+                    <th>Количество</th>
+                    <th>Единица измерения</th>
+                    <th>Действия</th>
+                </tr>
+                @foreach($dish->adaptations as $adaptation)
+                    <tr>
+                        <td>{{$adaptation->id}}</td>
+                        <td>{{$adaptation->name}}</td>
+                        <td>{{$adaptation->quantity}}</td>
+                        <td>{{$adaptation->unitName}}</td>
+                        <td>
+                            <img src="{{asset("imgs/icons/shock/edit.png")}}"
+                                 onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$dish->id.'/ingredient/'.$adaptation->id.'')}}','Редактирование состава блюда',600,450)"
+                                 class="pointer"
+                                 width="20"
+                                 height="20"
+                            >
+                            <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
+                                 onclick="removeIngredient('{{$adaptation->id}}','{{$adaptation->name}}')"
+                                 class="pointer"
+                                 width="20"
+                                 height="20"
+                            >
+                        </td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+
         <div class="tab-pane" id="recipe" role="tabpanel">
             <form method="POST" id="editRecipe" action="{{url('ctrl/nmcl/cfg/dish/'.$dish->id.'/recipe')}}">
                 {{ csrf_field() }}

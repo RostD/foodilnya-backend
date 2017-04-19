@@ -135,7 +135,6 @@ class Dish extends Material
 
                 $adaptation = new AdaptationCounted($a);
                 $adaptation->quantity = $a->pivot->quantity;
-                $adaptation->pivotId = $a->pivot->id;
                 $this->adaptations[] = $adaptation;
             }
             $this->adapt_loaded = true;
