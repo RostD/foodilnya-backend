@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Control;
 
 use App\Http\Controllers\Controller;
+use App\MaterialValue\Adaptation;
 use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
 use App\MaterialValue\Tag;
@@ -235,6 +236,45 @@ class DishController extends Controller
             $dish->removeIngredient((int)$ingredient);
         }
         return response('', 200);
+    }
+
+    public function formAddAdaptation($dishId)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(401);
+
+        $dish = Dish::find($dishId);
+
+        if ($dish) {
+            $adaptations = Adaptation::allNotUsed($dish->id);
+
+            return view('control/nomenclature/dish/formAddAdaptation', ['dish' => $dish,
+                'adaptations' => $adaptations]);
+        }
+        abort(404);
+    }
+
+    public function addAdaptation(Request $request)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(401);
+
+        $this->validate($request, [
+            'adaptation' => 'required',
+            'quantity' => 'required',
+            'dish' => 'required',
+        ]);
+
+        $adaptation = $request->input('adaptation');
+        $quantity = trim($request->input('quantity'));
+        $dish = Dish::find($request->input('dish'));
+
+        if ($dish) {
+            $dish->addAdaptation($adaptation, $quantity);
+
+            return back();
+        }
+        abort(400);
     }
 
     public function setRecipe(Request $request, $id)

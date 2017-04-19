@@ -162,15 +162,18 @@ class Dish extends Material
         return false;
     }
 
-    public function addAdaptation($id, $quantity = null)
+    public function addAdaptation($id, $quantity)
     {
-        //TODO чтобы quantity записывалось в базу (это количетсво приспособлений на единицу блюда)
-        if ($this->issetAdaptation($id))
-            return;
         $adaptation = Adaptation::find($id);
+
         if ($adaptation) {
-            $this->model->children()->attach($adaptation->id);
-            $this->adapt_loaded = false;
+
+            if ($this->issetIngredient($adaptation->id)) {
+                $this->model->children()->updateExistingPivot($adaptation->id, ['quantity' => $quantity]);
+            } else {
+                $this->model->children()->attach($adaptation->id, ['quantity' => $quantity]);
+                $this->ing_loaded = false;
+            }
         }
     }
 

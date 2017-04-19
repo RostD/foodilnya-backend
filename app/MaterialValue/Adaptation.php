@@ -62,4 +62,31 @@ class Adaptation extends DishComponent
         }
         return false;
     }
+
+    public static function allNotUsed($dishId)
+    {
+        $dish = Dish::find($dishId);
+
+        $modelsHaveParent = MaterialValue::adaptations()->whereHas('parents', function ($query) use ($dishId) {
+            $query->where('material_parent', '<>', $dishId);
+        })->get();
+
+        $modelsDoesntHaveParent = MaterialValue::adaptations()->doesntHave('parents')->get();
+
+
+        if ($modelsHaveParent || $modelsDoesntHaveParent) {
+            $notUsedIngredients = [];
+            foreach ($modelsHaveParent as $model) {
+                if (!$dish->issetIngredient($model->id))
+                    $notUsedIngredients[] = new self($model);
+            }
+
+            foreach ($modelsDoesntHaveParent as $model) {
+                $notUsedIngredients[] = new self($model);
+            }
+
+            return $notUsedIngredients;
+        }
+        return false;
+    }
 }
