@@ -96,6 +96,11 @@ class Tag
         return self::allUsedTags(Adaptation::type_id);
     }
 
+    public static function allUsedProductsTags()
+    {
+        return self::allUsedTags(Product::type_id);
+    }
+
     public static function allUsedIngredientsTags()
     {
         return self::allUsedTags(Ingredient::type_id);

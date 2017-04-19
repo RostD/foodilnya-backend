@@ -91,6 +91,11 @@ class MaterialValue extends Model
         return $query->where('type_id', Product::type_id)->where('id', $id);
     }
 
+    public function scopeProducts($query)
+    {
+        return $query->where('type_id', Product::type_id);
+    }
+
     public function scopeIngredient($query, $id)
     {
         return $query->where('type_id', Ingredient::type_id)->where('id', $id);

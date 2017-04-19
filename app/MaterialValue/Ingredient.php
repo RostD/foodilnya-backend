@@ -20,59 +20,7 @@ class Ingredient extends DishComponent
      * @var Material в массиве
      *
      */
-    protected $products = [];
-    protected $prod_loaded = false;
 
-    /**
-     * Загружает конкретизирующие товары
-     * @return void
-     */
-    private function loadProducts()
-    {
-        if (!$this->prod_loaded) {
-            $this->products = [];
-
-            foreach ($this->model->children as $products) {
-                $this->products[] = new Product($products);
-            }
-            $this->prod_loaded = true;
-        }
-    }
-
-
-    /**
-     * Получить товары, конкретизирующий этот ингредиент
-     * @return Material в массиве
-     */
-    public function getProducts()
-    {
-        $this->loadProducts();
-        return $this->products;
-    }
-
-    public function addProduct($id)
-    {
-        if ($this->issetProduct($id))
-            return;
-
-        $product = Product::find($id);
-
-        if ($product) {
-            $this->model->children()->attach($product->id);
-            $this->prod_loaded = false;
-        }
-    }
-
-    public function issetProduct($id)
-    {
-        $this->loadProducts();
-        foreach ($this->products as $product) {
-            if ($product->id == $id)
-                return true;
-        }
-
-        return false;
-    }
 
     public function destroy()
     {

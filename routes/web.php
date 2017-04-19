@@ -80,6 +80,8 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::put('adaptation/{id}', 'Control\AdaptationController@edit');
         Route::delete('adaptation/{id}', 'Control\AdaptationController@delete');
 
+        Route::get('products', 'Control\ProductController@products');
+
         Route::group(['prefix' => 'cfg'], function () {
 
             Route::get('dish/{id}', 'Control\DishController@constructor');

@@ -62,7 +62,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="{{url('/ctrl/nmcl/dishes')}}">Блюда</a>
                     <a class="dropdown-item" href="{{url('/ctrl/nmcl/ingredients')}}">Ингредиенты</a>
-                    <a class="dropdown-item" href="#">Товары</a>
+                    <a class="dropdown-item" href="{{url('/ctrl/nmcl/products')}}">Товары</a>
                     <a class="dropdown-item" href="{{url('/ctrl/nmcl/adaptations')}}">Приспособления</a>
                 </div>
             </li>

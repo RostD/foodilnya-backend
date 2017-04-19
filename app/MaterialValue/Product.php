@@ -18,58 +18,63 @@ class Product extends Material
      * Ингредиент, являющийся абстракцией для данного элемента
      * @var Material
      */
-    protected $ingredient = null;
-    protected $ingr_loaded = false;
+    protected $dishComponent = null;
+    protected $component_loaded = false;
 
     /**
      * Обновляет информацию об ингредиенте
      * @return void
      */
-    private function loadIngredient()
+    private function loadDishComponent()
     {
-        if (!$this->ingr_loaded) {
-            $this->ingredient = null;
+        if (!$this->component_loaded) {
+            $this->dishComponent = null;
 
             $ingredient = $this->model->parents()->first();
-            if ($ingredient)
-                $this->ingredient = new Ingredient($ingredient);
+            if ($ingredient) {
+                if ($ingredient->type_id == Ingredient::type_id)
+                    $this->dishComponent = new Ingredient($ingredient);
+                elseif ($ingredient->type_id == Adaptation::type_id)
+                    $this->dishComponent = new Adaptation($ingredient);
+            }
 
-            $this->ingr_loaded = true;
+            $this->component_loaded = true;
         }
     }
 
-    public function setIngredient($id)
+    public function setDishComponent($id, $quantity = null)
     {
         if ($this->issetIngredient($id)) return;
 
         $ingredient = Ingredient::find($id);
 
         if ($ingredient) {
-            $this->model->parents()->detach([$this->ingredient->id]);
+            $this->model->parents()->detach([$this->dishComponent->id]);
             $this->model->parents()->attach($ingredient->id);
-            $this->ingr_loaded = false;
+            $this->component_loaded = false;
         }
     }
 
     public function issetIngredient($id)
     {
-        $this->loadIngredient();
+        // Сомнительный метод!
+        $this->loadDishComponent();
 
-        if (!$this->ingredient) return false;
+        if (!$this->dishComponent) return false;
 
-        if ($this->ingredient->id == $id) return true;
+        if ($this->dishComponent->id == $id) return true;
 
         return false;
     }
 
     /**
      * Получить ингредиент, к которому относится данный товар
-     * @return Ingredient|bool
+     * @return Material
      */
-    public function getIngredient()
+    public function getDishComponent()
     {
-        $this->loadIngredient();
-        return $this->ingredient;
+        $this->loadDishComponent();
+        return $this->dishComponent;
     }
 
     /**
