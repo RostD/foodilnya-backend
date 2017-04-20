@@ -101,7 +101,7 @@
 
                     @can('product-delete')
                         <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
-                             onclick="destroyDish('{{$product->id}}','{{$product->name}}')"
+                             onclick="destroyProduct('{{$product->id}}','{{$product->name}}')"
                              class="pointer"
                              width="20"
                              height="20"
@@ -129,12 +129,12 @@
 @section('script')
     <script>
         var state = false;
-        function destroyDish(id, name) {
-            var resp = confirm("Удалить блюдо \"" + name + "\"?");
+        function destroyProduct(id, name) {
+            var resp = confirm("Удалить товар \"" + name + "\"?");
 
             if (resp) {
                 $.ajax({
-                    url: '{{url('/ctrl/nmcl/dish')}}/' + id,
+                    url: '{{url('/ctrl/nmcl/product')}}/' + id,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
@@ -142,7 +142,8 @@
                     success: function (data) {
                         window.location.reload();
                     },
-                    error: function () {
+                    error: function (data) {
+                        $('#error').html = data.responseText;
                         alert("Ошибка");
                     }
 

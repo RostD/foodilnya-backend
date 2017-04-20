@@ -16,7 +16,7 @@ class Product extends Material
     const type_id = 2;
     /**
      * Ингредиент, являющийся абстракцией для данного элемента
-     * @var Material
+     * @var array of Material
      */
     protected $dishComponent = null;
     protected $component_loaded = false;
@@ -30,7 +30,7 @@ class Product extends Material
         if (!$this->component_loaded) {
             $this->dishComponent = null;
 
-            $ingredient = $this->model->parents()->first();
+            $ingredient = $this->model->parents()->withTrashed()->first();
             if ($ingredient) {
                 if ($ingredient->type_id == Ingredient::type_id)
                     $this->dishComponent = new Ingredient($ingredient);
@@ -69,12 +69,25 @@ class Product extends Material
 
     /**
      * Получить ингредиент, к которому относится данный товар
-     * @return Material
+     * @return array
      */
     public function getDishComponent()
     {
         $this->loadDishComponent();
         return $this->dishComponent;
+    }
+
+    public function destroy()
+    {
+        if ($this->trashed()) {
+            $this->model->restore();
+        } else {
+            if (count($this->getDishComponent()) == 0)// TODO && Нет поставщиков
+                $this->model->forceDelete();
+            else
+                $this->model->delete();
+        }
+
     }
 
     /**

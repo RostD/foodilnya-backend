@@ -72,8 +72,8 @@
                     <th>Единица измерения</th>
                     <th>Действия</th>
                 </tr>
-                @foreach($dish->ingredients as $ingredient)
-                    <tr>
+                @foreach($dish->getIngredients(true) as $ingredient)
+                    <tr style="{{$ingredient->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">
                         <td>{{$ingredient->id}}</td>
                         <td>{{$ingredient->name}}</td>
                         <td>{{$ingredient->quantity}}</td>
@@ -112,8 +112,8 @@
                     <th>Единица измерения</th>
                     <th>Действия</th>
                 </tr>
-                @foreach($dish->adaptations as $adaptation)
-                    <tr>
+                @foreach($dish->getAdaptations(true) as $adaptation)
+                    <tr style="{{$adaptation->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">
                         <td>{{$adaptation->id}}</td>
                         <td>{{$adaptation->name}}</td>
                         <td>{{$adaptation->quantity}}</td>
@@ -224,16 +224,18 @@
         }
 
         $(function () {
-            var editor = CKEDITOR.replace('recipe-txt');
+            CKEDITOR.replace('recipe-txt');
 
-            $('#cfg-nav a').each(function () {
+            var cfg_navigation = $('#cfg-nav');
+
+            cfg_navigation.find('a').each(function () {
                 $(this).on("click", function () {
                     setHash(this.href);
                 });
             });
 
-            if (window.location.hash != '') {
-                $('#cfg-nav a[href="' + window.location.hash + '"]').tab('show') // Select tab by name
+            if (window.location.hash !== '') {
+                cfg_navigation.find('a[href="' + window.location.hash + '"]').tab('show') // Select tab by name
             }
 
         });

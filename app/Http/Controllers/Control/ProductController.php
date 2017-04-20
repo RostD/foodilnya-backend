@@ -142,4 +142,18 @@ class ProductController extends Controller
 
 
     }
+
+    public function delete(Request $request, $id)
+    {
+        if (Gate::denies('product-delete'))
+            abort(401);
+
+        $product = Product::find($id);
+
+        if ($product) {
+            $product->destroy();
+            return response('', 200);
+        }
+        abort(404);
+    }
 }

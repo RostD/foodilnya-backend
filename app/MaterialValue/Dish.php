@@ -64,13 +64,32 @@ class Dish extends Material
         }
     }
 
+    private function getTrashedIngredients()
+    {
+        $ingredients = [];
+
+        foreach ($this->model->ingredientsOfDish()->onlyTrashed()->get() as $i) {
+            $ingredient = new IngredientCounted($i);
+            $ingredient->quantity = $i->pivot->quantity;
+            $ingredients[] = $ingredient;
+        }
+
+        return $ingredients;
+    }
+
     /**
+     * @param bool $withTrashed
      * @return array
      */
-    public function getIngredients()
+    public function getIngredients($withTrashed = false)
     {
         $this->loadIngredients();
-        return $this->ingredients;
+        $ingredients = $this->ingredients;
+
+        if ($withTrashed)
+            $ingredients = array_merge($ingredients, $this->getTrashedIngredients());
+
+        return $ingredients;
     }
 
     public function getIngredient($id)
@@ -86,12 +105,18 @@ class Dish extends Material
      * Проверяет, есть ли в составе бюда переданный ингредиент
      *
      * @param $id
+     * @param bool $withTrashed
      * @return bool
      */
-    public function issetIngredient($id)
+    public function issetIngredient($id, $withTrashed = false)
     {
         $this->loadIngredients();
-        foreach ($this->ingredients as $i) {
+        $ingredients = $this->ingredients;
+
+        if ($withTrashed)
+            $ingredients = array_merge($ingredients, $this->getTrashedIngredients());
+
+        foreach ($ingredients as $i) {
             if ($i->id == $id) return true;
         }
         return false;
@@ -109,7 +134,7 @@ class Dish extends Material
         if ($ingredient) {
             $quantity = Unit::convert($quantity, $quantityUnit, $ingredient->unit);
 
-            if ($this->issetIngredient($ingredient->id)) {
+            if ($this->issetIngredient($ingredient->id, true)) {
                 $this->model->children()->updateExistingPivot($ingredient->id, ['quantity' => $quantity]);
             } else {
                 $this->model->children()->attach($ingredient->id, ['quantity' => $quantity]);
@@ -121,7 +146,7 @@ class Dish extends Material
 
     public function removeIngredient($id)
     {
-        if ($this->issetIngredient($id)) {
+        if ($this->issetIngredient($id, true)) {
             $this->model->children()->detach($id);
         }
     }
@@ -142,13 +167,35 @@ class Dish extends Material
 
     }
 
+    private function getTrashedAdaptations()
+    {
+        $adaptations = [];
+
+        foreach ($this->model->adaptationsOfDish()->onlyTrashed()->get() as $a) {
+
+            $adaptation = new AdaptationCounted($a);
+            $adaptation->quantity = $a->pivot->quantity;
+            $adaptations[] = $adaptation;
+        }
+
+        return $adaptations;
+    }
+
     /**
+     * @param bool $withTrashed
      * @return array
      */
-    public function getAdaptations()
+    public function getAdaptations($withTrashed = false)
     {
+
         $this->loadAdaptations();
-        return $this->adaptations;
+
+        $adaptations = $this->adaptations;
+
+        if ($withTrashed)
+            $adaptations = array_merge($adaptations, $this->getTrashedAdaptations());
+
+        return $adaptations;
     }
 
     public function getAdaptation($id)
@@ -160,10 +207,20 @@ class Dish extends Material
         return false;
     }
 
-    public function issetAdaptation($id)
+    /**
+     * @param $id
+     * @param bool $withTrashed
+     * @return bool
+     */
+    public function issetAdaptation($id, $withTrashed = false)
     {
         $this->loadAdaptations();
-        foreach ($this->adaptations as $a) {
+        $adaptations = $this->adaptations;
+
+        if ($withTrashed)
+            $adaptations = array_merge($adaptations, $this->getTrashedAdaptations());
+
+        foreach ($adaptations as $a) {
             if ($a->id == $id)
                 return true;
         }
@@ -177,7 +234,7 @@ class Dish extends Material
 
         if ($adaptation) {
 
-            if ($this->issetAdaptation($adaptation->id)) {
+            if ($this->issetAdaptation($adaptation->id, true)) {
                 $this->model->children()->updateExistingPivot($adaptation->id, ['quantity' => $quantity]);
             } else {
                 $this->model->children()->attach($adaptation->id, ['quantity' => $quantity]);
@@ -188,7 +245,7 @@ class Dish extends Material
 
     public function removeAdaptation($id)
     {
-        if ($this->issetAdaptation($id)) {
+        if ($this->issetAdaptation($id, true)) {
             $this->model->children()->detach($id);
         }
     }
