@@ -18,6 +18,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::get('/ingredient/{id}/availableUnits', 'Api\IngredientController@getAvailableUnits');
+Route::get('/attribute/{id}', 'Api\AttributeController@getAttribute');
 
 Route::resource('dishes', 'Api\DishController',
     ['only' => ['index', 'show']]);

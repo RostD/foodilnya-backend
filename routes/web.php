@@ -105,6 +105,10 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
             Route::get('dish/{d_id}/adaptation/{i_id}', 'Control\DishController@formEditAdaptation');
             Route::put('dish/{id}/editAdaptation', 'Control\DishController@editAdaptation');
 
+            Route::get('dish/{id}/addAttribute', 'Control\DishController@formAddAttribute');
+            Route::post('dish/{id}/addAttribute', 'Control\DishController@addAttribute');
+            Route::delete('dish/{d_id}/attribute/{i_id}', 'Control\DishController@removeAttribute');
+
         });
 
     });

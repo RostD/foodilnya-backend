@@ -154,7 +154,7 @@ class Property
      */
     public function replacePossibleValues($possibleValues)
     {
-        if (count($possibleValues) == 0)
+        if (count($possibleValues) == 0 && $this->isFixedValue())
             return false;
         foreach ($this->getPossibleValues() as $value) {
             $value->delete();
@@ -172,7 +172,7 @@ class Property
      */
     public function issetPossibleValue($value)
     {
-        $value = mb_strtolower($value);
+        $value = trim(mb_strtolower($value));
         foreach ($this->possibleValues as $possibleValue) {
             $possibleValue = mb_strtolower($possibleValue->value);
 
@@ -270,25 +270,44 @@ class Property
     }
 
     /**
+     * @param int $dishId
      * @param bool $withTrashed
      * @return array|bool
      */
-    public static function allDishes($withTrashed = false)
+    public static function allNotUsedDishes(int $dishId, $withTrashed = false)
     {
-        $properties = AttributeOfMaterialValue::properties()
-            ->where('material_type_id', '=', Dish::type_id)
-            ->orWhere('material_type_id', '=', 'null')
+        $dish = Dish::find($dishId);
+
+        $modelsHaveParent = AttributeOfMaterialValue::properties()
+            ->where(function ($query) {
+                $query->where('material_type_id', '=', Dish::type_id)
+                    ->orWhere('material_type_id', '=', null);
+            })->whereHas('materials', function ($query) use ($dishId) {
+                $query->where('material_id', '<>', $dishId);
+            })
             ->orderBy('name')->get();
 
-        if ($properties) {
-            $objects = array();
-            foreach ($properties as $property) {
-                $objects[] = new self($property);
+        $modelsDoesntHaveParent = AttributeOfMaterialValue::properties()
+            ->where(function ($query) {
+                $query->where('material_type_id', '=', Dish::type_id)
+                    ->orWhere('material_type_id', '=', null);
+            })->doesntHave('materials')
+            ->orderBy('name')->get();
+
+        if ($modelsHaveParent || $modelsDoesntHaveParent) {
+            $notUsedProperties = [];
+            foreach ($modelsHaveParent as $model) {
+                if (!$dish->issetProperty($model->id))
+                    $notUsedProperties[] = new self($model);
             }
-            return $objects;
-        } else {
-            return false;
+
+            foreach ($modelsDoesntHaveParent as $model) {
+                $notUsedProperties[] = new self($model);
+            }
+
+            return $notUsedProperties;
         }
+        return [];
     }
 
     public function destroy()

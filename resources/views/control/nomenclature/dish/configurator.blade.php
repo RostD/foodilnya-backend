@@ -149,12 +149,31 @@
             </button>
 
         </div>
+
         <div class="tab-pane" id="properties" role="tabpanel">
+            <button type="submit" class="btn btn-primary btn-sm pointer"
+                    style="margin:10px 0px 10px 10px"
+                    onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$dish->id.'/addAttribute')}}','Добавить свойство',600,500)">
+                Добавить
+            </button>
             <table class="table">
+                <tr>
+                    <th>Наименование</th>
+                    <th>Значение</th>
+                    <th>Действия</th>
+                </tr>
                 @foreach($dish->getProperties(true) as $property)
                     <tr style="{{$property->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">
                         <td>{{$property->name}}</td>
                         <td>{{$property->value}} @if($property->unit)({{$property->unit}})@endif</td>
+                        <td>
+                            <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
+                                 onclick="removeAttr('{{$property->id}}','{{$property->name}}')"
+                                 class="pointer"
+                                 width="20"
+                                 height="20"
+                            >
+                        </td>
                     </tr>
                 @endforeach
             </table>
@@ -168,6 +187,31 @@
     <script src="{{ asset('/js/ckeditor/ckeditor.js') }}" type="text/javascript" charset="utf-8"></script>
 
     <script>
+
+        function removeAttr(id, name) {
+            var resp = confirm("Стереть свойство \"" + name + "\"?");
+
+            if (resp) {
+                $.ajax({
+                    url: '{{url('/ctrl/nmcl/cfg/dish')}}/{{$dish->id}}/attribute/' + id,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'DELETE',
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function (data) {
+                        alert("Ошибка");
+                        $('#error').html(data.responseText);
+                    }
+
+
+                });
+            } else {
+                return false;
+            }
+        }
 
         function setHash(urlString) {
 

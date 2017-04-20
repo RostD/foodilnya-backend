@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\MaterialValue\Adaptation;
 use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
+use App\MaterialValue\Property;
 use App\MaterialValue\Tag;
 use App\MaterialValue\Unit;
 use App\Models\MaterialValue;
@@ -323,6 +324,73 @@ class DishController extends Controller
         }
 
         abort(404);
+    }
+
+    public function formAddAttribute($dishId)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(401);
+
+        $dish = Dish::find($dishId);
+
+        if ($dish) {
+            $attributes = Property::allNotUsedDishes($dish->id);
+
+            return view('control/nomenclature/dish/formAddAttribute', ['dish' => $dish,
+                'attributes' => $attributes]);
+        }
+        abort(404);
+    }
+
+    public function addAttribute(Request $request, $id)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(401);
+
+        $this->validate($request, [
+            'attribute' => 'required|exists:attribute_of_material_values,id'
+        ]);
+
+        $attribute = Property::find($request->input('attribute'));
+
+        $dish = Dish::find($id);
+
+        if ($attribute && $dish) {
+            $possValue = trim($request->input('possValue'));
+            $value = trim($request->input('value'));
+
+            if ($attribute->isFixedValue()) {
+                if ($attribute->issetPossibleValue($possValue))
+                    $dish->setProperty($attribute->id, $possValue);
+                else
+                    abort(403);
+
+                return back();
+            } else {
+                if (!empty($value))
+                    $dish->setProperty($attribute->id, $value);
+                elseif ($attribute->issetPossibleValue($possValue))
+                    $dish->setProperty($attribute->id, $possValue);
+                else
+                    abort(403);
+                return back();
+            }
+        }
+        abort(403);
+
+    }
+
+    public function removeAttribute(Request $request, $dish, $attribute)
+    {
+        if (Gate::denies('dish-edit'))
+            abort(401);
+
+        $dish = Dish::find((int)$dish);
+
+        if ($dish) {
+            $dish->removeProperty((int)$attribute);
+        }
+        return response('', 200);
     }
 
 }
