@@ -24,7 +24,8 @@
 
         <div class="form-group {{$errors->first('quantity') ? 'has-danger' : ''}}">
             <label for="att-name">Количество (штук)</label>
-            <input type="text" class="form-control {{$errors->first('quantity') ? 'form-control-danger' : ''}}"
+            <input type="text" autocomplete="off"
+                   class="form-control {{$errors->first('quantity') ? 'form-control-danger' : ''}}"
                    name="quantity"
                    id="att-name" value="{{$adaptation->quantity}}"
                    placeholder="Введите количество">

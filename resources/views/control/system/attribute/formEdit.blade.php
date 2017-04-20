@@ -17,7 +17,8 @@
         {{ csrf_field() }}
         <div class="form-group {{$errors->first('name') ? 'has-danger' : ''}}">
             <label for="att-name">Наименование</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'form-control-danger' : ''}}" name="name"
+            <input type="text" autocomplete="off"
+                   class="form-control {{$errors->first('name') ? 'form-control-danger' : ''}}" name="name"
                    id="att-name" value="{{$property->name}}"
                    placeholder="Введите наименование">
             @if($errors->first('name'))

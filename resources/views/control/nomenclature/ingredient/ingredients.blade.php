@@ -36,6 +36,7 @@
             <div class="form-group row">
                 <div class="col-10">
                     <input name="name" value="{{app('request')->input('name')}}" class="form-control" type="text"
+                           autocomplete="off"
                            placeholder="Наименование содержит">
                 </div>
             </div>

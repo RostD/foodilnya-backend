@@ -18,13 +18,15 @@
         <div class="form-group">
             <label for="unit-full_name">Наименование</label> <span
                     style="color:red;"><i>{{$errors->first('full_name')}}</i></span>
-            <input type="text" class="form-control" name="full_name" id="unit-full_name" value="{{old('full_name')}}"
+            <input type="text" autocomplete="off" class="form-control" name="full_name" id="unit-full_name"
+                   value="{{old('full_name')}}"
                    placeholder="Введите полное наименование">
         </div>
 
         <div class="form-group">
             <label for="unit-name">Сокращённо</label> <span style="color:red;"><i>{{$errors->first('name')}}</i></span>
-            <input type="text" class="form-control" name="name" id="unit-name" value="{{old('name')}}"
+            <input type="text" autocomplete="off" class="form-control" name="name" id="unit-name"
+                   value="{{old('name')}}"
                    placeholder="Введите сокращённое наименование">
         </div>
 
