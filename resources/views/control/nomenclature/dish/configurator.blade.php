@@ -178,7 +178,20 @@
                 @endforeach
             </table>
         </div>
-        <div class="tab-pane" id="tags" role="tabpanel">...</div>
+
+        <div class="tab-pane" id="tags" role="tabpanel">
+            <button type="submit" class="btn btn-primary btn-sm pointer"
+                    style="margin:10px 0px 10px 10px"
+                    onclick="openPopupWindow('{{url('/ctrl/nmcl/dish/'.$dish->id.'/edit')}}','Редактирование блюда',600,450)">
+                Редактировать
+            </button>
+            <div style="margin:10px;">
+                @foreach($dish->tags as $tag)
+                    <h5><span class="badge badge-success">{{$tag->name}}</span></h5>
+                @endforeach
+            </div>
+        </div>
+
     </div>
     <div id="error"></div>
 @endsection
