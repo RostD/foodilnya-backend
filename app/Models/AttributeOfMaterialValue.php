@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 
+/**
+ * @property int|mixed|static fixed_value
+ * @property int|mixed|static materials
+ */
 class AttributeOfMaterialValue extends Model
 {
     use SoftDeletes;

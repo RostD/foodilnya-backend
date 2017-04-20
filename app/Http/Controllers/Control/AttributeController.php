@@ -38,12 +38,18 @@ class AttributeController extends Controller
             'name' => 'required',
         ]);
 
+
         $property = Property::find($id);
 
         if ($property) {
 
+            $possibleValues = [];
+
+            if (!empty(trim($request->input('possibleValues'))))
+                $possibleValues = explode(',', $request->input('possibleValues'));
+
             $property->setName(trim($request->input('name')));
-            $property->replacePossibleValues(explode(',', $request->input('possibleValues')));
+            $property->replacePossibleValues($possibleValues);
             $property->setFixedValue((bool)$request->input('fixedValues'));
             DB::commit();
 
@@ -56,14 +62,23 @@ class AttributeController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'unit' => 'required|exists:units,id'
+            'unit' => 'exists:units,id'
         ]);
 
-        Property::create($request->input('name'),
-            (bool)$request->input('fixedValue'),
+        $possibleValues = [];
+
+        if (!empty(trim($request->input('possibleValues'))))
+            $possibleValues = explode(',', trim($request->input('possibleValues')));
+
+
+        $property = Property::create($request->input('name'),
+            (bool)$request->input('fixedValues'),
             $request->input('type'),
             $request->input('unit'),
-            explode(',', $request->input('possibleValues')));
+            $possibleValues);
+
+        if (!$property)
+            echo "Ошибка";
 
         return redirect()->action('Control\AttributeController@formAdd');
 
@@ -73,10 +88,7 @@ class AttributeController extends Controller
     {
         $property = Property::find($id);
         if ($property) {
-            if ($property->isTrashed())
-                $property->restore();
-            else
-                $property->destroy();
+            $property->destroy();
         }
     }
 }

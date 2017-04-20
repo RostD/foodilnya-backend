@@ -150,9 +150,12 @@ class Property
 
     /**
      * @param $possibleValues array of values
+     * @return bool
      */
     public function replacePossibleValues($possibleValues)
     {
+        if (count($possibleValues) == 0)
+            return false;
         foreach ($this->getPossibleValues() as $value) {
             $value->delete();
         }
@@ -212,6 +215,8 @@ class Property
      */
     public static function create($name, $fixedValue, $type_material = null, $unit = null, $values = array())
     {
+        if ($fixedValue && count($values) == 0)
+            return false;
 
         $attribute = new AttributeOfMaterialValue();
         $attribute->name = trim($name);
@@ -264,13 +269,38 @@ class Property
         }
     }
 
+    /**
+     * @param bool $withTrashed
+     * @return array|bool
+     */
+    public static function allDishes($withTrashed = false)
+    {
+        $properties = AttributeOfMaterialValue::properties()
+            ->where('material_type_id', '=', Dish::type_id)
+            ->orWhere('material_type_id', '=', 'null')
+            ->orderBy('name')->get();
+
+        if ($properties) {
+            $objects = array();
+            foreach ($properties as $property) {
+                $objects[] = new self($property);
+            }
+            return $objects;
+        } else {
+            return false;
+        }
+    }
+
     public function destroy()
     {
-
-        if (count($this->model->materials) > 0) {
-            $this->model->delete();
-        } else {
-            $this->model->forceDelete();
+        if ($this->trashed())
+            $this->restore();
+        else {
+            if (count($this->model->materials) > 0) {
+                $this->model->delete();
+            } else {
+                $this->model->forceDelete();
+            }
         }
 
     }
@@ -279,5 +309,4 @@ class Property
     {
         $this->model->restore();
     }
-    //TODO: destroy (поиск использования, если не используется, произвести удаление, если исп. мягк удалить)
 }

@@ -41,7 +41,13 @@
                         --
                     @endif
                 </td>
-                <td>{{$property->unitName}}</td>
+                <td>
+                    @if($property->unitName)
+                        {{$property->unitName}}
+                    @else
+                        --
+                    @endif
+                </td>
                 <td>
                     @foreach($property->possibleValues as $possibleValue)
                         {{$possibleValue->value}}@if(!$loop->last),@endif
@@ -91,7 +97,8 @@
                     success: function (data) {
                         window.location.reload();
                     },
-                    error: function () {
+                    error: function (data) {
+                        $('#error').html(data.responseText);
                         alert("Ошибка");
                     }
 

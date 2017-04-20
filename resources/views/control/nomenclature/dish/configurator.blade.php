@@ -149,7 +149,16 @@
             </button>
 
         </div>
-        <div class="tab-pane" id="properties" role="tabpanel">...</div>
+        <div class="tab-pane" id="properties" role="tabpanel">
+            <table class="table">
+                @foreach($dish->getProperties(true) as $property)
+                    <tr style="{{$property->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">
+                        <td>{{$property->name}}</td>
+                        <td>{{$property->value}} @if($property->unit)({{$property->unit}})@endif</td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
         <div class="tab-pane" id="tags" role="tabpanel">...</div>
     </div>
     <div id="error"></div>

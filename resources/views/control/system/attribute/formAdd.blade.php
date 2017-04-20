@@ -30,6 +30,7 @@
                 @foreach($units as $unit)
                     <option value="{{$unit->id}}" {{old('unit') === $unit->id ? 'selected' : ''}}>{{$unit->fullName}}</option>
                 @endforeach
+                <option value="">Не измеряется</option>
             </select>
         </div>
 

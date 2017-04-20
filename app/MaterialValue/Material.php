@@ -35,7 +35,7 @@ abstract class Material
 
     /**
      * Массив атрибутов материала
-     * @var PropertyValue в массиве
+     * @var array of PropertyValue
      */
     protected $properties = [];
     protected $prop_loaded = false;
@@ -76,7 +76,7 @@ abstract class Material
 
     /**
      * Получить идентификатор
-     * @return integer id мат. ценности
+     * @return int
      */
     public function getId()
     {
@@ -154,17 +154,34 @@ abstract class Material
             $this->prop_loaded = true;
         }
 
-    }    
+    }
+
+    private function getTrashedProperties()
+    {
+        $properties = [];
+        foreach ($this->model->properties()->onlyTrashed()->get() as $p) {
+
+            $properties[$p->id] = new PropertyValue($p);
+        }
+
+        return $properties;
+    }
 
     /**
      * Возвращает массив аттрибутов в виде объектов
      * @see AttributeValue
-     * @return array
+     * @param bool $withTrashed
+     * @return PropertyValue
      */
-    public function getProperties()
+    public function getProperties($withTrashed = false)
     {
         $this->loadProperties();
-        return $this->properties;
+        $properties = $this->properties;
+
+        if ($withTrashed)
+            $properties = array_merge($properties, $this->getTrashedProperties());
+
+        return $properties;
     }
 
     private function loadTags()
@@ -260,7 +277,7 @@ abstract class Material
             return;
         }
 
-        if ($this->issetProperty($prop_id)) {
+        if ($this->issetProperty($prop_id, true)) {
             $this->properties[$prop_id]->setValue($value);
         } else {
             $property = AttributeOfMaterialValue::property($prop_id)->first();
@@ -280,7 +297,7 @@ abstract class Material
      */
     public function removeProperty($attribute_id)
     {
-        if ($this->issetProperty($attribute_id)) {
+        if ($this->issetProperty($attribute_id, true)) {
             $this->model->attributes()->detach($attribute_id);
             $this->prop_loaded = false;
         }
@@ -291,10 +308,15 @@ abstract class Material
      * @param integer $property_id
      * @return bool
      */
-    public function issetProperty($property_id)
+    public function issetProperty($property_id, $withTrashed = false)
     {
         $this->loadProperties();
-        foreach ($this->properties as $prop) {
+        $properties = $this->properties;
+
+        if ($withTrashed)
+            $properties = array_merge($properties, $this->getTrashedProperties());
+
+        foreach ($properties as $prop) {
             if ($prop->id == $property_id)
                 return true;
         }
@@ -367,5 +389,6 @@ abstract class Material
      * @return MaterialValue|bool
      */
     abstract public static function find($id);
+
 
 }

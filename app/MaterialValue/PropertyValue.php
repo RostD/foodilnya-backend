@@ -131,5 +131,9 @@ class PropertyValue
         return $array;
     }
 
+    public function trashed()
+    {
+        return $this->model->trashed();
+    }
 
 }
