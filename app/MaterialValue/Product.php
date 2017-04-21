@@ -46,22 +46,26 @@ class Product extends Material
         }
     }
 
-    public function setDishComponent($id, $quantity = null)
+    public function setDishComponent($id, $quantity, int $quantityUnit)
     {
-        if ($this->issetIngredient($id)) return;
+        $component = Ingredient::find($id, false);
+        if (!$component)
+            $component = Adaptation::find($id, false);
 
-        $ingredient = Ingredient::find($id);
+        if ($component) {
+            $quantity = Unit::convert($quantity, $quantityUnit, $component->unit);
 
-        if ($ingredient) {
-            $this->model->parents()->detach([$this->dishComponent->id]);
-            $this->model->parents()->attach($ingredient->id);
-            $this->component_loaded = false;
+            if ($this->issetIngredient($component->id)) {
+                $this->model->parents()->updateExistingPivot($component->id, ['quantity' => $quantity]);
+            } else {
+                $this->model->parents()->attach($component->id, ['quantity' => $quantity]);
+                $this->component_loaded = false;
+            }
         }
     }
 
     public function issetIngredient($id)
     {
-        // Сомнительный метод!
         $this->loadDishComponent();
 
         if (!$this->dishComponent) return false;

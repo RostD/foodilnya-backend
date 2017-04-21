@@ -13,7 +13,7 @@
 @section('content')
     @extends('control.layout.menu')
 
-    <h3>
+    <h3 style="margin-left:10px;">[{{$dish->id}}]>
         {{$dish->name}}
         <img src="{{asset("imgs/icons/shock/edit.png")}}"
              onclick="openPopupWindow('{{url('/ctrl/nmcl/dish/'.$dish->id.'/edit')}}','Редактирование блюда',600,450)"

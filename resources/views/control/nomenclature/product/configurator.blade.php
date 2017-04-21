@@ -13,7 +13,7 @@
 @section('content')
     @extends('control.layout.menu')
 
-    <h3>
+    <h3 style="margin-left:10px;">[{{$product->id}}]
         {{$product->name}}
         <img src="{{asset("imgs/icons/shock/edit.png")}}"
              onclick="openPopupWindow('{{url('/ctrl/nmcl/product/'.$product->id.'/edit')}}','Редактирование товара',600,450)"
@@ -61,14 +61,15 @@
             @if(!$product->dishComponent)
                 <button type="submit" class="btn btn-primary btn-sm pointer"
                         style="margin:10px 0px 10px 10px"
-                        onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$product->id.'/addIngredient')}}','Задать ингредиент',600,500)">
+                        onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/product/'.$product->id.'/addComponent')}}','Задать ингредиент',600,500)">
                     Задать
                 </button>
             @else
 
                 <div class="card">
                     <div class="card-block">
-                        <h4 class="card-title">{{$product->dishComponent->name}}</h4>
+                        <h4 class="card-title"
+                            style="{{$product->dishComponent->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">{{$product->dishComponent->name}}</h4>
                         <p class="card-text">{{$product->dishComponent->quantity}} {{$product->dishComponent->unitName}}
                             на 1 {{$product->unitName}} товара</p>
 
@@ -86,7 +87,6 @@
                     </div>
                 </div>
             @endif
-
 
         </div>
 

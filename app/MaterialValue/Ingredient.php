@@ -35,14 +35,6 @@ class Ingredient extends DishComponent
 
     }
 
-    public function getAvailableUnits()
-    {
-        $mainUnit = Unit::find($this->getUnit());
-        $units = $mainUnit->getSimilarUnits();
-        $units[] = $mainUnit;
-
-        return $units;
-    }
 
     public function toArray()
     {
@@ -53,11 +45,18 @@ class Ingredient extends DishComponent
 
     /**
      * @param int $id
-     * @return bool|Ingredient
+     * @param bool $withTrashed
+     * @return Ingredient|bool
      */
-    public static function find($id)
+    public static function find($id, $withTrashed = true)
     {
-        $ingredient = MaterialValue::ingredient($id)->withTrashed()->first();
+        $ingredient = MaterialValue::ingredient($id);
+
+        if ($withTrashed)
+            $ingredient = $ingredient->withTrashed();
+
+        $ingredient = $ingredient->first();
+
         if ($ingredient)
             return self::initial(self::class, $ingredient);
         return false;
@@ -90,9 +89,15 @@ class Ingredient extends DishComponent
         return false;
     }
 
-    public static function all()
+    public static function all($withTrashed = true)
     {
-        $models = MaterialValue::ingredients()->withTrashed()->get();
+
+        $models = MaterialValue::ingredients();
+
+        if ($withTrashed)
+            $models = $models->withTrashed();
+
+        $models = $models->get();
 
         if ($models) {
             $ingredients = [];

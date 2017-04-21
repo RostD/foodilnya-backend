@@ -112,6 +112,9 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
 
             Route::get('product/{id}', 'Control\ProductController@constructor');
 
+            Route::get('product/{id}/addComponent', 'Control\ProductController@formAddComponent');
+            Route::post('product/{id}/addComponent', 'Control\ProductController@addComponent');
+
         });
 
     });

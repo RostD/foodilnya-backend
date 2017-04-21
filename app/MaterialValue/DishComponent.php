@@ -110,4 +110,17 @@ abstract class DishComponent extends Material
         }
         return false;
     }
+
+    /**
+     * Первый эелемент - основная единица измерения ингредиента
+     * @return array|bool
+     */
+    public function getAvailableUnits()
+    {
+        $mainUnit = Unit::find($this->getUnit());
+        $units = $mainUnit->getSimilarUnits();
+        array_unshift($units, $mainUnit);
+
+        return $units;
+    }
 }

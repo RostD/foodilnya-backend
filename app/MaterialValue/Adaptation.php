@@ -89,4 +89,23 @@ class Adaptation extends DishComponent
         }
         return false;
     }
+
+    public static function all($withTrashed = true)
+    {
+        $models = MaterialValue::adaptations();
+
+        if ($withTrashed)
+            $models = $models->withTrashed();
+
+        $models = $models->get();
+
+        if ($models) {
+            $ingredients = [];
+            foreach ($models as $model) {
+                $ingredients[] = new self($model);
+            }
+            return $ingredients;
+        }
+        return false;
+    }
 }

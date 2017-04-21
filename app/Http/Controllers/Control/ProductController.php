@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Control;
 
+use App\MaterialValue\Adaptation;
+use App\MaterialValue\Ingredient;
 use App\MaterialValue\Product;
 use App\MaterialValue\Tag;
 use App\MaterialValue\Unit;
@@ -168,5 +170,52 @@ class ProductController extends Controller
             return view('control.nomenclature.product.configurator', ['product' => $product]);
         }
         abort(404);
+    }
+
+    public function formAddComponent($productId)
+    {
+        if (Gate::denies('product-edit'))
+            abort(401);
+
+        $product = Product::find($productId);
+
+        if ($product) {
+            $components = [];
+
+            foreach (Ingredient::all(false) as $ingredient)
+                $components[] = $ingredient;
+
+            foreach (Adaptation::all(false) as $adaptation)
+                $components[] = $adaptation;
+
+            return view('control/nomenclature/product/formAddComponent', ['product' => $product,
+                'components' => $components]);
+        }
+        abort(404);
+    }
+
+    public function addComponent(Request $request)
+    {
+        if (Gate::denies('product-edit'))
+            abort(403);
+
+        $this->validate($request, [
+            'component' => 'required',
+            'quantity' => 'required',
+            'unit' => 'required',
+            'product' => 'required',
+        ]);
+
+        $component = $request->input('component');
+        $quantity = trim($request->input('quantity'));
+        $unit = $request->input('unit');
+        $product = Product::find($request->input('product'));
+
+        if ($product) {
+            $product->setDishComponent($component, $quantity, (integer)$unit);
+
+            return back();
+        }
+        abort(400);
     }
 }
