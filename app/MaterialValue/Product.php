@@ -16,7 +16,7 @@ class Product extends Material
     const type_id = 2;
     /**
      * Ингредиент, являющийся абстракцией для данного элемента
-     * @var array of Material
+     * @var IngredientCounted|AdaptationCounted
      */
     protected $dishComponent = null;
     protected $component_loaded = false;
@@ -30,12 +30,16 @@ class Product extends Material
         if (!$this->component_loaded) {
             $this->dishComponent = null;
 
-            $ingredient = $this->model->parents()->withTrashed()->first();
-            if ($ingredient) {
-                if ($ingredient->type_id == Ingredient::type_id)
-                    $this->dishComponent = new Ingredient($ingredient);
-                elseif ($ingredient->type_id == Adaptation::type_id)
-                    $this->dishComponent = new Adaptation($ingredient);
+            $component = $this->model->ProductsDishComponent()->first();
+
+            if ($component) {
+                if ($component->type_id == Ingredient::type_id) {
+                    $this->dishComponent = new IngredientCounted($component);
+                    $this->dishComponent->quantity = $component->pivot->quantity;
+                } elseif ($component->type_id == Adaptation::type_id) {
+                    $this->dishComponent = new AdaptationCounted($component);
+                    $this->dishComponent->quantity = $component->pivot->quantity;
+                }
             }
 
             $this->component_loaded = true;
@@ -69,7 +73,7 @@ class Product extends Material
 
     /**
      * Получить ингредиент, к которому относится данный товар
-     * @return array
+     * @return AdaptationCounted|IngredientCounted
      */
     public function getDishComponent()
     {
@@ -82,7 +86,7 @@ class Product extends Material
         if ($this->trashed()) {
             $this->model->restore();
         } else {
-            if (count($this->getDishComponent()) == 0)// TODO && Нет поставщиков
+            if (!$this->getDishComponent())// TODO && Нет поставщиков
                 $this->model->forceDelete();
             else
                 $this->model->delete();

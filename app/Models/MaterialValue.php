@@ -106,6 +106,11 @@ class MaterialValue extends Model
         return $query->where('type_id', Ingredient::type_id);
     }
 
+    public function scopeProductsDishComponent()
+    {
+        return $this->parents()->withTrashed()->withPivot('quantity');
+    }
+
     public function scopeAdaptation($query, $id)
     {
         return $query->where('type_id', Adaptation::type_id)->where('id', $id);

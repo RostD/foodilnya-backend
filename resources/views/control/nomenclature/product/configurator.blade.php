@@ -28,7 +28,7 @@
             <a class="nav-link active" data-toggle="tab" href="#main" role="tab">Описание</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#ingredient" role="tab">Ингредиент</a>
+            <a class="nav-link" data-toggle="tab" href="#dish-component" role="tab">Компонент блюда</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#suppliers" role="tab">Поставщики</a>
@@ -56,13 +56,37 @@
             </table>
         </div>
 
-        <div class="tab-pane" id="ingredient" role="tabpanel">
+        <div class="tab-pane" id="dish-component" role="tabpanel">
 
-            <button type="submit" class="btn btn-primary btn-sm pointer"
-                    style="margin:10px 0px 10px 10px"
-                    onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$product->id.'/addIngredient')}}','Задать ингредиент',600,500)">
-                Задать
-            </button>
+            @if(!$product->dishComponent)
+                <button type="submit" class="btn btn-primary btn-sm pointer"
+                        style="margin:10px 0px 10px 10px"
+                        onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$product->id.'/addIngredient')}}','Задать ингредиент',600,500)">
+                    Задать
+                </button>
+            @else
+
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">{{$product->dishComponent->name}}</h4>
+                        <p class="card-text">{{$product->dishComponent->quantity}} {{$product->dishComponent->unitName}}
+                            на 1 {{$product->unitName}} товара</p>
+
+                        <button type="submit" class="btn btn-primary btn-sm pointer"
+                                style="margin:10px 0px 10px 0px"
+                                onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$product->id.'/addIngredient')}}','Задать ингредиент',600,500)">
+                            Редактировать соотношение
+                        </button>
+
+                        <button type="submit" class="btn btn-danger btn-sm pointer"
+                                style="margin:10px 0px 10px 10px"
+                                onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$product->id.'/addIngredient')}}','Задать ингредиент',600,500)">
+                            Удалить компонент
+                        </button>
+                    </div>
+                </div>
+            @endif
+
 
         </div>
 
