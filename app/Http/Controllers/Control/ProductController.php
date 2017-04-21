@@ -156,4 +156,17 @@ class ProductController extends Controller
         }
         abort(404);
     }
+
+    public function constructor(Request $request, $id)
+    {
+        if (Gate::denies('product-edit'))
+            abort(401);
+
+        $product = Product::find($id);
+
+        if ($product) {
+            return view('control.nomenclature.product.configurator', ['product' => $product]);
+        }
+        abort(404);
+    }
 }

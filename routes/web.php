@@ -109,6 +109,9 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
             Route::post('dish/{id}/addAttribute', 'Control\DishController@addAttribute');
             Route::delete('dish/{d_id}/attribute/{i_id}', 'Control\DishController@removeAttribute');
 
+
+            Route::get('product/{id}', 'Control\ProductController@constructor');
+
         });
 
     });

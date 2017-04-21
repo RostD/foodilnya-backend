@@ -109,7 +109,7 @@
                     @endcan
 
                     @can('product-edit')
-                        <a href="{{url('/ctrl/nmcl/cfg/dish').'/'.$product->id}}" target="_blank">
+                        <a href="{{url('/ctrl/nmcl/cfg/product').'/'.$product->id}}" target="_blank">
                             <img src="{{asset("imgs/icons/shock/technical_wrench.png")}}"
                                  class="pointer"
                                  width="20"
