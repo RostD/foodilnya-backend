@@ -55,7 +55,7 @@ class Product extends Material
         if ($component) {
             $quantity = Unit::convert($quantity, $quantityUnit, $component->unit);
 
-            if ($this->issetIngredient($component->id)) {
+            if ($this->issetComponent($component->id)) {
                 $this->model->parents()->updateExistingPivot($component->id, ['quantity' => $quantity]);
             } else {
                 $this->model->parents()->attach($component->id, ['quantity' => $quantity]);
@@ -64,7 +64,7 @@ class Product extends Material
         }
     }
 
-    public function issetIngredient($id)
+    public function issetComponent($id = null)
     {
         $this->loadDishComponent();
 
@@ -96,6 +96,13 @@ class Product extends Material
                 $this->model->delete();
         }
 
+    }
+
+    public function removeComponent($id)
+    {
+        if ($this->issetComponent($id)) {
+            $this->model->parents()->detach($id);
+        }
     }
 
     /**

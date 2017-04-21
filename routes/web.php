@@ -114,6 +114,7 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
 
             Route::get('product/{id}/addComponent', 'Control\ProductController@formAddComponent');
             Route::post('product/{id}/addComponent', 'Control\ProductController@addComponent');
+            Route::delete('product/{d_id}/component/{i_id}', 'Control\ProductController@removeComponent');
 
         });
 

@@ -180,6 +180,9 @@ class ProductController extends Controller
         $product = Product::find($productId);
 
         if ($product) {
+            if ($product->dishComponent)
+                return view('control.layout.closeButton');
+
             $components = [];
 
             foreach (Ingredient::all(false) as $ingredient)
@@ -217,5 +220,18 @@ class ProductController extends Controller
             return back();
         }
         abort(400);
+    }
+
+    public function removeComponent(Request $request, $productId, $component)
+    {
+        if (Gate::denies('product-edit'))
+            abort(401);
+
+        $product = Product::find((int)$productId);
+
+        if ($product) {
+            $product->removeComponent((int)$component);
+        }
+        return response('', 200);
     }
 }

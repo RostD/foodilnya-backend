@@ -65,7 +65,6 @@
                     Задать
                 </button>
             @else
-
                 <div class="card">
                     <div class="card-block">
                         <h4 class="card-title"
@@ -81,7 +80,7 @@
 
                         <button type="submit" class="btn btn-danger btn-sm pointer"
                                 style="margin:10px 0px 10px 10px"
-                                onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$product->id.'/addIngredient')}}','Задать ингредиент',600,500)">
+                                onclick="removeComponent('{{$product->dishComponent->id}}','{{$product->dishComponent->name}}')">
                             Удалить компонент
                         </button>
                     </div>
@@ -151,6 +150,30 @@
 
     <script>
 
+        function removeComponent(id, name) {
+            var resp = confirm("Отсоединить компонент \"" + name + "\"?");
+
+            if (resp) {
+                $.ajax({
+                    url: '{{url('/ctrl/nmcl/cfg/product')}}/{{$product->id}}/component/' + id,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'DELETE',
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function (data) {
+                        alert("Ошибка");
+                        $('#error').html(data.responseText);
+                    }
+
+
+                });
+            } else {
+                return false;
+            }
+        }
 
         function setHash(urlString) {
 
