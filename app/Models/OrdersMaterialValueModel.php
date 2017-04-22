@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrdersMaterialValueModel extends Model
 {
+    protected $table = 'ordersMaterialValues';
     public $timestamps = false;
 
     /**

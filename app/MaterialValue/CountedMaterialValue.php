@@ -18,22 +18,6 @@ use App\Interfaces\IRegisterString;
 abstract class CountedMaterial extends Material implements IRegisterString
 {
     private $quantity;
-    //private $unit;
-
-    /**
-     * CountedMaterialValue constructor.
-     * @param integer $id Сушествующий идентификатор
-     * @param string $name
-     * @param integer $baseUnit_id
-     * @param float $quantity
-     */
-    public function __construct($id, $name, $baseUnit_id, $quantity)
-    {
-        //TODO: Изменить класс, в соответствии с конструктором родительского класса
-        parent::__construct($id, $name, $baseUnit_id);
-        $this->quantity = $quantity;
-        //$this->unit = $unit;
-    }
 
     /**
      * @return float
@@ -43,12 +27,9 @@ abstract class CountedMaterial extends Material implements IRegisterString
         return $this->quantity;
     }
 
-    /**
-     * @return integer id
-     */
-    public function getUnit()
+    public function setQuantity($value)
     {
-        return $this->unit;
+        $this->quantity = $value;
     }
 
 

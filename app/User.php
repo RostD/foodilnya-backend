@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\OrderModel;
 use App\Models\UserRole;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -31,5 +32,10 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(UserRole::class, 'role_id', 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(OrderModel::class);
     }
 }

@@ -9,19 +9,30 @@
 namespace App\Models;
 
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderModel extends Model
 {
+    protected $table = 'orders';
     public $timestamps = false;
+
+    /**
+     * Атрибуты, которые должны быть преобразованы к базовым типам.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'confirmed' => 'boolean',
+    ];
 
     public function materialValues()
     {
         return $this->hasMany(OrdersMaterialValueModel::class);
     }
 
-    public function counterparty()
+    public function user()
     {
-        return $this->belongsTo(CounterpartyModel::class);
+        return $this->belongsTo(User::class);
     }
 }

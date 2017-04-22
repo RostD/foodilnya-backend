@@ -29,7 +29,6 @@ class IngredientCounted extends Ingredient implements Counted
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
-        //TODO
     }
 
 

@@ -25,7 +25,6 @@
                 <div class="form-control-feedback">{{$errors->first('name')}}</div>@endif
         </div>
 
-        <!-- TODO преределать на чекбоксы -->
         <div class="form-group">
             <label for="tagsSelect">Теги:</label>
             <select multiple class="form-control" id="tagsSelect" name="tags[]">
