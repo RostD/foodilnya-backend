@@ -119,6 +119,13 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         });
 
     });
+
+    Route::group(['prefix' => 'order'], function () {
+
+        Route::get('clients', 'Control\ClientController@clients');
+
+    });
+
 });
 
 

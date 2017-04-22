@@ -9,7 +9,7 @@
 namespace App\RightsAccess\Nomenclature;
 
 
-class ProductRights
+class ClientRights
 {
     public function see($user)
     {
@@ -20,21 +20,21 @@ class ProductRights
 
     public function add($user)
     {
-        if ($user->role->sys_name == 'supplier')
+        if ($user->role->sys_name == 'manager')
             return true;
         return false;
     }
 
     public function edit($user)
     {
-        if ($user->role->sys_name == 'supplier')
+        if ($user->role->sys_name == 'manager')
             return true;
         return false;
     }
 
     public function delete($user)
     {
-        if ($user->role->sys_name == 'supplier')
+        if ($user->role->sys_name == 'manager')
             return true;
         return false;
     }

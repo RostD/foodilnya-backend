@@ -4,12 +4,14 @@ namespace App;
 
 use App\Models\OrderModel;
 use App\Models\UserRole;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +30,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    /**
+     * Атрибуты, которые должны быть преобразованы в даты.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     public function role()
     {
@@ -37,5 +45,10 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(OrderModel::class);
+    }
+
+    public function scopeClients($query)
+    {
+        return $query->where('role_id', 3);
     }
 }
