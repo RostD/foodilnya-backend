@@ -15,6 +15,38 @@ class Client
 {
     protected $model;
 
+
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address)
+    {
+        $this->model->address = trim($address);
+        $this->model->save();
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->model->phone = trim($phone);
+        $this->model->save();
+    }
+
+    public function getLogin()
+    {
+        return $this->model->email;
+    }
+
+    public function setLogin($login)
+    {
+        $this->model->email = $login;
+        $this->model->save();
+    }
+
+    const role_id = 3;
+
     public function __construct(User $model)
     {
         $this->model = $model;
@@ -40,6 +72,12 @@ class Client
     public function getName()
     {
         return $this->model->name;
+    }
+
+    public function setName($name)
+    {
+        $this->model->name = $name;
+        $this->model->save();
     }
 
     public function getAddress()
@@ -73,4 +111,28 @@ class Client
 
         return $clients;
     }
+
+    public static function create($name, $login, $password)
+    {
+        $model = User::create([
+            'name' => $name,
+            'email' => $login,
+            'password' => bcrypt($password),
+            'role_id' => Client::role_id,
+        ]);
+
+        if ($model)
+            return new self($model);
+        return false;
+    }
+
+    public static function find($id)
+    {
+        $model = User::client($id)->withTrashed()->first();
+
+        if ($model)
+            return new self($model);
+        return false;
+    }
+
 }

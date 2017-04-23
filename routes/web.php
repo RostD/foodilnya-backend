@@ -116,6 +116,7 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
             Route::post('product/{id}/addComponent', 'Control\ProductController@addComponent');
             Route::delete('product/{d_id}/component/{i_id}', 'Control\ProductController@removeComponent');
 
+
         });
 
     });
@@ -123,6 +124,10 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
     Route::group(['prefix' => 'order'], function () {
 
         Route::get('clients', 'Control\ClientController@clients');
+        Route::get('client/add', 'Control\ClientController@formAdd');
+        Route::post('client/add', 'Control\ClientController@add');
+        Route::get('client/{id}/edit', 'Control\ClientController@formEdit');
+        Route::put('client/{id}', 'Control\ClientController@edit');
 
     });
 
