@@ -80,9 +80,9 @@
                         >
                     @endcan
 
-                    @can('dish-delete')
+                    @can('client-delete')
                         <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
-                             onclick="destroyDish('{{$client->id}}','{{$client->name}}')"
+                             onclick="destroyClient('{{$client->id}}','{{$client->name}}')"
                              class="pointer"
                              width="20"
                              height="20"
@@ -110,12 +110,12 @@
 @section('script')
     <script>
         var state = false;
-        function destroyDish(id, name) {
-            var resp = confirm("Удалить блюдо \"" + name + "\"?");
+        function destroyClient(id, name) {
+            var resp = confirm("Удалить клиента \"" + name + "\"?");
 
             if (resp) {
                 $.ajax({
-                    url: '{{url('/ctrl/nmcl/dish')}}/' + id,
+                    url: '{{url('/ctrl/order/client')}}/' + id,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },

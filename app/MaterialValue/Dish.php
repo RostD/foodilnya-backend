@@ -260,7 +260,6 @@ class Dish extends Material
             else
                 $this->model->delete();
         }
-
     }
     
     /**

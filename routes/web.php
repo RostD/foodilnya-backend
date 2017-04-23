@@ -128,6 +128,7 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::post('client/add', 'Control\ClientController@add');
         Route::get('client/{id}/edit', 'Control\ClientController@formEdit');
         Route::put('client/{id}', 'Control\ClientController@edit');
+        Route::delete('client/{id}', 'Control\ClientController@delete');
 
     });
 

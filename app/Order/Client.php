@@ -14,7 +14,10 @@ use App\User;
 class Client
 {
     protected $model;
+    const role_id = 3;
 
+    protected $orders;
+    protected $orders_loaded = false;
 
     /**
      * @param mixed $address
@@ -44,8 +47,6 @@ class Client
         $this->model->email = $login;
         $this->model->save();
     }
-
-    const role_id = 3;
 
     public function __construct(User $model)
     {
@@ -90,9 +91,39 @@ class Client
         return $this->model->phone;
     }
 
+    private function loadOrders()
+    {
+        if (!$this->orders_loaded) {
+            $this->orders = [];
+
+            foreach ($this->model->orders as $model)
+                $this->orders[] = new Order($model);
+
+            $this->orders_loaded = true;
+        }
+    }
+
+    public function getOrders()
+    {
+        $this->loadOrders();
+        return $this->orders;
+    }
+
     public function trashed()
     {
         return $this->model->trashed();
+    }
+
+    public function destroy()
+    {
+        if ($this->trashed()) {
+            $this->model->restore();
+        } else {
+            if (count($this->getOrders()) == 0)
+                $this->model->forceDelete();
+            else
+                $this->model->delete();
+        }
     }
 
     public static function all($withTrashed = true)

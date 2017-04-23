@@ -119,4 +119,18 @@ class ClientController extends Controller
 
         abort(404);
     }
+
+    public function delete(Request $request, $id)
+    {
+        if (Gate::denies('client-delete'))
+            abort(401);
+
+        $client = Client::find($id);
+
+        if ($client) {
+            $client->destroy();
+            return response('', 200);
+        }
+        abort(404);
+    }
 }
