@@ -130,6 +130,8 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::put('client/{id}', 'Control\ClientController@edit');
         Route::delete('client/{id}', 'Control\ClientController@delete');
 
+        Route::get('orders', 'Control\OrderController@orders');
+
     });
 
 });

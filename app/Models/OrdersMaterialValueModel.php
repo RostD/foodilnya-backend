@@ -16,15 +16,13 @@ class OrdersMaterialValueModel extends Model
     protected $table = 'ordersMaterialValues';
     public $timestamps = false;
 
-    /**
-     * Атрибуты, которые должны быть преобразованы в даты.
-     *
-     * @var array
-     */
-    protected $dates = ['date'];
-
     public function order()
     {
         return $this->belongsTo(OrderModel::class);
+    }
+
+    public function materialValue()
+    {
+        return $this->belongsTo(MaterialValue::class);
     }
 }

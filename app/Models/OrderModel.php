@@ -11,11 +11,24 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property  user_id
+ */
 class OrderModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'orders';
     public $timestamps = false;
+
+    /**
+     * Атрибуты, которые должны быть преобразованы в даты.
+     *
+     * @var array
+     */
+    protected $dates = ['date', 'deleted_at'];
 
     /**
      * Атрибуты, которые должны быть преобразованы к базовым типам.
@@ -24,9 +37,10 @@ class OrderModel extends Model
      */
     protected $casts = [
         'confirmed' => 'boolean',
+        'done' => 'boolean',
     ];
 
-    public function materialValues()
+    public function materialStrings()
     {
         return $this->hasMany(OrdersMaterialValueModel::class);
     }

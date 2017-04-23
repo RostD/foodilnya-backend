@@ -37,6 +37,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{{url('/ctrl/order/clients')}}">Клиенты</a>
+                        <a class="dropdown-item" href="{{url('/ctrl/order/orders')}}">Заказы</a>
                     </div>
                 </li>
             @endcan

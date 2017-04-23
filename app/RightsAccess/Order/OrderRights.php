@@ -9,7 +9,7 @@
 namespace App\RightsAccess\Nomenclature;
 
 
-class ClientRights
+class OrderRights
 {
     public function see($user)
     {

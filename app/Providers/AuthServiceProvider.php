@@ -56,6 +56,11 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('client-edit', $rightsAccessNamespace . '\Order\ClientRights@edit');
         Gate::define('client-delete', $rightsAccessNamespace . '\Order\ClientRights@delete');
 
+        Gate::define('order-see', $rightsAccessNamespace . '\Order\OrderRights@see');
+        Gate::define('order-add', $rightsAccessNamespace . '\Order\OrderRights@add');
+        Gate::define('order-edit', $rightsAccessNamespace . '\Order\OrderRights@edit');
+        Gate::define('order-delete', $rightsAccessNamespace . '\Order\OrderRights@delete');
+
         //Просмотр информации шеф повара
         Gate::define('chef_info-see', function ($user) {
             if ($user->role->sys_name == 'chef')
