@@ -141,15 +141,9 @@ class Order
 
     private function loadMaterialValues()
     {
-        //TODO
         if (!$this->material_values_loaded) {
-            $this->material_values = [];
-
-            foreach ($this->model->materialStrings as $materialString) {
-                if ($materialString->materialValue->type_id == Dish::type_id) {
-                }
-
-            }
+            $this->material_values = OrderMaterialString::all($this->model->id);
+            $this->material_values_loaded = true;
         }
     }
 
@@ -175,6 +169,24 @@ class Order
 
             return $orders;
         }
+        return false;
+    }
+
+    public static function create($client_id, $date, $address)
+    {
+        $client = Client::find($client_id);
+
+        if ($client) {
+            $order = new OrderModel();
+            $order->date = $date;
+            $order->address = $address;
+            $order->user_id = $client->id;
+
+            $order->save();
+
+            return new self($order);
+        }
+
         return false;
     }
 

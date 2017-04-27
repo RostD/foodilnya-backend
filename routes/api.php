@@ -20,6 +20,7 @@ Route::get('/user', function (Request $request) {
 Route::get('/ingredient/{id}/availableUnits', 'Api\IngredientController@getAvailableUnits');
 Route::get('/component/{id}/availableUnits', 'Api\DishComponentController@getAvailableUnits');
 Route::get('/attribute/{id}', 'Api\AttributeController@getAttribute');
+Route::get('/client/{id}/address', 'Api\ClientController@getAddress');
 
 Route::resource('dishes', 'Api\DishController',
     ['only' => ['index', 'show']]);

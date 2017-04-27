@@ -23,6 +23,6 @@ class OrdersMaterialValueModel extends Model
 
     public function materialValue()
     {
-        return $this->belongsTo(MaterialValue::class);
+        return $this->belongsTo(MaterialValue::class, 'material_value_id', 'id');
     }
 }

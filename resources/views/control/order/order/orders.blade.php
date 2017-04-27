@@ -18,7 +18,7 @@
     @can('client-add')
         <button type="submit" class="btn btn-primary btn-sm pointer"
                 style="margin:10px 0px 10px 10px"
-                onclick="openPopupWindow('{{url('ctrl/order/client/add')}}','Добавить нового клиента',600,550)">Добавить
+                onclick="openPopupWindow('{{url('ctrl/order/order/add')}}','Добавить нового клиента',600,550)">Добавить
         </button>
     @endcan
     <button type="submit" class="btn btn-primary btn-sm pointer"
@@ -102,15 +102,6 @@
                         >
                     @endcan
 
-                    @can('dish-edit')
-                        <a href="{{url('/ctrl/nmcl/cfg/dish').'/'.$order->id}}" target="_blank">
-                            <img src="{{asset("imgs/icons/shock/technical_wrench.png")}}"
-                                 class="pointer"
-                                 width="20"
-                                 height="20"
-                            >
-                        </a>
-                    @endcan
                 </td>
             </tr>
 

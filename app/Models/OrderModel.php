@@ -21,14 +21,13 @@ class OrderModel extends Model
     use SoftDeletes;
 
     protected $table = 'orders';
-    public $timestamps = false;
 
     /**
      * Атрибуты, которые должны быть преобразованы в даты.
      *
      * @var array
      */
-    protected $dates = ['date', 'deleted_at'];
+    protected $dates = ['deleted_at'];
 
     /**
      * Атрибуты, которые должны быть преобразованы к базовым типам.
@@ -42,7 +41,7 @@ class OrderModel extends Model
 
     public function materialStrings()
     {
-        return $this->hasMany(OrdersMaterialValueModel::class);
+        return $this->hasMany(OrdersMaterialValueModel::class)->withPivot('quantity');
     }
 
     public function user()
