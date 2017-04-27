@@ -17,8 +17,8 @@ class Order
     protected $model;
     protected $client = false;
 
-    protected $material_values;
-    protected $material_values_loaded = false;
+    protected $material_strings;
+    protected $material_strings_loaded = false;
 
 
     public function __set($name, $value)
@@ -139,18 +139,18 @@ class Order
         $this->model = $model;
     }
 
-    private function loadMaterialValues()
+    private function loadMaterialStrings()
     {
-        if (!$this->material_values_loaded) {
-            $this->material_values = OrderMaterialString::all($this->model->id);
-            $this->material_values_loaded = true;
+        if (!$this->material_strings_loaded) {
+            $this->material_strings = OrderMaterialString::all($this->model->id);
+            $this->material_strings_loaded = true;
         }
     }
 
-    public function getMaterialValues()
+    public function getMaterialStrings()
     {
-        $this->loadMaterialValues();
-        return $this->material_values;
+        $this->loadMaterialStrings();
+        return $this->material_strings;
     }
 
     public static function all($withTrashed = true)
@@ -190,6 +190,15 @@ class Order
         return false;
     }
 
+    public static function find($order_id)
+    {
+        $model = OrderModel::find($order_id);
+
+        if ($model)
+            return new self($model);
+
+        return false;
+    }
     public function trashed()
     {
         return $this->model->trashed();

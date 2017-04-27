@@ -57,4 +57,13 @@ class OrderController extends Controller
 
         return back();
     }
+
+    public function formEdit($id)
+    {
+        if (Gate::denies('order-edit'))
+            abort(401);
+
+        $data['order'] = Order::find($id);
+        return view('control.order.order.formEdit', $data);
+    }
 }

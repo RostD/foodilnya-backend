@@ -133,6 +133,7 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::get('orders', 'Control\OrderController@orders');
         Route::get('order/add', 'Control\OrderController@formAdd');
         Route::post('order/add', 'Control\OrderController@add');
+        Route::get('order/{id}/edit', 'Control\OrderController@formEdit');
 
     });
 

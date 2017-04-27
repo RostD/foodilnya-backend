@@ -86,7 +86,7 @@
                 <td>
                     @can('client-edit')
                         <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                             onclick="openPopupWindow('{{url('/ctrl/order/client/'.$order->id.'/edit')}}','Редактирование клиента',600,450)"
+                             onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/edit')}}','Редактирование заказа',1000,600)"
                              class="pointer"
                              width="20"
                              height="20"

@@ -28,14 +28,27 @@ class OrderMaterialString extends OrderString
         $this->model = $model;
     }
 
+    public function __set($name, $value)
+    {
+        $name = "set" . $name;
+        return $this->$name($value);
+    }
+
+    public function __get($name)
+    {
+        $name = "get" . $name;
+        return $this->$name();
+    }
+
+
     private function loadMaterial()
     {
         if (!$this->material) {
-            if ($this->model->materialValue()->type_id == Dish::type_id)
+            if ($this->model->materialValue->type_id == Dish::type_id)
                 $this->material = Dish::find($this->model->material_value_id);
-            elseif ($this->model->materialValue()->type_id == Adaptation::type_id)
+            elseif ($this->model->materialValue->type_id == Adaptation::type_id)
                 $this->material = Adaptation::find($this->model->material_value_id);
-            elseif ($this->model->materialValue()->type_id == Ingredient::type_id)
+            elseif ($this->model->materialValue->type_id == Ingredient::type_id)
                 $this->material = Ingredient::find($this->model->material_value_id);
 
             $this->material_loaded = true;
@@ -71,7 +84,7 @@ class OrderMaterialString extends OrderString
         $order = OrderModel::find($order_id);
 
         $strings = [];
-        foreach ($order->materialStrings() as $model) {
+        foreach ($order->materialStrings as $model) {
             $strings[] = new self($model);
         }
 

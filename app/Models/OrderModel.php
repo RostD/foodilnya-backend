@@ -41,7 +41,7 @@ class OrderModel extends Model
 
     public function materialStrings()
     {
-        return $this->hasMany(OrdersMaterialValueModel::class)->withPivot('quantity');
+        return $this->hasMany(OrdersMaterialValueModel::class, 'order_id', 'id');
     }
 
     public function user()
