@@ -6,7 +6,7 @@
  * Time: 12:21
  */
 
-namespace App\RightsAccess\Nomenclature;
+namespace App\RightsAccess\Order;
 
 
 class ClientRights

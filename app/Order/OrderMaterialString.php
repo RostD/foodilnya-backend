@@ -66,6 +66,17 @@ class OrderMaterialString extends OrderString
         return $this->model->quantity;
     }
 
+    public function setQuantity($value)
+    {
+        $this->model->quantity = $value;
+        $this->model->save();
+    }
+
+    public function destroy()
+    {
+        $this->model->delete();
+    }
+
     public static function create($material_id, $quantity, $order_id)
     {
         $material = MaterialValue::find($material_id);
@@ -89,5 +100,15 @@ class OrderMaterialString extends OrderString
         }
 
         return $strings;
+    }
+
+    public static function find($orderId, $materialId)
+    {
+        $model = OrdersMaterialValueModel::where([['order_id', $orderId], ['material_value_id', $materialId]])->first();
+
+        if ($model)
+            return new self($model);
+
+        return false;
     }
 }

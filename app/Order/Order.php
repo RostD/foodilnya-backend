@@ -16,6 +16,7 @@ use App\MaterialValue\Material;
 use App\MaterialValue\Unit;
 use App\Models\MaterialValue;
 use App\Models\OrderModel;
+use Illuminate\Support\Facades\Gate;
 
 class Order
 {
@@ -59,6 +60,9 @@ class Order
      */
     public function setConfirmed(bool $confirmed)
     {
+        if (Gate::denies('order-confirm'))
+            return;
+
         $this->model->confirmed = $confirmed;
         $this->model->save();
     }
@@ -84,6 +88,9 @@ class Order
      */
     public function setDone(bool $done)
     {
+        if (Gate::denies('order-close'))
+            return;
+
         $this->model->done = $done;
         $this->model->save();
     }
@@ -123,6 +130,13 @@ class Order
             $this->client = Client::find($this->model->user_id);
 
         return $this->client;
+    }
+
+    public function removeMaterialString($materialId)
+    {
+        $string = OrderMaterialString::find($this->id, $materialId);
+        if ($string)
+            $string->destroy();
     }
 
     /**
@@ -187,6 +201,10 @@ class Order
 
                 if (!$this->issetMaterialString($material->id)) {
                     OrderMaterialString::create($material->id, $quantity, $this->id);
+                } else {
+                    $materialString = OrderMaterialString::find($this->id, $material->id);
+                    if ($materialString)
+                        $materialString->quantity = $quantity;
                 }
             }
             $this->material_strings_loaded = false;

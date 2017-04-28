@@ -6,7 +6,7 @@
  * Time: 12:21
  */
 
-namespace App\RightsAccess\Nomenclature;
+namespace App\RightsAccess\Order;
 
 
 class OrderRights
@@ -35,6 +35,20 @@ class OrderRights
     public function delete($user)
     {
         if ($user->role->sys_name == 'manager')
+            return true;
+        return false;
+    }
+
+    public function confirm($user)
+    {
+        if ($user->role->sys_name == 'manager')
+            return true;
+        return false;
+    }
+
+    public function close($user)
+    {
+        if ($user->role->sys_name == 'wh_head')
             return true;
         return false;
     }

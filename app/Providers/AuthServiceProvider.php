@@ -60,6 +60,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('order-add', $rightsAccessNamespace . '\Order\OrderRights@add');
         Gate::define('order-edit', $rightsAccessNamespace . '\Order\OrderRights@edit');
         Gate::define('order-delete', $rightsAccessNamespace . '\Order\OrderRights@delete');
+        Gate::define('order-confirm', $rightsAccessNamespace . '\Order\OrderRights@confirm');
+        Gate::define('order-close', $rightsAccessNamespace . '\Order\OrderRights@close');
 
         //Просмотр информации шеф повара
         Gate::define('chef_info-see', function ($user) {

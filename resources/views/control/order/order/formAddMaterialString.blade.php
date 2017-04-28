@@ -14,7 +14,7 @@
 
 @section('content')
     <div style="margin: 10px;">
-        <h4>{{$order->id}}</h4>
+        <h4>К заказу №{{$order->id}}</h4>
 
         <form id="formProp" method="POST" action="{{url('/ctrl/order/order/'.$order->id.'/addMaterialString')}}">
             {{ csrf_field() }}

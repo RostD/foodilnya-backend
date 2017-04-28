@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Control;
 use App\Models\OrderModel;
 use App\Order\Client;
 use App\Order\Order;
+use App\Order\OrderMaterialString;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -56,6 +57,28 @@ class OrderController extends Controller
         DB::commit();
 
         return back();
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if (Gate::denies('order-edit'))
+            abort(401);
+        $confirmed = (bool)$request->input('confirmed');
+        $closed = (bool)$request->input('closed');
+
+        $order = Order::find($id);
+
+        if ($order) {
+
+            DB::beginTransaction();
+
+            $order->confirmed = $confirmed;
+            $order->done = $closed;
+            DB::commit();
+
+            return back();
+        }
+        abort(404);
     }
 
     public function formEdit($id)
@@ -141,5 +164,18 @@ class OrderController extends Controller
             return back();
         }
         abort(400);
+    }
+
+    public function removeMaterialString(Request $request, $orderId, $material)
+    {
+        if (Gate::denies('order-edit'))
+            abort(403);
+
+        $order = Order::find((int)$orderId);
+
+        if ($order) {
+            $order->removeMaterialString((int)$material);
+        }
+        return response('', 200);
     }
 }

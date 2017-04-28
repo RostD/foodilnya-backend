@@ -134,10 +134,12 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::get('order/add', 'Control\OrderController@formAdd');
         Route::post('order/add', 'Control\OrderController@add');
         Route::get('order/{id}/edit', 'Control\OrderController@formEdit');
+        Route::put('order/{id}', 'Control\OrderController@edit');
         Route::get('order/{id}/addMaterialStringDish', 'Control\OrderController@formAddMaterialStringDish');
         Route::get('order/{id}/addMaterialStringIngredient', 'Control\OrderController@formAddMaterialStringIngredient');
         Route::get('order/{id}/addMaterialStringAdaptation', 'Control\OrderController@formAddMaterialStringAdaptation');
         Route::post('order/{id}/addMaterialString', 'Control\OrderController@addMaterialString');
+        Route::delete('order/{d_id}/material/{i_id}', 'Control\OrderController@removeMaterialString');
 
     });
 
