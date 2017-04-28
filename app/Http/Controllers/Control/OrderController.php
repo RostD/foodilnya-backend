@@ -81,6 +81,20 @@ class OrderController extends Controller
         abort(404);
     }
 
+    public function delete(Request $request, $id)
+    {
+        if (Gate::denies('order-delete'))
+            abort(401);
+
+        $order = Order::find($id);
+
+        if ($order) {
+            $order->destroy();
+            return response('', 200);
+        }
+        abort(404);
+    }
+
     public function formEdit($id)
     {
         if (Gate::denies('order-edit'))

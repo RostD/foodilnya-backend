@@ -95,7 +95,7 @@
 
                     @can('client-delete')
                         <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
-                             onclick="destroyClient('{{$order->id}}','{{$order->client->name}}')"
+                             onclick="destroyOrder('{{$order->id}}')"
                              class="pointer"
                              width="20"
                              height="20"
@@ -114,12 +114,12 @@
 @section('script')
     <script>
         var state = false;
-        function destroyClient(id, name) {
-            var resp = confirm("Удалить клиента \"" + name + "\"?");
+        function destroyOrder(id) {
+            var resp = confirm("Удалить заказ №" + id + "?");
 
             if (resp) {
                 $.ajax({
-                    url: '{{url('/ctrl/order/client')}}/' + id,
+                    url: '{{url('/ctrl/order/order')}}/' + id,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },

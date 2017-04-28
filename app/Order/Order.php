@@ -212,6 +212,22 @@ class Order
 
     }
 
+    public function destroy()
+    {
+        if ($this->trashed()) {
+            $this->model->restore();
+        } else {
+            if (!$this->getConfirmed() && !$this->getDone()) {
+                if (count($this->getMaterialStrings()) == 0)
+                    $this->model->forceDelete();
+                else
+                    $this->model->delete();
+            }
+
+        }
+
+    }
+
     public static function all($withTrashed = true)
     {
         $models = OrderModel::orderBy('date');
@@ -251,7 +267,7 @@ class Order
 
     public static function find($order_id)
     {
-        $model = OrderModel::find($order_id);
+        $model = OrderModel::withTrashed()->find($order_id);
 
         if ($model)
             return new self($model);
