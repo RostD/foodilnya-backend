@@ -66,4 +66,80 @@ class OrderController extends Controller
         $data['order'] = Order::find($id);
         return view('control.order.order.formEdit', $data);
     }
+
+    public function formAddMaterialStringDish($orderId)
+    {
+        if (Gate::denies('order-edit'))
+            abort(401);
+
+        $order = Order::find($orderId);
+
+        if ($order) {
+            $dishes = Order::allNotUsedDishes($order->id);
+
+            return view('control/order/order/formAddMaterialString', ['order' => $order,
+                'materials' => $dishes]);
+        }
+
+        abort(404);
+    }
+
+    public function formAddMaterialStringIngredient($orderId)
+    {
+        if (Gate::denies('order-edit'))
+            abort(401);
+
+        $order = Order::find($orderId);
+
+        if ($order) {
+            $ingredients = Order::allNotUsedIngredients($order->id);
+
+            return view('control/order/order/formAddMaterialString', ['order' => $order,
+                'materials' => $ingredients]);
+        }
+
+        abort(404);
+    }
+
+    public function formAddMaterialStringAdaptation($orderId)
+    {
+        if (Gate::denies('order-edit'))
+            abort(401);
+
+        $order = Order::find($orderId);
+
+        if ($order) {
+            $adaptations = Order::allNotUsedAdaptations($order->id);
+
+            return view('control/order/order/formAddMaterialString', ['order' => $order,
+                'materials' => $adaptations]);
+        }
+
+        abort(404);
+    }
+
+    public function addMaterialString(Request $request)
+    {
+        if (Gate::denies('order-edit'))
+            abort(401);
+
+        $this->validate($request, [
+            'material' => 'required',
+            'quantity' => 'required',
+            'unit' => 'required',
+            'order' => 'required',
+        ]);
+
+        $material = $request->input('material');
+        $quantity = trim($request->input('quantity'));
+        $unit = $request->input('unit');
+        $order = Order::find($request->input('order'));
+
+        if ($order) {
+            $order->addMaterialString($material, $quantity, (int)$unit);
+
+            return back();
+        }
+        abort(400);
+    }
 }

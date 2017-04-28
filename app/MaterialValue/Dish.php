@@ -276,14 +276,20 @@ class Dish extends Material
         $array['rate'] = $this->rate;
         return $array;
     }
-    
+
     /**
      * Все существующие блюда,
-     * @return array|bool (Dish[])
+     * @param bool $withTrashed
+     * @return array|\bool[])
      */
-    public static function all()
+    public static function all($withTrashed = true)
     {
-        $result = MaterialValue::dishes()->get();
+        $result = MaterialValue::dishes();
+
+        if ($withTrashed)
+            $result = $result->withTrashed();
+
+        $result = $result->get();
 
         if (!$result)
             return false;

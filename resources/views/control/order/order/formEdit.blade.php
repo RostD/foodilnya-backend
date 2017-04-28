@@ -31,8 +31,20 @@
         <h5 style="display: inline;">Материальные ценности</h5>
         <button type="submit" class="btn btn-primary btn-sm pointer"
                 style="margin:10px 0px 10px 10px"
-                onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$order->id.'/addIngredient')}}','Добавить ингредиент',600,500)">
-            Добавить
+                onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringDish')}}','Добавить строку',600,500)">
+            Добавить блюдо
+        </button>
+
+        <button type="submit" class="btn btn-primary btn-sm pointer"
+                style="margin:10px 0px 10px 10px"
+                onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringIngredient')}}','Добавить строку',600,500)">
+            Добавить ингредиент
+        </button>
+
+        <button type="submit" class="btn btn-primary btn-sm pointer"
+                style="margin:10px 0px 10px 10px"
+                onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringAdaptation')}}','Добавить строку',600,500)">
+            Добавить приспособление
         </button>
 
         <table class="table table-sm">

@@ -19,8 +19,6 @@ use App\Models\Unit;
  * Материальная ценность.
  * Класс, для создания материальной ценности(далее материал), а так же
  * для получения и редактирования информации сущестсвующей.
- * @property  typeName
- * @property  id
  * @package App\MaterialValue
  */
 abstract class Material
@@ -321,6 +319,19 @@ abstract class Material
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Первый эелемент - основная единица измерения ингредиента
+     * @return array|bool
+     */
+    public function getAvailableUnits()
+    {
+        $mainUnit = \App\MaterialValue\Unit::find($this->getUnit());
+        $units = $mainUnit->getSimilarUnits();
+        array_unshift($units, $mainUnit);
+
+        return $units;
     }
 
     public function trashed()
