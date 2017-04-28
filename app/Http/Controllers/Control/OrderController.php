@@ -166,6 +166,28 @@ class OrderController extends Controller
         abort(400);
     }
 
+    public function formEditMaterialString($orderId, $materialId)
+    {
+        if (Gate::denies('order-edit'))
+            abort(401);
+
+        $order = Order::find($orderId);
+
+        if ($order) {
+            if ($order->issetMaterialString($materialId))
+                return view('control/order/order/formEditMaterialString', ['order' => $order,
+                    'materialString' => OrderMaterialString::find($order->id, $materialId)]);
+        }
+        abort(404);
+    }
+
+    public function editMaterialString(Request $request)
+    {
+        $this->addMaterialString($request);
+
+        return back();
+    }
+
     public function removeMaterialString(Request $request, $orderId, $material)
     {
         if (Gate::denies('order-edit'))

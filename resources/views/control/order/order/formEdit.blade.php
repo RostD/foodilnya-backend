@@ -83,7 +83,7 @@
 
                             <td>
                                 <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                                     onclick="openPopupWindow('{{url('/ctrl/nmcl/cfg/dish/'.$order->id.'/ingredient/')}}','Редактирование состава блюда',600,300)"
+                                     onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/material/'.$materialString->material->id.'')}}','Редактирование состава блюда',600,300)"
                                      class="pointer"
                                      width="20"
                                      height="20"

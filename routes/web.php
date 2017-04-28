@@ -139,6 +139,8 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
         Route::get('order/{id}/addMaterialStringIngredient', 'Control\OrderController@formAddMaterialStringIngredient');
         Route::get('order/{id}/addMaterialStringAdaptation', 'Control\OrderController@formAddMaterialStringAdaptation');
         Route::post('order/{id}/addMaterialString', 'Control\OrderController@addMaterialString');
+        Route::get('order/{d_id}/material/{i_id}', 'Control\OrderController@formEditMaterialString');
+        Route::put('order/{id}/editMaterialString', 'Control\OrderController@editMaterialString');
         Route::delete('order/{d_id}/material/{i_id}', 'Control\OrderController@removeMaterialString');
 
     });
