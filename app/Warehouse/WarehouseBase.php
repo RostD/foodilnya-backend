@@ -10,6 +10,8 @@ namespace App\Warehouse;
 
 
 use App\Collections\WarehouseCollection;
+use App\Interfaces\IMaterialDocument;
+use App\Models\Warehouse;
 use App\Warehouse\AcceptPolicy\IAcceptPut;
 use App\Warehouse\AcceptPolicy\IAcceptTake;
 use App\Warehouse\AcceptPolicy\IAcceptValidate;
@@ -28,16 +30,15 @@ class WarehouseBase implements IWarehouse
 
     /**
      * WarehouseBase constructor.
-     * @param $warehouse_id
      */
-    public function __construct($warehouse_id)
+    public function __construct()
     {
         // Политики по-умолчанию
         $this->acceptPut = new FreePut($this);
         $this->acceptTake = new FreeTake($this);
         $this->acceptValidate = new NoValidate($this);
 
-        $this->warehouse_id = $warehouse_id;
+        $this->warehouse_id = (Warehouse::find(1))->id;
     }
 
 
@@ -53,10 +54,10 @@ class WarehouseBase implements IWarehouse
     /**
      * @param $isComing boolean Приход или Расход
      */
-    protected function recordInRegister($isComing)
+    protected function recordInRegister($documentName, $isComing)
     {
         foreach ($this->data->array() as $value) {
-            Register::record($this->warehouse_id, $isComing, $value);
+            Register::record($this->warehouse_id, $documentName, $isComing, $value);
         }
     }
 
@@ -69,9 +70,32 @@ class WarehouseBase implements IWarehouse
      * @param $document
      * @return bool
      */
-    public function appeal($document)
+    public function appeal(IMaterialDocument $document)
     {
+        if ($document->isComing())
+            $this->put($document->getDocumentName(), $document->getMaterialValuesData());
+        else
+            $this->take($document->getDocumentName(), $document->getMaterialValuesData());
         // TODO: Implement appeal() method.
+        $this->clearAppeal();
+    }
+
+    public function reverseAppeal(IMaterialDocument $document)
+    {
+        Register::refutation($this->warehouse_id, $document->getDocumentName());
+    }
+
+
+    private function put(string $documentName, WarehouseCollection $data, bool $forcibly = false)
+    {
+        $this->data = $data;
+
+        if (!$forcibly)
+            if (!$this->acceptPut->canPut())
+                return false;
+
+        $this->recordInRegister($documentName, true);
+        // обновление состояния остатков
         $this->clearAppeal();
     }
 
@@ -81,17 +105,22 @@ class WarehouseBase implements IWarehouse
      *
      * @param WarehouseCollection $data
      * @param bool $forcibly
-     * @return bool
+     * @return void
      */
     public function justPut(WarehouseCollection $data, bool $forcibly = false)
+    {
+        $this->put('none', $data, $forcibly);
+    }
+
+    private function take(string $documentName, WarehouseCollection $data, bool $forcibly = false)
     {
         $this->data = $data;
 
         if (!$forcibly)
-            if (!$this->acceptPut->canPut())
+            if (!$this->acceptTake->canTake())
                 return false;
 
-        $this->recordInRegister(true);
+        $this->recordInRegister($documentName, false);
         // обновление состояния остатков
         $this->clearAppeal();
     }
@@ -102,19 +131,11 @@ class WarehouseBase implements IWarehouse
      *
      * @param WarehouseCollection $data
      * @param bool $forcibly
-     * @return mixed
+     * @return void
      */
     public function justTake(WarehouseCollection $data, bool $forcibly = false)
     {
-        $this->data = $data;
-
-        if (!$forcibly)
-            if (!$this->acceptTake->canTake())
-                return false;
-
-        $this->recordInRegister(false);
-        // обновление состояния остатков
-        $this->clearAppeal();
+        $this->take('none', $data, $forcibly);
     }
 
     /**
@@ -157,5 +178,14 @@ class WarehouseBase implements IWarehouse
     {
         $this->data = null;
         $this->documentNumber = null;
+    }
+
+    /**
+     * Текущие остатки склада
+     * @return WarehouseCollection
+     */
+    public function getRemains()
+    {
+        //TODO
     }
 }

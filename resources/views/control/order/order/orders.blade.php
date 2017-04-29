@@ -73,23 +73,41 @@
                 <td>{{$order->date}}</td>
                 <td>
                     @if($order->confirmed)
-                        +
+                        <img src="{{asset("imgs/icons/shock/checkbox_check.png")}}"
+                             width="20"
+                             height="20"
+                        >
                     @else
-                        -
+                        <img src="{{asset("imgs/icons/shock/checkbox_cross.png")}}"
+                             width="20"
+                             height="20"
+                        >
                     @endif
                 </td>
                 <td>
                     @if($order->equipped)
-                        +
+                        <img src="{{asset("imgs/icons/shock/checkbox_check.png")}}"
+                             width="20"
+                             height="20"
+                        >
                     @else
-                        -
+                        <img src="{{asset("imgs/icons/shock/checkbox_cross.png")}}"
+                             width="20"
+                             height="20"
+                        >
                     @endif
                 </td>
                 <td>
                     @if($order->done)
-                        +
+                        <img src="{{asset("imgs/icons/shock/checkbox_check.png")}}"
+                             width="20"
+                             height="20"
+                        >
                     @else
-                        -
+                        <img src="{{asset("imgs/icons/shock/checkbox_cross.png")}}"
+                             width="20"
+                             height="20"
+                        >
                     @endif
                 </td>
 

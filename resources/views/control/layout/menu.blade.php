@@ -23,8 +23,9 @@
                         Склад
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="#">Остатки</a>
+                        <a class="dropdown-item" href="#">Планируемые расходы</a>
+                        <a class="dropdown-item" href="#">Заказы на комплектацию</a>
                     </div>
                 </li>
             @endcan

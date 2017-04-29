@@ -9,6 +9,7 @@
 namespace App\Order;
 
 
+use App\Interfaces\IRegisterString;
 use App\MaterialValue\Adaptation;
 use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
@@ -16,7 +17,7 @@ use App\Models\MaterialValue;
 use App\Models\OrderModel;
 use App\Models\OrdersMaterialValueModel;
 
-class OrderMaterialString extends OrderString
+class OrderMaterialString extends OrderString implements IRegisterString
 {
     protected $material;
     protected $material_loaded = false;
@@ -110,5 +111,15 @@ class OrderMaterialString extends OrderString
             return new self($model);
 
         return false;
+    }
+
+    public function getMaterialId()
+    {
+        return $this->material->id;
+    }
+
+    public function getUnit()
+    {
+        return $this->material->unit;
     }
 }

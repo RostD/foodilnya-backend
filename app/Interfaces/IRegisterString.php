@@ -11,7 +11,7 @@ namespace App\Interfaces;
  */
 interface IRegisterString
 {
-    public function getName();
+    public function getMaterialId();
 
     public function getQuantity();
 

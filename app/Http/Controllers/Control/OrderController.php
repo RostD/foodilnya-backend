@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Control;
 
 use App\Models\OrderModel;
+use App\Models\Warehouse;
 use App\Order\Client;
 use App\Order\Order;
 use App\Order\OrderMaterialString;
+use App\Warehouse\WarehouseBase;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;

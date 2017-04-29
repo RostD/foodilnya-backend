@@ -10,6 +10,7 @@ namespace App\Warehouse;
 
 
 use App\Collections\WarehouseCollection;
+use App\Interfaces\IMaterialDocument;
 use App\Warehouse\AcceptPolicy\IAcceptPut;
 use App\Warehouse\AcceptPolicy\IAcceptTake;
 use App\Warehouse\AcceptPolicy\IAcceptValidate;
@@ -25,7 +26,7 @@ interface IWarehouse
      * @param $document
      * @return bool
      */
-    public function appeal($document);
+    public function appeal(IMaterialDocument $document);
 
     /**
      * Если требутся поместить на склад без сопроводительных документов,

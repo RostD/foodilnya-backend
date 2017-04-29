@@ -59,11 +59,10 @@
                         Добавить блюдо
                     </button>
 
-                <!--
                     <button type="submit" class="btn btn-secondary btn-sm pointer"
                             onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringIngredient')}}','Добавить строку',600,500)">
                         Добавить ингредиент
-                    </button> -->
+                    </button>
 
                     <button type="submit" class="btn btn-secondary btn-sm pointer"
                             style="margin:10px 0px 10px 10px"

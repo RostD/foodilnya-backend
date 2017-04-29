@@ -78,10 +78,11 @@ class Dish extends Material
     }
 
     /**
+     * @param int $dishQuantity
      * @param bool $withTrashed
      * @return array
      */
-    public function getIngredients($withTrashed = false)
+    public function getIngredients($dishQuantity = 1, $withTrashed = false)
     {
         $this->loadIngredients();
         $ingredients = $this->ingredients;
@@ -89,7 +90,12 @@ class Dish extends Material
         if ($withTrashed)
             $ingredients = array_merge($ingredients, $this->getTrashedIngredients());
 
+        if ($dishQuantity != 1)
+            foreach ($ingredients as $ingredient)
+                $ingredient->quantity = $ingredient->quantity * $dishQuantity;
+
         return $ingredients;
+
     }
 
     public function getIngredient($id)

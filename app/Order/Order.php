@@ -9,17 +9,27 @@
 namespace App\Order;
 
 
+use App\Collections\WarehouseCollection;
+use App\Interfaces\IMaterialDocument;
+use App\Interfaces\IRegisterString;
 use App\MaterialValue\Adaptation;
 use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
+use App\MaterialValue\IngredientCounted;
 use App\MaterialValue\Material;
 use App\MaterialValue\Unit;
 use App\Models\MaterialValue;
 use App\Models\OrderModel;
+use App\Warehouse\WarehouseBase;
 use Illuminate\Support\Facades\Gate;
 
-class Order
+class Order implements IMaterialDocument
 {
+    /**
+     * Документ прихода или расхода на складе
+     */
+    const isComing = false;
+
     protected $model;
     protected $client = false;
 
@@ -107,6 +117,11 @@ class Order
     {
         if (Gate::denies('order-equip'))
             return;
+
+        if ($equipped)
+            (new WarehouseBase())->appeal($this);
+        else
+            (new WarehouseBase())->reverseAppeal($this);
 
         $this->model->equipped = $equipped;
         $this->model->save();
@@ -234,7 +249,7 @@ class Order
         if ($this->trashed()) {
             $this->model->restore();
         } else {
-            if (!$this->getConfirmed() && !$this->getDone()) {
+            if (!$this->getConfirmed() && !$this->getDone() && !$this->getEquipped()) {
                 if (count($this->getMaterialStrings()) == 0)
                     $this->model->forceDelete();
                 else
@@ -342,4 +357,69 @@ class Order
     }
 
 
+    /**
+     * @return bool
+     */
+    public function isComing()
+    {
+        return self::isComing;
+    }
+
+    /**
+     * @return WarehouseCollection
+     */
+    public function getMaterialValuesData()
+    {
+        $collection = new WarehouseCollection();
+        foreach ($this->getMaterialStrings() as $materialString) {
+            // Тип "товар" мы пока не учитываем в заказах
+            if ($materialString->material->type == Adaptation::type_id || $materialString->material->type == Ingredient::type_id)
+                $collection->add($materialString);
+            elseif ($materialString->material->type == Dish::type_id) {
+                foreach ($materialString->material->getIngredients($materialString->quantity) as $ingredient) {
+                    //echo $ingredient->quantity.'<br />';
+                    $collection->add(new class ($ingredient) implements IRegisterString
+                    {
+
+                        protected $ingredient;
+
+                        /**
+                         * __anonymous$object$\App\Interfaces\IRegisterString@8571 constructor.
+                         * @param $ingredient
+                         */
+                        public function __construct(IngredientCounted $ingredient)
+                        {
+                            $this->ingredient = $ingredient;
+                        }
+
+                        public function getMaterialId()
+                        {
+                            return $this->ingredient->id;
+                        }
+
+                        public function getQuantity()
+                        {
+                            return $this->ingredient->quantity;
+                        }
+
+                        public function getUnit()
+                        {
+                            return $this->ingredient->unit;
+                        }
+                    });
+                }
+
+            }
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDocumentName()
+    {
+        return 'Заказ_№' . $this->id;
+    }
 }
