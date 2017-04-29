@@ -95,6 +95,23 @@ class Order
         $this->model->save();
     }
 
+    public function getEquipped()
+    {
+        return $this->model->equipped;
+    }
+
+    /**
+     * @param mixed $equipped
+     */
+    public function setEquipped(bool $equipped)
+    {
+        if (Gate::denies('order-equip'))
+            return;
+
+        $this->model->equipped = $equipped;
+        $this->model->save();
+    }
+
     /**
      * @return mixed
      */

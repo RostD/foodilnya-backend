@@ -60,8 +60,11 @@
             <th>Заказчик</th>
             <th>Дата доставки</th>
             <th>Подтвержден</th>
+            <th>Укомплектован</th>
             <th>Выполнен</th>
-            <th>Действия</th>
+            @if( Gate::check('order-edit') || Gate::check('order-delete') )
+                <th>Действия</th>
+            @endif
         </tr>
         @foreach($orders as $order)
             <tr style="{{$order->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">
@@ -76,6 +79,13 @@
                     @endif
                 </td>
                 <td>
+                    @if($order->equipped)
+                        +
+                    @else
+                        -
+                    @endif
+                </td>
+                <td>
                     @if($order->done)
                         +
                     @else
@@ -84,7 +94,7 @@
                 </td>
 
                 <td>
-                    @can('client-edit')
+                    @can('order-edit')
                         <img src="{{asset("imgs/icons/shock/edit.png")}}"
                              onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/edit')}}','Редактирование заказа',1000,600)"
                              class="pointer"
@@ -93,7 +103,7 @@
                         >
                     @endcan
 
-                    @can('client-delete')
+                    @can('order-delete')
                         <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
                              onclick="destroyOrder('{{$order->id}}')"
                              class="pointer"

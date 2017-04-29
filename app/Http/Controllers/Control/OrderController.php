@@ -64,6 +64,7 @@ class OrderController extends Controller
         if (Gate::denies('order-edit'))
             abort(401);
         $confirmed = (bool)$request->input('confirmed');
+        $equipped = (bool)$request->input('equipped');
         $closed = (bool)$request->input('closed');
 
         $order = Order::find($id);
@@ -73,6 +74,7 @@ class OrderController extends Controller
             DB::beginTransaction();
 
             $order->confirmed = $confirmed;
+            $order->equipped = $equipped;
             $order->done = $closed;
             DB::commit();
 
@@ -106,7 +108,7 @@ class OrderController extends Controller
 
     public function formAddMaterialStringDish($orderId)
     {
-        if (Gate::denies('order-edit'))
+        if (Gate::denies('order-editStrings'))
             abort(401);
 
         $order = Order::find($orderId);
@@ -123,7 +125,7 @@ class OrderController extends Controller
 
     public function formAddMaterialStringIngredient($orderId)
     {
-        if (Gate::denies('order-edit'))
+        if (Gate::denies('order-editStrings'))
             abort(401);
 
         $order = Order::find($orderId);
@@ -140,7 +142,7 @@ class OrderController extends Controller
 
     public function formAddMaterialStringAdaptation($orderId)
     {
-        if (Gate::denies('order-edit'))
+        if (Gate::denies('order-editStrings'))
             abort(401);
 
         $order = Order::find($orderId);
@@ -157,7 +159,7 @@ class OrderController extends Controller
 
     public function addMaterialString(Request $request)
     {
-        if (Gate::denies('order-edit'))
+        if (Gate::denies('order-editStrings'))
             abort(401);
 
         $this->validate($request, [
@@ -182,7 +184,7 @@ class OrderController extends Controller
 
     public function formEditMaterialString($orderId, $materialId)
     {
-        if (Gate::denies('order-edit'))
+        if (Gate::denies('order-editStrings'))
             abort(401);
 
         $order = Order::find($orderId);
@@ -204,7 +206,7 @@ class OrderController extends Controller
 
     public function removeMaterialString(Request $request, $orderId, $material)
     {
-        if (Gate::denies('order-edit'))
+        if (Gate::denies('order-editStrings'))
             abort(403);
 
         $order = Order::find((int)$orderId);

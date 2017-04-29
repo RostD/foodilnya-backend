@@ -13,7 +13,7 @@ class ClientRights
 {
     public function see($user)
     {
-        if ($user->role->sys_name = 'manager')
+        if ($user->role->sys_name == 'manager')
             return true;
         return false;
     }

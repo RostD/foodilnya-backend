@@ -29,18 +29,19 @@
                 </li>
             @endcan
 
-            @can('manager_info-see')
+            @if( Gate::check('order-see') || Gate::check('client-see') )
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false">
                         Заказы
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{{url('/ctrl/order/clients')}}">Клиенты</a>
-                        <a class="dropdown-item" href="{{url('/ctrl/order/orders')}}">Заказы</a>
+                        @can('client-see')<a class="dropdown-item"
+                                             href="{{url('/ctrl/order/clients')}}">Клиенты</a>@endcan
+                        @can('order-see')<a class="dropdown-item" href="{{url('/ctrl/order/orders')}}">Заказы</a>@endcan
                     </div>
                 </li>
-            @endcan
+            @endif
 
             @can('supplier_info-see')
                 <li class="nav-item dropdown">

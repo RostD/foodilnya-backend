@@ -40,7 +40,7 @@
 <body>
 <div class="container">
     <div class="content">
-        <div class="title">403 Доступ закрыт</div>
+        <div class="title">401 Доступ закрыт</div>
     </div>
 </div>
 </body>

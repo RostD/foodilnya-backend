@@ -13,7 +13,11 @@ class OrderRights
 {
     public function see($user)
     {
-        if ($user->role->sys_name = 'manager')
+        if ($user->role->sys_name == 'manager' ||
+            $user->role->sys_name == 'wh_head' ||
+            $user->role->sys_name == 'wh_worker'
+        )
+
             return true;
         return false;
     }
@@ -26,6 +30,16 @@ class OrderRights
     }
 
     public function edit($user)
+    {
+        if ($user->role->sys_name == 'manager' ||
+            $user->role->sys_name == 'wh_head' ||
+            $user->role->sys_name == 'wh_worker'
+        )
+            return true;
+        return false;
+    }
+
+    public function editStrings($user)
     {
         if ($user->role->sys_name == 'manager')
             return true;
@@ -52,5 +66,14 @@ class OrderRights
             return true;
         return false;
     }
+
+    public function equip($user)
+    {
+        if ($user->role->sys_name == 'wh_worker')
+            return true;
+        return false;
+    }
+
+
 
 }

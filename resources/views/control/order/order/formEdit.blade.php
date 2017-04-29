@@ -15,18 +15,22 @@
 
     <div style="margin-left:10px; margin-right: 10px;">
 
+        <div class="row">
+            <div class="col-3">
+                <h1>Заказ №{{$order->id}}</h1>
+            </div>
+            <div class="col" style="padding-top:10px;">
+                <button type="submit" class="btn btn-primary btn-sm pointer"
+                        onclick="window.location.reload()">Обновить
+                </button>
+                <button type="submit" class="btn btn-warning btn-sm pointer"
+                        style="margin-left:15px;"
+                        onclick="closeWindow()">Закрыть
+                </button>
+            </div>
+        </div>
 
-        <h1 style="display: inline;">Заказ №{{$order->id}}
-            <button type="submit" class="btn btn-primary btn-sm pointer"
-                    onclick="window.location.reload()">Обновить
-            </button>
-            <button type="submit" class="btn btn-warning btn-sm pointer"
-                    onclick="closeWindow()">Закрыть
-            </button>
-        </h1>
-
-
-        <div class="card card-outline-primary mb-3 text-center">
+        <div class="card card-outline-primary mb-3">
             <div class="card-block">
                 <blockquote class="card-blockquote">
                     <table class="table table-sm">
@@ -35,7 +39,7 @@
                             <th>Адрес доставки</th>
                             <th>Дата и время доставки</th>
                         </tr>
-                        <tr style="text-align: left;">
+                        <tr>
                             <td>{{$order->client->name}}</td>
                             <td>{{$order->address}}</td>
                             <td>{{$order->date}}</td>
@@ -46,55 +50,59 @@
         </div>
 
 
-        <div class="card card-outline-primary mb-3 text-center">
+        <h5 style="margin-bottom: 10px;">Материальные ценности</h5>
+        <div class="card card-outline-primary mb-3">
             <div class="card-block">
+                @can('order-editStrings')
+                    <button type="submit" class="btn btn-secondary btn-sm pointer"
+                            onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringDish')}}','Добавить строку',600,500)">
+                        Добавить блюдо
+                    </button>
 
-                <h5 style="margin-bottom: 10px;">Материальные ценности</h5>
-                <button type="submit" class="btn btn-secondary btn-sm pointer"
-                        onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringDish')}}','Добавить строку',600,500)">
-                    Добавить блюдо
-                </button>
+                <!--
+                    <button type="submit" class="btn btn-secondary btn-sm pointer"
+                            onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringIngredient')}}','Добавить строку',600,500)">
+                        Добавить ингредиент
+                    </button> -->
 
-                <button type="submit" class="btn btn-secondary btn-sm pointer"
-                        onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringIngredient')}}','Добавить строку',600,500)">
-                    Добавить ингредиент
-                </button>
-
-                <button type="submit" class="btn btn-secondary btn-sm pointer"
-                        style="margin:10px 0px 10px 10px"
-                        onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringAdaptation')}}','Добавить строку',600,500)">
-                    Добавить приспособление
-                </button>
-
+                    <button type="submit" class="btn btn-secondary btn-sm pointer"
+                            style="margin:10px 0px 10px 10px"
+                            onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringAdaptation')}}','Добавить строку',600,500)">
+                        Добавить приспособление
+                    </button>
+                @endcan
                 <table class="table table-sm">
                     <tr>
                         <th>Наименование</th>
                         <th>Тип</th>
                         <th>Количество</th>
                         <th>Единица измерения</th>
-                        <th>Действия</th>
+                        @can('order-editStrings')
+                            <th>Действия</th>@endcan
                     </tr>
                     @foreach($order->materialStrings as $materialString)
-                        <tr style="text-align: left">
+                        <tr>
                             <td>{{$materialString->material->name}}</td>
                             <td>{{$materialString->material->typeName}}</td>
                             <td>{{$materialString->quantity}}</td>
                             <td>{{$materialString->material->unitName}}</td>
 
-                            <td>
-                                <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                                     onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/material/'.$materialString->material->id.'')}}','Редактирование состава блюда',600,300)"
-                                     class="pointer"
-                                     width="20"
-                                     height="20"
-                                >
-                                <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
-                                     onclick="removeMaterialString('{{$materialString->material->id}}','{{$materialString->material->name}}')"
-                                     class="pointer"
-                                     width="20"
-                                     height="20"
-                                >
-                            </td>
+                            @can('order-editStrings')
+                                <td>
+                                    <img src="{{asset("imgs/icons/shock/edit.png")}}"
+                                         onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/material/'.$materialString->material->id.'')}}','Редактирование состава блюда',600,300)"
+                                         class="pointer"
+                                         width="20"
+                                         height="20"
+                                    >
+                                    <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
+                                         onclick="removeMaterialString('{{$materialString->material->id}}','{{$materialString->material->name}}')"
+                                         class="pointer"
+                                         width="20"
+                                         height="20"
+                                    >
+                                </td>
+                            @endcan
                         </tr>
                     @endforeach
                 </table>
@@ -102,30 +110,43 @@
             </div>
         </div>
 
+        <h5 style="margin-bottom: 10px;">Статус заказа</h5>
+        <div class="card card-outline-primary mb-3">
+            <div class="card-block">
+                <form style="display: inline; margin-left: 20px;" method="POST"
+                      action="{{url('ctrl/order/order/'.$order->id)}}">
+                    {{csrf_field()}}
+                    <input type="hidden" name="_method" value="PUT">
+                    @can('order-confirm')
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="confirmed"
+                                   {{$order->confirmed? 'checked':''}} value="true">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Заказ подтвержден и оплачен</span>
+                        </label>
+                    @endcan
 
-        <form style="display: inline; margin-left: 20px;" method="POST"
-              action="{{url('ctrl/order/order/'.$order->id)}}">
-            {{csrf_field()}}
-            <input type="hidden" name="_method" value="PUT">
-            @can('order-confirm')
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" name="confirmed"
-                           {{$order->confirmed? 'checked':''}} value="true">
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description">Заказ подтвержден и оплачен</span>
-                </label>
-            @endcan
+                    @can('order-equip')
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="equipped"
+                                   {{$order->equipped? 'checked':''}} value="true">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Заказ скомплектован</span>
+                        </label>
+                    @endcan
 
-            @can('order-close')
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" name="closed"
-                           {{$order->done? 'checked':''}} value="true">
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description">Заказ выполнен</span>
-                </label>
-            @endcan
-            <button type="submit" class="btn btn-primary btn-sm pointer">Сохранить</button>
-        </form>
+                    @can('order-close')
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="closed"
+                                   {{$order->done? 'checked':''}} value="true">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Заказ выполнен</span>
+                        </label>
+                    @endcan
+                    <button type="submit" class="btn btn-secondary btn-sm pointer">Сохранить</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div id="error"></div>
