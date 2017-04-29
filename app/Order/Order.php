@@ -72,6 +72,8 @@ class Order implements IMaterialDocument
     {
         if (Gate::denies('order-confirm'))
             return;
+        if ($confirmed == $this->getConfirmed())
+            return;
 
         $this->model->confirmed = $confirmed;
         $this->model->save();
@@ -101,6 +103,9 @@ class Order implements IMaterialDocument
         if (Gate::denies('order-close'))
             return;
 
+        if ($done == $this->getDone())
+            return;
+
         $this->model->done = $done;
         $this->model->save();
     }
@@ -116,6 +121,8 @@ class Order implements IMaterialDocument
     public function setEquipped(bool $equipped)
     {
         if (Gate::denies('order-equip'))
+            return;
+        if ($equipped == $this->getEquipped())
             return;
 
         if ($equipped)

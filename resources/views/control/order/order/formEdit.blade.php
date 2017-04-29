@@ -54,21 +54,22 @@
         <div class="card card-outline-primary mb-3">
             <div class="card-block">
                 @can('order-editStrings')
-                    <button type="submit" class="btn btn-secondary btn-sm pointer"
-                            onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringDish')}}','Добавить строку',600,500)">
-                        Добавить блюдо
-                    </button>
+                    <div style="margin-bottom: 10px;">
+                        <button type="submit" class="btn btn-secondary btn-sm pointer"
+                                onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringDish')}}','Добавить строку',600,500)">
+                            Добавить блюдо
+                        </button>
 
-                    <button type="submit" class="btn btn-secondary btn-sm pointer"
-                            onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringIngredient')}}','Добавить строку',600,500)">
-                        Добавить ингредиент
-                    </button>
+                        <button type="submit" class="btn btn-secondary btn-sm pointer"
+                                onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringIngredient')}}','Добавить строку',600,500)">
+                            Добавить ингредиент
+                        </button>
 
-                    <button type="submit" class="btn btn-secondary btn-sm pointer"
-                            style="margin:10px 0px 10px 10px"
-                            onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringAdaptation')}}','Добавить строку',600,500)">
-                        Добавить приспособление
-                    </button>
+                        <button type="submit" class="btn btn-secondary btn-sm pointer"
+                                onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringAdaptation')}}','Добавить строку',600,500)">
+                            Добавить приспособление
+                        </button>
+                    </div>
                 @endcan
                 <table class="table table-sm">
                     <tr>
