@@ -10,25 +10,24 @@ namespace App\Order;
 
 
 use App\Collections\WarehouseCollection;
-use App\Interfaces\IMaterialDocument;
 use App\Interfaces\IRegisterString;
+use App\Interfaces\Warehouses\IBaseDocument;
 use App\MaterialValue\Adaptation;
 use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
 use App\MaterialValue\IngredientCounted;
-use App\MaterialValue\Material;
 use App\MaterialValue\Unit;
 use App\Models\MaterialValue;
 use App\Models\OrderModel;
 use App\Warehouse\WarehouseBase;
 use Illuminate\Support\Facades\Gate;
 
-class Order implements IMaterialDocument
+class Order implements IBaseDocument
 {
     /**
      * Документ прихода или расхода на складе
      */
-    const isComing = false;
+    const isComingWHBase = false;
 
     protected $model;
     protected $client = false;
@@ -122,6 +121,7 @@ class Order implements IMaterialDocument
     {
         if (Gate::denies('order-equip'))
             return;
+
         if ($equipped == $this->getEquipped())
             return;
 
@@ -367,9 +367,9 @@ class Order implements IMaterialDocument
     /**
      * @return bool
      */
-    public function isComing()
+    public function isComingWHBase()
     {
-        return self::isComing;
+        return self::isComingWHBase;
     }
 
     /**
@@ -384,7 +384,7 @@ class Order implements IMaterialDocument
                 $collection->add($materialString);
             elseif ($materialString->material->type == Dish::type_id) {
                 foreach ($materialString->material->getIngredients($materialString->quantity) as $ingredient) {
-                    //echo $ingredient->quantity.'<br />';
+
                     $collection->add(new class ($ingredient) implements IRegisterString
                     {
 

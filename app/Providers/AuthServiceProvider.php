@@ -65,6 +65,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('order-close', $rightsAccessNamespace . '\Order\OrderRights@close');
         Gate::define('order-equip', $rightsAccessNamespace . '\Order\OrderRights@equip');
 
+        Gate::define('wh-base-seeBalance', $rightsAccessNamespace . '\Warehouse\WHBadeRights@seeBalance');
+
         //Просмотр информации шеф повара
         Gate::define('chef_info-see', function ($user) {
             if ($user->role->sys_name == 'chef')

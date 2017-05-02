@@ -23,7 +23,8 @@
                         Склад
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Остатки</a>
+                        @can('wh-base-seeBalance')<a class="dropdown-item"
+                                                     href="{{url('/ctrl/warehouse/baseBalance')}}">Остатки</a>@endcan
                         <a class="dropdown-item" href="#">Планируемые расходы</a>
                         <a class="dropdown-item" href="#">Заказы на комплектацию</a>
                     </div>

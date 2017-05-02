@@ -11,7 +11,7 @@ namespace App\Warehouse;
 
 use App\Collections\WarehouseCollection;
 use App\Interfaces\IMaterialDocument;
-use App\Models\Warehouse;
+use App\Interfaces\Warehouses\IBaseDocument;
 use App\Warehouse\AcceptPolicy\IAcceptPut;
 use App\Warehouse\AcceptPolicy\IAcceptTake;
 use App\Warehouse\AcceptPolicy\IAcceptValidate;
@@ -27,6 +27,7 @@ class WarehouseBase implements IWarehouse
     protected $acceptPut;
     protected $acceptTake;
     protected $acceptValidate;
+    const id = 1;
 
     /**
      * WarehouseBase constructor.
@@ -38,7 +39,7 @@ class WarehouseBase implements IWarehouse
         $this->acceptTake = new FreeTake($this);
         $this->acceptValidate = new NoValidate($this);
 
-        $this->warehouse_id = (Warehouse::find(1))->id;
+        $this->warehouse_id = WarehouseBase::id;
     }
 
 
@@ -56,9 +57,13 @@ class WarehouseBase implements IWarehouse
      */
     protected function recordInRegister($documentName, $isComing)
     {
+        Register::beginTransaction();
+
         foreach ($this->data->array() as $value) {
-            Register::record($this->warehouse_id, $documentName, $isComing, $value);
+            Register::record(WarehouseBase::id, $documentName, $isComing, $value);
         }
+
+        Register::commitTransaction();
     }
 
     /**
@@ -67,12 +72,15 @@ class WarehouseBase implements IWarehouse
      * Для обращения достаточно документа, в котором
      * будет указно что, куда, какое движение (Приход/Расход)
      *
-     * @param $document
+     * @param IBaseDocument $document
      * @return bool
      */
     public function appeal(IMaterialDocument $document)
     {
-        if ($document->isComing())
+        if (!$document instanceof IBaseDocument)
+            return;
+
+        if ($document->isComingWHBase())
             $this->put($document->getDocumentName(), $document->getMaterialValuesData());
         else
             $this->take($document->getDocumentName(), $document->getMaterialValuesData());
@@ -80,9 +88,11 @@ class WarehouseBase implements IWarehouse
         $this->clearAppeal();
     }
 
-    public function reverseAppeal(IMaterialDocument $document)
+    public function reverseAppeal(IBaseDocument $document)
     {
-        Register::refutation($this->warehouse_id, $document->getDocumentName());
+        Register::beginTransaction();
+        Register::refutation(WarehouseBase::id, $document->getDocumentName());
+        Register::commitTransaction();
     }
 
 
@@ -184,8 +194,8 @@ class WarehouseBase implements IWarehouse
      * Текущие остатки склада
      * @return WarehouseCollection
      */
-    public function getRemains()
+    public function getBalance()
     {
-        //TODO
+        return Register::getBalance(WarehouseBase::id);
     }
 }

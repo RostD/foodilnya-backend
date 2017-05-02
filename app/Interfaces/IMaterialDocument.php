@@ -15,11 +15,6 @@ interface IMaterialDocument
 {
 
     /**
-     * @return bool
-     */
-    public function isComing();
-
-    /**
      * @return WarehouseCollection
      */
     public function getMaterialValuesData();
