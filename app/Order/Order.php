@@ -13,6 +13,7 @@ use App\Collections\WarehouseCollection;
 use App\Interfaces\IRegisterString;
 use App\Interfaces\Warehouses\IBaseDocument;
 use App\MaterialValue\Adaptation;
+use App\MaterialValue\AdaptationCounted;
 use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
 use App\MaterialValue\IngredientCounted;
@@ -224,6 +225,9 @@ class Order implements IBaseDocument
 
     public function addMaterialString($material_id, $quantity, $unit)
     {
+        if ($this->getConfirmed() || $this->getEquipped() || $this->getDone())
+            return false;
+        
         $model = MaterialValue::find($material_id);
         if ($model) {
             $material = false;
@@ -395,6 +399,39 @@ class Order implements IBaseDocument
                          * @param $ingredient
                          */
                         public function __construct(IngredientCounted $ingredient)
+                        {
+                            $this->ingredient = $ingredient;
+                        }
+
+                        public function getMaterialId()
+                        {
+                            return $this->ingredient->id;
+                        }
+
+                        public function getQuantity()
+                        {
+                            return $this->ingredient->quantity;
+                        }
+
+                        public function getUnit()
+                        {
+                            return $this->ingredient->unit;
+                        }
+                    });
+                }
+
+                foreach ($materialString->material->getAdaptations($materialString->quantity) as $ingredient) {
+
+                    $collection->add(new class ($ingredient) implements IRegisterString
+                    {
+
+                        protected $ingredient;
+
+                        /**
+                         * __anonymous$object$\App\Interfaces\IRegisterString@8571 constructor.
+                         * @param $ingredient
+                         */
+                        public function __construct(AdaptationCounted $ingredient)
                         {
                             $this->ingredient = $ingredient;
                         }

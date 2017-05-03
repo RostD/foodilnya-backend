@@ -150,6 +150,8 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
 
         Route::get('baseBalance', 'Control\WarehouseController@balanceWHBase');
 
+        Route::get('ordersForPicking', 'Control\WarehouseController@ordersForPicking');
+
     });
 
 });

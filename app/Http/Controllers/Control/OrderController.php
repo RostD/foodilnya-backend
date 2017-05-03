@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Order\Client;
 use App\Order\Order;
 use App\Order\OrderMaterialString;
-use App\Warehouse\Register;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -18,8 +17,6 @@ class OrderController extends Controller
         if (Gate::denies('order-see'))
             abort(401);
 
-        Register::recountBalance(1);
-        
         $filterName = $request->input('name');
         $filterLogin = $request->input('login');
 

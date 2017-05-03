@@ -188,10 +188,11 @@ class Dish extends Material
     }
 
     /**
+     * @param int $dishQuantity
      * @param bool $withTrashed
      * @return array
      */
-    public function getAdaptations($withTrashed = false)
+    public function getAdaptations($dishQuantity = 1, $withTrashed = false)
     {
 
         $this->loadAdaptations();
@@ -200,6 +201,10 @@ class Dish extends Material
 
         if ($withTrashed)
             $adaptations = array_merge($adaptations, $this->getTrashedAdaptations());
+
+        if ($dishQuantity != 1)
+            foreach ($adaptations as $adaptation)
+                $adaptation->quantity = $adaptation->quantity * $dishQuantity;
 
         return $adaptations;
     }

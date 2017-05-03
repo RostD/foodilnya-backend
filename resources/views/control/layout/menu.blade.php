@@ -26,7 +26,9 @@
                         @can('wh-base-seeBalance')<a class="dropdown-item"
                                                      href="{{url('/ctrl/warehouse/baseBalance')}}">Остатки</a>@endcan
                         <a class="dropdown-item" href="#">Планируемые расходы</a>
-                        <a class="dropdown-item" href="#">Заказы на комплектацию</a>
+                        <a class="dropdown-item"
+                           href="{{url('/ctrl/warehouse/ordersForPicking').'?day='.date('Y-m-d')}}">Заказы на
+                            комплектацию</a>
                     </div>
                 </li>
             @endcan
