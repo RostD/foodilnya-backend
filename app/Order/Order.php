@@ -174,6 +174,9 @@ class Order implements IBaseDocument
 
     public function removeMaterialString($materialId)
     {
+        if ($this->getConfirmed() || $this->getEquipped() || $this->getDone())
+            return;
+         
         $string = OrderMaterialString::find($this->id, $materialId);
         if ($string)
             $string->destroy();

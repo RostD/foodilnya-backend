@@ -43,25 +43,24 @@
                 <th>Код</th>
                 <th>Наименование</th>
                 <th>Тип</th>
-                <th>Единица измерения</th>
                 <th>Плановый расход</th>
                 <th>В наличии</th>
                 <th>Недостаток</th>
-
+                <th>Единица измерения</th>
             </tr>
             @foreach($strings as $string)
                 <tr>
                     <td>{{$string->material->id}}</td>
                     <td>{{$string->material->name}}</td>
                     <td>{{$string->material->typeName}}</td>
-                    <td>{{$string->material->unitName}}</td>
-                    <td>{{$string->quantity}}</td>
-                    <td>{{$string->fact}}</td>
-                    <td style="color:#d9534f;">
+                    <td style="text-align: center;">{{$string->quantity}}</td>
+                    <td style="text-align: center;">{{$string->fact}}</td>
+                    <td style="text-align: center; color:#d9534f;">
                         @if($string->fact - $string->quantity < 0)
                             {{abs($string->fact - $string->quantity)}}
                         @endif
                     </td>
+                    <td>{{$string->material->unitName}}</td>
                 </tr>
             @endforeach
         </table>

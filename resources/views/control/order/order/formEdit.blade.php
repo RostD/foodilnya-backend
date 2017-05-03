@@ -55,20 +55,24 @@
             <div class="card-block">
                 @can('order-editStrings')
                     <div style="margin-bottom: 10px;">
-                        <button type="submit" class="btn btn-secondary btn-sm pointer"
-                                onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringDish')}}','Добавить строку',600,500)">
-                            Добавить блюдо
-                        </button>
+                        @if($order->confirmed || $order->equipped || $order->done)
+                            <fieldset disabled>
+                                @endif
+                                <button type="submit" class="btn btn-secondary btn-sm pointer"
+                                        onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringDish')}}','Добавить строку',600,500)">
+                                    Добавить блюдо
+                                </button>
 
-                        <button type="submit" class="btn btn-secondary btn-sm pointer"
-                                onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringIngredient')}}','Добавить строку',600,500)">
-                            Добавить ингредиент
-                        </button>
+                                <button type="submit" class="btn btn-secondary btn-sm pointer"
+                                        onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringIngredient')}}','Добавить строку',600,500)">
+                                    Добавить ингредиент
+                                </button>
 
-                        <button type="submit" class="btn btn-secondary btn-sm pointer"
-                                onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringAdaptation')}}','Добавить строку',600,500)">
-                            Добавить приспособление
-                        </button>
+                                <button type="submit" class="btn btn-secondary btn-sm pointer"
+                                        onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/addMaterialStringAdaptation')}}','Добавить строку',600,500)">
+                                    Добавить приспособление
+                                </button>
+                            </fieldset>
                     </div>
                 @endcan
                 <table class="table table-sm">
@@ -77,8 +81,11 @@
                         <th>Тип</th>
                         <th>Количество</th>
                         <th>Единица измерения</th>
-                        @can('order-editStrings')
-                            <th>Действия</th>@endcan
+                        @if(!$order->confirmed && !$order->equipped && !$order->done)
+                            @can('order-editStrings')
+                                <th>Действия</th>
+                            @endcan
+                        @endif
                     </tr>
                     @foreach($order->materialStrings as $materialString)
                         <tr>
@@ -87,22 +94,24 @@
                             <td>{{$materialString->quantity}}</td>
                             <td>{{$materialString->material->unitName}}</td>
 
-                            @can('order-editStrings')
-                                <td>
-                                    <img src="{{asset("imgs/icons/shock/edit.png")}}"
-                                         onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/material/'.$materialString->material->id.'')}}','Редактирование состава блюда',600,300)"
-                                         class="pointer"
-                                         width="20"
-                                         height="20"
-                                    >
-                                    <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
-                                         onclick="removeMaterialString('{{$materialString->material->id}}','{{$materialString->material->name}}')"
-                                         class="pointer"
-                                         width="20"
-                                         height="20"
-                                    >
-                                </td>
-                            @endcan
+                            @if(!$order->confirmed && !$order->equipped && !$order->done)
+                                @can('order-editStrings')
+                                    <td>
+                                        <img src="{{asset("imgs/icons/shock/edit.png")}}"
+                                             onclick="openPopupWindow('{{url('/ctrl/order/order/'.$order->id.'/material/'.$materialString->material->id.'')}}','Редактирование состава блюда',600,300)"
+                                             class="pointer"
+                                             width="20"
+                                             height="20"
+                                        >
+                                        <img src="{{asset("imgs/icons/shock/trash_can.png")}}"
+                                             onclick="removeMaterialString('{{$materialString->material->id}}','{{$materialString->material->name}}')"
+                                             class="pointer"
+                                             width="20"
+                                             height="20"
+                                        >
+                                    </td>
+                                @endcan
+                            @endif
                         </tr>
                     @endforeach
                 </table>
