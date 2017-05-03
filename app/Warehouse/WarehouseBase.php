@@ -198,4 +198,13 @@ class WarehouseBase implements IWarehouse
     {
         return Register::getBalance(WarehouseBase::id);
     }
+
+    /**
+     * @param $material_id
+     * @return float
+     */
+    public function getMaterialBalance($material_id)
+    {
+        return Register::getMaterialBalance(WarehouseBase::id, $material_id);
+    }
 }

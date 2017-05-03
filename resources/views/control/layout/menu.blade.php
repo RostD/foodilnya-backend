@@ -16,22 +16,28 @@
     <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
         <ul class="navbar-nav ">
 
-            @can('wh_head_info-see')
+            @if( Gate::check('wh-base-seeBalance') || Gate::check('order-see') )
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         Склад
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        @can('wh-base-seeBalance')<a class="dropdown-item"
-                                                     href="{{url('/ctrl/warehouse/baseBalance')}}">Остатки</a>@endcan
-                        <a class="dropdown-item" href="#">Планируемые расходы</a>
-                        <a class="dropdown-item"
-                           href="{{url('/ctrl/warehouse/ordersForPicking').'?day='.date('Y-m-d')}}">Заказы на
-                            комплектацию</a>
+                        @can('wh-base-seeBalance')
+                            <a class="dropdown-item" href="{{url('/ctrl/warehouse/base/balance')}}">Остатки</a>
+                        @endcan
+
+                        <a class="dropdown-item" href="{{url('/ctrl/warehouse/base/plannedCosts')}}">Планируемые
+                            расходы</a>
+
+                        @can('order-see')
+                            <a class="dropdown-item"
+                               href="{{url('/ctrl/warehouse/ordersForPicking').'?day='.date('Y-m-d')}}">Заказы на
+                                комплектацию</a>
+                        @endcan
                     </div>
                 </li>
-            @endcan
+            @endif
 
             @if( Gate::check('order-see') || Gate::check('client-see') )
                 <li class="nav-item dropdown">

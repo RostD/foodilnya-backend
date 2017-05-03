@@ -74,14 +74,17 @@
                         <th>Количество</th>
                         <th>Единица измерения</th>
                     </tr>
-                    @foreach($order->getMaterialStrings() as $item)
+                    @foreach($order->getMaterialStrings() as $key=>$item)
                         @if($item->material->type == \App\MaterialValue\Dish::type_id)
-                            <tr>
-                                <th colspan="4"><h5>{{$item->material->name}}</h5></th>
+                            <tr style="color:#f0ad4e;">
+                                <td>{{$item->material->name}}</td>
+                                <td>{{$item->material->typeName}}</td>
+                                <td>{{$item->quantity}}</td>
+                                <td>{{$item->material->unitName}}</td>
                             </tr>
                             @foreach($item->material->getIngredients($item->quantity) as $ingredient)
                                 <tr>
-                                    <td style="padding-left:20px;">{{$ingredient->name}}</td>
+                                    <td>|---{{$ingredient->name}}</td>
                                     <td>{{$ingredient->typeName}}</td>
                                     <td>{{$ingredient->quantity}}</td>
                                     <td>{{$ingredient->unitName}}</td>
@@ -90,14 +93,19 @@
 
                             @foreach($item->material->getAdaptations($item->quantity) as $adaptation)
                                 <tr>
-                                    <td style="padding-left:20px;">{{$adaptation->name}}</td>
+                                    <td>|---{{$adaptation->name}}</td>
                                     <td>{{$adaptation->typeName}}</td>
                                     <td>{{$adaptation->quantity}}</td>
                                     <td>{{$adaptation->unitName}}</td>
                                 </tr>
                             @endforeach
                         @else
-
+                            <tr>
+                                <td>{{$item->material->name}}</td>
+                                <td>{{$item->material->typeName}}</td>
+                                <td>{{$item->quantity}}</td>
+                                <td>{{$item->material->unitName}}</td>
+                            </tr>
                         @endif
                     @endforeach
                 </table>

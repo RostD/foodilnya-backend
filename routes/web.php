@@ -148,9 +148,10 @@ Route::group(['prefix' => 'ctrl', 'middleware' => ['auth', 'ctrl']], function ()
 
     Route::group(['prefix' => 'warehouse'], function () {
 
-        Route::get('baseBalance', 'Control\WarehouseController@balanceWHBase');
+        Route::get('base/balance', 'Control\WarehouseController@balanceWHBase');
 
         Route::get('ordersForPicking', 'Control\WarehouseController@ordersForPicking');
+        Route::get('base/plannedCosts', 'Control\WarehouseController@plannedCosts');
 
     });
 

@@ -33,14 +33,19 @@ class ReportMaterialString
 
     public function __set($name, $value)
     {
-        $name = "set" . $name;
-        return $this->$name($value);
+        $name_m = "set" . $name;
+        if (!method_exists($this, $name_m))
+            return $this->$name = $value;
+        else
+            return $this->$name_m($value);
     }
 
     public function __get($name)
     {
-        $name = "get" . $name;
-        return $this->$name();
+        $name_m = "get" . $name;
+        if (!method_exists($this, $name_m))
+            return $this->$name;
+        return $this->$name_m();
     }
 
     /**
@@ -49,6 +54,11 @@ class ReportMaterialString
     public function getQuantity()
     {
         return $this->quantity;
+    }
+
+    public function setQuantity($value)
+    {
+        return $this->quantity = $value;
     }
 
     private function loadMaterial()

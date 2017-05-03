@@ -135,4 +135,22 @@ class Register
 
         return $materials;
     }
+
+    /**
+     * @param $wh_id
+     * @param $material_id
+     * @return float
+     */
+    static public function getMaterialBalance($wh_id, $material_id)
+    {
+        $string = WarehouseStatus::where('warehouse_id', $wh_id)
+            ->where('material_id', $material_id)->first();
+        if ($string) {
+            $material = MaterialValue::find($string->material_id);
+            if ($material)
+                return (float)$string->quantity;
+        }
+
+        return (float)0;
+    }
 }
