@@ -107,6 +107,7 @@
                         >
                     @endcan
 
+                <!--
                     @can('adaptation-edit')
                         <a href="{{url('/ctrl/nmcl/cfg/dish').'/'.$adaptation->id}}" target="_blank">
                             <img src="{{asset("imgs/icons/shock/technical_wrench.png")}}"
@@ -116,6 +117,7 @@
                             >
                         </a>
                     @endcan
+                        -->
                 </td>
             </tr>
 

@@ -108,7 +108,7 @@
                         >
                     @endcan
 
-                    @can('ingredient-edit')
+                <!-- @can('ingredient-edit')
                         <img src="{{asset("imgs/icons/shock/technical_wrench.png")}}"
                              onclick="openPopupWindow('{{url('#')}}','Конструктор ингредиента',600,450)"
                              class="pointer"
@@ -116,6 +116,7 @@
                              height="20"
                         >
                     @endcan
+                        -->
                 </td>
             </tr>
 

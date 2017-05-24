@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Control;
 
+use App\Http\Controllers\Controller;
 use App\MaterialValue\Adaptation;
 use App\MaterialValue\Ingredient;
 use App\MaterialValue\Product;
@@ -9,7 +10,6 @@ use App\MaterialValue\Tag;
 use App\MaterialValue\Unit;
 use App\Models\MaterialValue;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
@@ -133,9 +133,10 @@ class ProductController extends Controller
 
             $product->name = $request->input('name');
 
-            if (!empty($tags)) {
+            if (!empty($tags))
                 $product->replaceTags($tags);
-            }
+            else
+                $product->replaceTags([]);
             DB::commit();
 
             return back();

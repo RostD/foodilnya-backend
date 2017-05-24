@@ -10,7 +10,7 @@
 
 @extends('control.layout.main')
 
-@section('title','Добавление ингредиента')
+@section('title','Добавление приспособления')
 
 @section('content')
     <h4>{{$dish->name}}</h4>
@@ -20,7 +20,7 @@
         <input type="hidden" name="dish" value="{{$dish->id}}">
 
         <div class="form-group {{$errors->first('adaptation') ? 'has-danger' : ''}}">
-            <label for="tagsSelect">Ингредиент:</label><br/>
+            <label for="tagsSelect">Приспособление:</label><br/>
             <select class="custom-select" name="adaptation">
                 <option selected disabled="disabled">Выберите приспособление</option>
                 @foreach($adaptations as $adaptation)

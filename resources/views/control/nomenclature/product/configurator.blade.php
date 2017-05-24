@@ -68,7 +68,8 @@
                 <div class="card">
                     <div class="card-block">
                         <h4 class="card-title"
-                            style="{{$product->dishComponent->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">{{$product->dishComponent->name}}</h4>
+                            style="{{$product->dishComponent->trashed() ? 'text-decoration:line-through;background-color:#FBEFEF;':''}}">
+                            [{{$product->dishComponent->id}}] {{$product->dishComponent->name}}</h4>
                         <p class="card-text">{{$product->dishComponent->quantity}} {{$product->dishComponent->unitName}}
                             на 1 {{$product->unitName}} товара</p>
 

@@ -9,7 +9,7 @@
 
 @extends('control.layout.main')
 
-@section('title','Добавление товара')
+@section('title','Добавление ингредиента')
 
 @section('content')
 

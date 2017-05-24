@@ -8,7 +8,6 @@ use App\MaterialValue\Dish;
 use App\MaterialValue\Ingredient;
 use App\MaterialValue\Property;
 use App\MaterialValue\Tag;
-use App\MaterialValue\Unit;
 use App\Models\MaterialValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -126,9 +125,10 @@ class DishController extends Controller
 
             $dish->name = $request->input('name');
 
-            if (!empty($tags)) {
+            if (!empty($tags))
                 $dish->replaceTags($tags);
-            }
+            else
+                $dish->replaceTags([]);
             DB::commit();
 
             return redirect()->action('Control\DishController@formEdit', ['id' => $dish->id]);

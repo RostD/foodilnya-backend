@@ -131,9 +131,10 @@ class IngredientController extends Controller
 
             $ingredient->name = $request->input('name');
 
-            if (!empty($tags)) {
+            if (!empty($tags))
                 $ingredient->replaceTags($tags);
-            }
+            else
+                $ingredient->replaceTags([]); 
             DB::commit();
 
             return redirect()->action('Control\IngredientController@formEdit', ['id' => $ingredient->id]);

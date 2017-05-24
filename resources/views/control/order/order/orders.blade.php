@@ -26,10 +26,12 @@
             onclick="window.location.reload()">Обновить
     </button>
 
+    <!--
     <button type="submit" class="btn btn-primary btn-sm pointer"
             style="margin:10px 0px 10px 10px"
             onclick="toggle()">Фильтр
     </button>
+
 
     <div id="filter" style="display: none; margin: 10px; padding:5px; border:2px dashed #292B2C; ">
         <form method="GET">
@@ -53,7 +55,7 @@
 
 
     </div>
-
+    -->
     <table class="table table-sm">
         <tr>
             <th>Код</th>
