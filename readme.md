@@ -1,3 +1,24 @@
+
+Демонстрация: http://foodtable.zzz.com.ua
+
+Заходите в "Панель управления"
+
+Можете создать новые аккаунты, а можете использовать уже созданные:
+
+admin@fd.loc
+chef@fd.loc
+wh_head@fd.loc
+wh_worker@fd.loc
+manager@fd.loc
+У всех пароль - 5103780
+
+У каждого аккаунта свои права.
+
+Cookies должны быть включены.
+
+Изменять можно любую информацию.
+
+Работоспособность тестировалась на google chrome(desktop).
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
